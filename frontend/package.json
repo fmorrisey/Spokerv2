@@ -1,5 +1,5 @@
 {
-  "name": "spokerv2",
+  "name": "spoker-v2-frontend",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -9,8 +9,7 @@
     "test": "ng test",
     "serve:ssr:spokerv2": "node dist/spokerv2/server/server.mjs",
     "cy:open": "npx cypress open",
-    "cy:run": "npx cypress run",
-    
+    "cy:run": "npx cypress run"
   },
   "private": true,
   "dependencies": {

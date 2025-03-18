@@ -16,4 +16,7 @@ Spoker v2 - refactored from the ground up
 setup
 - SCSS
 - Enabled SSR and SSG/PreRender
-- No Server Routing and App Engine API GGGGGGGGG4
+- No Server Routing and App Engine API
+
+"docker" : "docker-compose up",
+"docker:build" : "docker-compose up --build"
