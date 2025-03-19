@@ -20,6 +20,7 @@
 - Node server written in TypeScript
 - MongoDB with Mongoose
 - RBAC with JWT + Bcrypt
+- Email Service (TBD / NodeMailer?)
 
 ### Logging
 - Service to handle and process font and backend logs

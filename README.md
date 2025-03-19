@@ -8,8 +8,8 @@ Run `docker-compose build`
 
 
 ## Basic Design
-[Backend](./design/technical/backend_arch.md)   
-[Frontend](./design/technical/frontend_arch.md)
+- [Backend](./design/technical/backend_arch.md)   
+- [Frontend](./design/technical/frontend_arch.md)
 
 
 ## Testing
