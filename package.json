@@ -1,0 +1,13 @@
+{
+    "name": "spoker-v2-root",
+    "version": "0.0.0",
+    "scripts": {
+      "ng": "ng",
+      "build:dev": "docker compose -f docker-compose.dev.yml up",
+      "docker:dev": "docker compose -f docker-compose.dev.yml up",
+      "build:prod": "docker compose -f docker-compose.prod.yml up",
+      "docker:prod": "docker compose -f docker-compose.prod.yml up",
+      "docker:test": "echo \"Error: no test specified\" && exit 1"
+    }
+  }
+  

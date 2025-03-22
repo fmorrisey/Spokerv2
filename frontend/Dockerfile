@@ -9,8 +9,9 @@ RUN npm run build
 
 # Serve Stage
 FROM nginx:stable-alpine
-
-COPY --from=build /app/build /usr/share/nginx/html
+RUN rm -rf /usr/share/nginx/html/* && rm /etc/nginx/conf.d/default.conf
+COPY --from=build /app/dist/spokerv2/browser/ /usr/share/nginx/html/
+COPY default.conf /etc/nginx/conf.d/default.conf
 
 # Expose port 80
 EXPOSE 80

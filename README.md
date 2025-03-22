@@ -3,7 +3,18 @@ Spoker v2 - refactored from the ground up using professional industry developmen
 
 
 ## Getting Started
-Run `docker-compose up --build`
+
+### Local App Hot-Load Development Environment
+ - `npm run build:dev` builds the local development docker environment image
+ - `npm run docker:dev` run the local development docker environment image with hot-loading
+ ** point browser at `localhost:4200`
+
+### Production App Deployment and Testing
+ - `npm run build:prod` builds the local development docker environment image
+ - `npm run docker:prod` run the local development docker environment image with hot-loading
+ ** point browser at `localhost:4200`
+ *** TESTING TBD
+
 
 
 
