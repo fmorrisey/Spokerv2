@@ -13,24 +13,21 @@ Spoker v2 - refactored from the ground up using professional industry developmen
  - `npm run build:prod` builds the local development docker environment image
  - `npm run docker:prod` run the local development docker environment image with hot-loading
  ** point browser at `localhost:4200`
- *** TESTING TBD
-
-
 
 
 ## Basic Design
 - [Backend](./design/technical/backend_arch.md)   
 - [Frontend](./design/technical/frontend_arch.md)
 
-
 ## Testing
+
+## Frontend Testing
+- `npm run test:frontend` will run unit tests for the frontend client with code coverage report found in the `frontend/coverage` directory
+- `npm run cy:test:frontend` will run Cypress tests for the frontend client `frontend/coverage` directory
 
 ### Unit Testing
 
 ### Cypress
-`npx cypress open`
-`npx cypress run`
-
-
-"docker" : "docker-compose up",
-"docker:build" : ""
+From the frontend client directory
+- `npx cypress open`
+- `npx cypress run`
