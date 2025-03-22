@@ -1,4 +1,4 @@
-name: Spoker CI
+name: Spoker CI - Frontend
 
 on:
   push:
@@ -9,48 +9,40 @@ on:
       - main
 
 jobs:
-  build-and-test-angular:
-    name: Angular Build & Test
+  build-and-test:
+    name: Build, Test, and E2E
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: frontend
     steps:
+      # Step 1: Checkout code
       - uses: actions/checkout@v4
+
+      # Step 2: Set up Node.js
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
 
+      # Step 3: Install dependencies
       - name: Install dependencies
         run: npm install
 
-      - name: List files for debugging
-        run: ls -R
+      # Step 4: Build the frontend
+      - name: Build frontend
+        run: npm run build
 
+      # Step 5: Run Karma unit tests with coverage
       - name: Run Karma unit tests with coverage
         run: npm run test -- --no-watch --no-progress
-        working-directory: frontend
 
+      # Step 6: Upload coverage artifact
       - name: Upload coverage artifact
         uses: actions/upload-artifact@v4
         with:
           name: angular-coverage
           path: coverage/
 
-  cypress-tests:
-    name: Cypress E2E Tests
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: frontend
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install dependencies
-        run: npm install
-
+      # Step 7: Run Cypress E2E tests
       - name: Run Cypress tests
         run: npm run test:e2e
