@@ -24,8 +24,12 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: List files for debugging
+        run: ls -R
+
       - name: Run Karma unit tests with coverage
         run: npm run test -- --no-watch --no-progress
+        working-directory: frontend
 
       - name: Upload coverage artifact
         uses: actions/upload-artifact@v4
