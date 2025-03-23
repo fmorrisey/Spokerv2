@@ -1,6 +1,5 @@
 # Spokerv2
-
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.13.
+[![Spoker V2 Frontend CI/CD Pipeline](https://github.com/fmorrisey/Spokerv2/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/fmorrisey/Spokerv2/actions/workflows/ci.yml)
 
 `project:init`
 
