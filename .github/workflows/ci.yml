@@ -12,37 +12,33 @@ jobs:
   build-and-test:
     name: Build, Test, and E2E
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: frontend
     steps:
       # Step 1: Checkout code
       - uses: actions/checkout@v4
 
-      # Step 2: Set up Node.js
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
+      # Step 2: Build Docker image
+      - name: Build Docker image
+        run: docker build -t spoker-frontend ./frontend
 
-      # Step 3: Install dependencies
-      - name: Install dependencies
-        run: npm install
+      # Step 3: Run Karma unit tests inside Docker
+      - name: Run Karma unit tests
+        run: |
+          docker run --rm \
+          -v ${{ github.workspace }}/frontend:/app \
+          -w /app spoker-frontend \
+          sh -c "npm run test -- --no-watch --no-progress"
 
-      # Step 4: Build the frontend
-      - name: Build frontend
-        run: npm run build
-
-      # Step 5: Run Karma unit tests with coverage
-      - name: Run Karma unit tests with coverage
-        run: npm run test -- --no-watch --no-progress
-
-      # Step 6: Upload coverage artifact
+      # Step 4: Upload coverage artifact
       - name: Upload coverage artifact
         uses: actions/upload-artifact@v4
         with:
           name: angular-coverage
-          path: coverage/
+          path: frontend/coverage/
 
-      # Step 7: Run Cypress E2E tests
-      - name: Run Cypress tests
-        run: npm run test:e2e
+      # Step 5: Run Cypress E2E tests inside Docker
+      - name: Run Cypress E2E tests
+        run: |
+          docker run --rm \
+          -v ${{ github.workspace }}/frontend:/app \
+          -w /app spoker-frontend \
+          sh -c "npm run test:e2e"
