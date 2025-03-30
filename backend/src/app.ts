@@ -19,8 +19,8 @@ app.use(helmet());
 app.use('/api', routes);
 
 // Database Connection
-// mongoose.connect(process.env.MONGO_URI as string, {
-// }).then(() => console.log('MongoDB Connected'))
-//   .catch(err => console.error('MongoDB Connection Error:', err));
+mongoose.connect(process.env.DB_URI as string, {
+}).then(() => console.log('✅ Connected to MongoDB'))
+  .catch(err => console.error('❌ MongoDB connection error:', err));
 
 export default app;

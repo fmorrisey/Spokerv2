@@ -26,6 +26,7 @@ Spoker v2 - refactored from the ground up using professional industry developmen
 - `npm run cy:test:frontend` will run Cypress tests for the frontend client `frontend/coverage` directory
 
 ### Unit Testing
+Unit testing currently uses firefox headless as the default for local and ci environments. 
 
 ### Cypress
 From the frontend client directory
