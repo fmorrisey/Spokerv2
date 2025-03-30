@@ -14,27 +14,33 @@ jobs:
         working-directory: frontend
 
     steps:
+      # Step 1: Checkout the repository
       - name: Checkout Repository
         uses: actions/checkout@v4
-
+      
+      # Step 2: Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-
+        
+      # Step 3: Install dependencies
       - name: Install Dependencies
         run: npm install
-
+        
+      # Step 4: Run unit tests with Jasmine/Karma
       - name: Run Jasmine/Karma Unit Tests
-        run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadless --code-coverage
+        run: npm run test --no-watch --no-progress --browsers=FirefoxHeadless --code-coverage
 
+        # Step 5: Run E2E tests with Cypress  
       - name: Run Cypress E2E Tests
         uses: cypress-io/github-action@v6
         with:
           start: npm run test:e2e
           wait-on: 'http://localhost:4200'
           working-directory: frontend
-
+          
+      # Step 6: Build and push Docker image (optional, commented out for now)
       # Only after tests pass, build and push Docker:
       # - name: Login to Docker Hub
       #   uses: docker/login-action@v3

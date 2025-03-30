@@ -83,6 +83,8 @@
             "karmaConfig": "karma.conf.js",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
+            "watch": false,
+            "codeCoverage": true,
             "assets": [
               "src/favicon.ico",
               "src/assets"
