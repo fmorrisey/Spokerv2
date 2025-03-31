@@ -1,27 +1,8 @@
 import { Request, Response } from 'express';
-import mongoose from 'mongoose';
+import { getHealthStatus } from '../services/health.service';
 
 export function healthCheck(_req: Request, res: Response) {
-  const mongoState = mongoose.connection.readyState === 1 ? "Connected" : "Disconnected";
-  console.log("🫀 SERVER HEALTH CHECK :: ", "MongoDB State: ", mongoState);
-
-
-  res.status(200).json({
-    status: "success",
-    message: "Server is healthy",
-    data: {
-      mongoState,
-      uptime: process.uptime(),
-      timestamp: new Date().toISOString(),
-      memoryUsage: process.memoryUsage(),
-      cpuUsage: process.cpuUsage(),
-      nodeVersion: process.version,
-      platform: process.platform,
-      arch: process.arch,
-      pid: process.pid,
-      execPath: process.execPath,
-      execArgv: process.execArgv
-    }
-  });
+  const status = getHealthStatus();
+  console.log("🫀 SERVER HEALTH CHECK :: ", "MongoDB State: ", status.data.mongoState);
+  res.status(status.code).json(status);
 }
-
