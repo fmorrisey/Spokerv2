@@ -1,0 +1,47 @@
+name: Spoker V2 Backend CI/CD Pipeline
+
+on:
+  push:
+    paths:
+      - 'backend/**'
+  pull_request:
+    paths:
+      - 'backend/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: ⬇️ Checkout Repository
+        uses: actions/checkout@v3
+    
+      # Step 2: Set up Node.js
+      - name: 🟢 Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      # Step 3: Install dependencies
+      - name: 📦 Install Dependencies
+        run: npm ci
+
+      # Step 4: Run unit tests with Jest
+      - name: 🧪 Run Unit Tests (Jest)
+        run: npm run test
+
+      - name: ⚙️ Start Backend for Cypress
+        run: |
+          npm run build
+          npm run start &  # or `ts-node src/server.ts` if using nodemon
+          sleep 5 # give it time to spin up
+
+      - name: 🧪 Run API Tests (Cypress)
+        run: npx cypress run
+        env:
+          CYPRESS_baseUrl: http://localhost:5001/api/v1
