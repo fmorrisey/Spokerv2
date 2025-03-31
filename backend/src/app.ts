@@ -2,8 +2,11 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import helmet from 'helmet';
-import mongoose from 'mongoose';
-import routes from './routes/index';
+import itemRoutes from './routes/item.route';
+import { errorHandler } from './middleware/errorHandler';
+import { healthCheck } from './middleware/healthCheck';
+
+import { connectDB } from './config/mongodb';
 
 // Load environment variables
 dotenv.config();
@@ -16,11 +19,11 @@ app.use(cors());
 app.use(helmet());
 
 // Routes
-app.use('/api', routes);
+app.use('/api/v1/health', healthCheck);
+app.use('/api/v1/items', itemRoutes);
+app.use(errorHandler);
 
 // Database Connection
-mongoose.connect(process.env.DB_URI as string, {
-}).then(() => console.log('✅ Connected to MongoDB'))
-  .catch(err => console.error('❌ MongoDB connection error:', err));
+connectDB();
 
 export default app;
