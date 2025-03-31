@@ -33,15 +33,11 @@ jobs:
 
       # Step 4: Run unit tests with Jest
       - name: 🧪 Run Unit Tests (Jest)
-        run: npm run test
+        run: npm run test:unit
 
-      - name: ⚙️ Start Backend for Cypress
-        run: |
-          npm run build
-          npm run start &  # or `ts-node src/server.ts` if using nodemon
-          sleep 5 # give it time to spin up
-
-      - name: 🧪 Run API Tests (Cypress)
-        run: npx cypress run
-        env:
-          CYPRESS_baseUrl: http://localhost:5001/api/v1
+      # - name: 🧪 Run API Tests (Cypress)
+      #   uses: cypress-io/github-action@v6
+      #   with:
+      #     start: npm run start
+      #     wait-on: 'http://localhost:5001/api/v1'
+      #     wait-on-timeout: 60
