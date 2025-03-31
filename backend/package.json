@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon",
     "start": "node dist/server.js",
-    "build": "tsc"
+    "build": "tsc",
+    "test:e2e": "cypress run --headless"
   },
   "keywords": [],
   "author": "",
@@ -21,13 +22,21 @@
     "mongoose": "^8.12.1"
   },
   "devDependencies": {
+    "@badeball/cypress-cucumber-preprocessor": "^22.0.1",
+    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.4",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/helmet": "^0.0.48",
+    "@types/jest": "^29.5.14",
     "@types/mongoose": "^5.11.96",
-    "@types/node": "^22.13.10",
+    "@types/node": "^22.13.14",
+    "cypress": "^14.2.1",
+    "cypress-plugin-api": "^2.11.2",
+    "esbuild": "^0.25.2",
+    "jest": "^29.7.0",
     "mongodb": "^6.15.0",
     "nodemon": "^3.1.9",
+    "ts-jest": "^29.3.0",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.8.2"
