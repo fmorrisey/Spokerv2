@@ -19,7 +19,6 @@ const router = express.Router();
  *                 $ref: '#/components/schemas/Item'
  */
 
-
 router.get("/", getAllItems);
 
 export default router;

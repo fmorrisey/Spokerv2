@@ -10,10 +10,23 @@ const swaggerDefinition = {
   },
 };
 
-const swaggerOptions = {
+const swaggerOptions: { definition: typeof swaggerDefinition; apis: string[] } = {
   definition: swaggerDefinition,
-  apis: ['./src/routes/*.ts', './src/middleware/*.ts'],
+  apis: [],
 };
+
+if (process.env.NODE_ENV === 'production'){
+  swaggerOptions.apis = [
+    ...swaggerOptions.apis,
+    'dist/**/*.js'
+  ]
+} else {
+  console.log("📝 Swagger Docs: Development mode detected, using TypeScript files for API documentation.");
+  swaggerOptions.apis = [
+    ...swaggerOptions.apis,
+    'src/**/*.ts'
+  ]
+}
 
 const swaggerSpec = swaggerJSDoc(swaggerOptions);
 
