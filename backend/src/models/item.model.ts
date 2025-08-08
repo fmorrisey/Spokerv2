@@ -1,5 +1,21 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     Item:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *         name:
+ *           type: string
+ *         description:
+ *           type: string
+ *         price:
+ *           type: number
+ */
 
 interface IItem extends Document {
     id: string;
