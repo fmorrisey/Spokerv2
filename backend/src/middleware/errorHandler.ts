@@ -10,7 +10,8 @@ export function errorHandler(
 
     const statusCode = error.statusCode || 500;
     const message = error.message || "Internal Server Error";
-    const stack = process.env.NODE_ENV === "development" ? null : error.stack;
+    // Show stack traces in non-production environments for easier debugging
+    const stack = process.env.NODE_ENV === "production" ? null : error.stack;
 
     res.status(statusCode).json({
         status: statusCode === 500 ? "error" : "fail",
