@@ -7,7 +7,7 @@ import { DashboardComponent } from "./components/dashboard/dashboard.component";
   standalone: true,
   imports: [RouterOutlet, DashboardComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
   title = 'spokerv2';
