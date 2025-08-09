@@ -40,9 +40,9 @@ From the frontend client directory
 - `npx cypress open`
 - `npx cypress run`
 
-## Backend Testing !! UPDATE THIS SECTION
-- `npm run test:frontend` will run unit tests for the frontend client with code coverage report found in the `backend/coverage` directory
-- `npm run cy:test:frontend` will run Cypress tests for the frontend client `frontend/coverage` directory
+## Backend Testing
+- `npm run test:unit --prefix=backend` will run unit tests for the backend with code coverage report found in the `backend/coverage` directory
+- `npm run test:e2e --prefix=backend` will run Cypress API end-to-end tests for the backend
 
 ### Unit Testing with Jest
 Unit testing currently uses Jest

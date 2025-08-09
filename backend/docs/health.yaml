@@ -1,0 +1,7 @@
+paths:
+  /api/v1/health:
+    get:
+      summary: Health check endpoint
+      responses:
+        '200':
+          description: Returns the service health status
