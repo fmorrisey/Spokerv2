@@ -9,6 +9,8 @@ import { healthCheck } from './middleware/healthCheck';
 import { setupSwagger } from './config/swagger';
 import { connectDB } from './config/mongodb';
 
+const BASE_URL = process.env.API_BASE_URL || '/api/v1';
+
 // Load environment variables
 dotenv.config();
 
@@ -25,8 +27,8 @@ app.use(helmet());
 setupSwagger(app);
 
 // Routes
-app.use('/api/v1/health', healthCheck);
-app.use('/api/v1/items', itemRoutes);
+app.use(`${BASE_URL}/health`, healthCheck);
+app.use(`${BASE_URL}/items`, itemRoutes);
 app.use(errorHandler);
 
 // Database Connection
