@@ -23,11 +23,16 @@
 
 ## Technologies
 - Node server written in TypeScript
+- OpenAPI 3.0
 - MongoDB with Mongoose
 - RBAC with JWT + Bcrypt
 - Email Service (TBD / NodeMailer?)
 
 ## API V1 Endpoints
+
+### OpenAPI Docs
+- `http://localhost:5001/api-docs/' : Loads the Swagger page to view all endpoints for this project
+
 ### General Server
 - `/api/v1/health` : returns a 200 if the server is live along with connection state of mongoDB
 
