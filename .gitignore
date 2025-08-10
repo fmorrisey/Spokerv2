@@ -183,3 +183,6 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Swagger generated files
+*/swagger/*
