@@ -1,10 +1,10 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
 interface IProduct extends Document {
-    id: string;
     name: string;
     description: string;
     price: number;
+    msrp: number;
 }
 
 interface ProductModel extends Model<IProduct> {
@@ -12,12 +12,6 @@ interface ProductModel extends Model<IProduct> {
 }
 
 const productSchema = new Schema({
-    id: {
-        type: String,
-        required: true,
-        unique: true,
-        trim: true,
-    },
     name: {
         type: String,
         required: true,
@@ -36,13 +30,13 @@ const productSchema = new Schema({
         type: Number,
         required: true,
     }
-})
+});
 
 productSchema.statics.seed = async function () {
     const sampleProducts = [
-        { id: 'product1', name: 'Alpha', description: 'Test A', price: 10 },
-        { id: 'product2', name: 'Bravo', description: 'Test B', price: 20 },
-        { id: 'product3', name: 'Charlie', description: 'Test C', price: 30 },
+        { name: 'Alpha', description: 'Test A', price: 10, msrp: 15 },
+        { name: 'Bravo', description: 'Test B', price: 20, msrp: 25 },
+        { name: 'Charlie', description: 'Test C', price: 30, msrp: 35 },
     ];
 
     await this.deleteMany({});
@@ -51,5 +45,3 @@ productSchema.statics.seed = async function () {
 };
 
 export const Product = mongoose.model<IProduct, ProductModel>('Product', productSchema);
-
-
