@@ -12,27 +12,15 @@ const swaggerDefinition = {
 
 const swaggerOptions: { definition: typeof swaggerDefinition; apis: string[] } = {
   definition: swaggerDefinition,
-  apis: [],
+  apis: ['docs/**/*.yaml'],
 };
-
-if (process.env.NODE_ENV === 'production') {
-  swaggerOptions.apis = [
-    'dist/routes/**/*.js',
-    'docs/**/*.yaml',
-  ];
-} else {
-  console.log(
-    '📝 Swagger Docs: Development mode detected, using TypeScript files for API documentation.'
-  );
-  swaggerOptions.apis = [
-    'src/routes/**/*.ts',
-    'docs/**/*.yaml',
-  ];
-}
 
 const swaggerSpec = swaggerJSDoc(swaggerOptions);
 
 export function setupSwagger(app: Express) {
+  console.log(
+    '📝 Swagger Docs: Development mode detected, using TypeScript files for API documentation.'
+  );
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 }
 

@@ -31,8 +31,8 @@
 ### General Server
 - `/api/v1/health` : returns a 200 if the server is live along with connection state of mongoDB
 
-### Items
-- `/api/v1/items` : returns a list of items in the database
+### Products
+- `/api/v1/products` : returns a list of products in the database
 
 ## Testing
 Cypress-Gherkin for API Testing

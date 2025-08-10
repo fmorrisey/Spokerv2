@@ -2,7 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import helmet from 'helmet';
-import itemRoutes from './routes/item.route';
+import productRoutes from './routes/product.route';
 import { errorHandler } from './middleware/errorHandler';
 import { healthCheck } from './middleware/healthCheck';
 
@@ -28,7 +28,7 @@ setupSwagger(app);
 
 // Routes
 app.use(`${BASE_URL}/health`, healthCheck);
-app.use(`${BASE_URL}/items`, itemRoutes);
+app.use(`${BASE_URL}/products`, productRoutes);
 app.use(errorHandler);
 
 // Database Connection

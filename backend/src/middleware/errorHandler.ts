@@ -4,7 +4,7 @@ export function errorHandler(
     error: any,
     _req: Request,
     res: Response,
-    // _next: NextFunction
+    _next: NextFunction
 ) {
     console.error("ERROR OCCURRED :: ", error);
 
@@ -19,5 +19,4 @@ export function errorHandler(
         stack: stack,
         timestamp: new Date().toISOString(),
     })
-
 }
