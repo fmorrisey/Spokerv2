@@ -185,4 +185,5 @@ testem.log
 Thumbs.db
 
 # Swagger generated files
-*/swagger/*
+/backend/src/swagger/*
+/frontend/src/swagger/*
