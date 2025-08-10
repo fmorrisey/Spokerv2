@@ -87,6 +87,8 @@ components:
       properties:
         _id:
           type: string
+          description: MongoDB ObjectId
+          readOnly: true
         name:
           type: string
         description:
@@ -95,3 +97,8 @@ components:
           type: number
         price:
           type: number
+        required:
+        - name
+        - description
+        - msrp
+        - price
