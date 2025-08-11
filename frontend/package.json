@@ -2,7 +2,8 @@
   "name": "spoker-v2-frontend",
   "version": "0.0.0",
   "scripts": {
-    "project:init": "npm install && npx cypress install",
+    "project:init": "npm install && npx cypress install ** npm run swagger:gen",
+    "swagger:gen" : "node ../scripts/generate-types.js",
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0 --port 4200",
     "build": "ng build",

@@ -10,7 +10,7 @@
         "docker:test": "echo \"Error: no test specified\" && exit 1",
         "test:frontend": "npm run test --prefix=frontend",
         "cy:test:frontend": "npm run test:e2e --prefix=frontend",
-        "gen:types": "node scripts/generate-types.js"
+        "swagger:gen": "node scripts/generate-types.js"
     },
     "devDependencies": {
         "openapi-typescript": "^7.8.0"
