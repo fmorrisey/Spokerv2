@@ -9,5 +9,5 @@ export async function findAll(): Promise<ProductType[]> {
 export async function create(data: Omit<ProductType, '_id'>): Promise<ProductType> {
   const newProduct = new Product(data);
   const savedProduct = await newProduct.save();
-  return savedProduct.toObject();
+  return savedProduct.toObject() as ProductType;
 }
