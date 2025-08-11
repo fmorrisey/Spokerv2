@@ -1,38 +1,36 @@
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 
-const productController = require('../../src/controllers/product.controller');
-import { getAllProducts } from '../../src/controllers/product.controller';
+import * as productController from '../../src/controllers/product.controller';
+import * as ProductService from '../../src/services/product.service';
 import { jest } from "@jest/globals";
-import { Product } from '../../src/models/product.model';
 import { ProductType } from '../../src/types/product.type';
 
-// Write a test for the getAllProducts function
 describe('Product Controller', () => {
-it('should fetch all products', async () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should fetch all products', async () => {
     const mockProducts: ProductType[] = [
-        { _id: '1', name: 'Product 1', description: 'Description 1', msrp: 110, price: 100 },
-        { _id: '2', name: 'Product 2', description: 'Description 2', msrp: 210, price: 200 },
+      { _id: '1', name: 'Product 1', description: 'Description 1', msrp: 110, price: 100 },
+      { _id: '2', name: 'Product 2', description: 'Description 2', msrp: 210, price: 200 },
     ];
 
-    jest.spyOn(Product, 'find').mockReturnValue({
-        lean: () => Promise.resolve(mockProducts),
-    } as unknown as any);
+    jest.spyOn(ProductService, 'findAll').mockResolvedValue(mockProducts as any);
 
     const req: any = {};
     const res: any = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
     };
     const next = jest.fn();
 
-    await getAllProducts(req, res, next);
+    await productController.getAllProducts(req, res, next);
 
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith(mockProducts);
-
   });
 
-  // Write a test for a 500 error in getAllProducts
   it('should handle errors in getAllProducts', async () => {
     const req: any = {};
     const res: any = {
@@ -41,18 +39,14 @@ it('should fetch all products', async () => {
     };
     const next = jest.fn();
 
-    // Simulate an error by throwing an exception
-    jest.spyOn(Product, 'find').mockImplementation(() => {
-      throw new Error('Database error');
-    });
+    jest.spyOn(ProductService, 'findAll').mockRejectedValue(new Error('Database error'));
 
-    await getAllProducts(req, res, next);
+    await productController.getAllProducts(req, res, next);
 
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.json).toHaveBeenCalledWith({ error: expect.stringContaining('Error fetching products') });
   });
 
-  // Write a test for the createProduct function
   it('should create a new product', async () => {
     const newProductData: Omit<ProductType, '_id'> = {
       name: 'New Product',
@@ -62,9 +56,7 @@ it('should fetch all products', async () => {
     };
     const savedProduct: ProductType = { _id: '3', ...newProductData };
 
-    jest.spyOn(Product.prototype, 'save').mockResolvedValue({
-      toObject: () => savedProduct,
-    } as unknown as any);
+    jest.spyOn(ProductService, 'create').mockResolvedValue(savedProduct as any);
 
     const req: any = { body: newProductData };
     const res: any = {
@@ -79,7 +71,6 @@ it('should fetch all products', async () => {
     expect(res.json).toHaveBeenCalledWith(savedProduct);
   });
 
-  // Write a test for a 500 error in createProduct
   it('should handle errors in createProduct', async () => {
     const req: any = { body: {} };
     const res: any = {
@@ -88,10 +79,7 @@ it('should fetch all products', async () => {
     };
     const next = jest.fn();
 
-    // Simulate an error by throwing an exception
-    jest.spyOn(Product.prototype, 'save').mockImplementation(() => {
-      throw new Error('Database error');
-    });
+    jest.spyOn(ProductService, 'create').mockRejectedValue(new Error('Database error'));
 
     await productController.createProduct(req, res, next);
 

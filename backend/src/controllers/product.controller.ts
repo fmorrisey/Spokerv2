@@ -1,28 +1,14 @@
-import { NextFunction, RequestHandler, Request, Response } from "express";
-import { Product } from "../models/product.model";
-import { ProductType } from '../../src/types/product.type';
-
-// In-memory mock data used when running with a mocked database
-const mockProducts: ProductType[] = [
-  { _id: '1', name: 'Alpha', description: 'Test A', msrp: 15, price: 10 },
-  { _id: '2', name: 'Bravo', description: 'Test B', msrp: 25, price: 20 },
-  { _id: '3', name: 'Charlie', description: 'Test C', msrp: 35, price: 30 },
-];
-
+import { NextFunction, Request, RequestHandler, Response } from "express";
+import * as ProductService from "../services/product.service";
+import { ProductType } from "../types/product.type";
 
 export const getAllProducts: RequestHandler<{}, ProductType[]> = async (
   _req: Request,
   res: Response,
   next?: NextFunction,
 ) => {
-  // When MOCK_DB is enabled (Cypress), return mock data instead of querying MongoDB
-  if (process.env.MOCK_DB === 'true') {
-    res.status(200).json(mockProducts);
-    return;
-  }
-
   try {
-    const products = await Product.find().lean<ProductType[]>();
+    const products = await ProductService.findAll();
     res.status(200).json(products);
   } catch (error) {
     if (next) {
@@ -37,21 +23,9 @@ export const createProduct: RequestHandler<{}, ProductType> = async (
   res: Response,
   next?: NextFunction,
 ) => {
-  // When MOCK_DB is enabled (Cypress), push to the mock array instead of using MongoDB
-  if (process.env.MOCK_DB === 'true') {
-    const newProduct: ProductType = {
-      _id: String(mockProducts.length + 1),
-      ...req.body,
-    };
-    mockProducts.push(newProduct);
-    res.status(201).json(newProduct);
-    return;
-  }
-
   try {
-    const newProduct = new Product(req.body);
-    const savedProduct = await newProduct.save();
-    res.status(201).json(savedProduct.toObject());
+    const savedProduct = await ProductService.create(req.body);
+    res.status(201).json(savedProduct);
   } catch (error) {
     if (next) {
       next(error);
