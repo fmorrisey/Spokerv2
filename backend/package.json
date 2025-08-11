@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "swagger:gen" : "node ../scripts/generate-types.js",
     "dev": "nodemon",
     "start": "node dist/server.js",
     "build": "tsc",
@@ -11,6 +12,7 @@
     "test:unit": "npx jest --config jest.config.ts",
     "test:e2e": "start-server-and-test 'npm run dev' http://localhost:5001 'cypress run --headless'",
     "cypress:open": "cypress open"
+
   },
   "keywords": [],
   "author": "",

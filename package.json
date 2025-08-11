@@ -2,14 +2,17 @@
     "name": "spoker-v2-root",
     "version": "0.0.0",
     "scripts": {
-      "ng": "ng",
-      "build:dev": "docker compose -f docker-compose.dev.yml up --build",
-      "docker:dev": "docker compose -f docker-compose.dev.yml up",
-      "build:prod": "docker compose -f docker-compose.prod.yml up --build",
-      "docker:prod": "docker compose -f docker-compose.prod.yml up",
-      "docker:test": "echo \"Error: no test specified\" && exit 1",
-      "test:frontend": "npm run test --prefix=frontend",
-      "cy:test:frontend": "npm run test:e2e --prefix=frontend"
+        "ng": "ng",
+        "build:dev": "docker compose -f docker-compose.dev.yml up --build",
+        "docker:dev": "docker compose -f docker-compose.dev.yml up",
+        "build:prod": "docker compose -f docker-compose.prod.yml up --build",
+        "docker:prod": "docker compose -f docker-compose.prod.yml up",
+        "docker:test": "echo \"Error: no test specified\" && exit 1",
+        "test:frontend": "npm run test --prefix=frontend",
+        "cy:test:frontend": "npm run test:e2e --prefix=frontend",
+        "swagger:gen": "node scripts/generate-types.js"
+    },
+    "devDependencies": {
+        "openapi-typescript": "^7.8.0"
     }
-  }
-  
+}

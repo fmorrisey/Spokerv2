@@ -183,3 +183,7 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Swagger generated files
+/backend/src/swagger/*
+/frontend/src/swagger/*

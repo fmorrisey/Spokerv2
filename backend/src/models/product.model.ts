@@ -1,17 +1,12 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
+import { ProductType as ProductSchema } from '../../src/types/product.type';
 
-interface IProduct extends Document {
-    name: string;
-    description: string;
-    price: number;
-    msrp: number;
-}
-
+interface IProduct extends Document, Omit<ProductSchema, '_id'> {}
 interface ProductModel extends Model<IProduct> {
     seed(): Promise<void>;
 }
 
-const productSchema = new Schema({
+const productSchema = new Schema<IProduct>({
     name: {
         type: String,
         required: true,
@@ -33,10 +28,10 @@ const productSchema = new Schema({
 });
 
 productSchema.statics.seed = async function () {
-    const sampleProducts = [
-        { name: 'Alpha', description: 'Test A', price: 10, msrp: 15 },
-        { name: 'Bravo', description: 'Test B', price: 20, msrp: 25 },
-        { name: 'Charlie', description: 'Test C', price: 30, msrp: 35 },
+    const sampleProducts : ProductSchema[] = [
+        { _id: '', name: 'Alpha', description: 'Test A', price: 10, msrp: 15 },
+        { _id: '', name: 'Bravo', description: 'Test B', price: 20, msrp: 25 },
+        { _id: '', name: 'Charlie', description: 'Test C', price: 30, msrp: 35 },
     ];
 
     await this.deleteMany({});
