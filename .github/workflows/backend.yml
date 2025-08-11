@@ -34,10 +34,7 @@ jobs:
       # Step 4: Run unit tests with Jest
       - name: 🧪 Run Unit Tests (Jest)
         run: npm run test:unit
-
-      # - name: 🧪 Run API Tests (Cypress)
-      #   uses: cypress-io/github-action@v6
-      #   with:
-      #     start: npm run start
-      #     wait-on: 'http://localhost:5001/api/v1'
-      #     wait-on-timeout: 60
+      
+      # Step 5: Run Cypress API tests
+      - name: 🧪 Run API Tests (Cypress)
+        run: npm run test:e2e

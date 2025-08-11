@@ -20,4 +20,8 @@ Then('the response body field {string} should equal {string}', (field: string, v
     expect(response.body[field]).to.eq(value);
 });
 
+Then('the response body should have length {string}', (length: string) => {
+    expect(response.body).to.have.length(parseInt(length));
+});
+
 

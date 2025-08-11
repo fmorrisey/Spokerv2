@@ -10,9 +10,8 @@
     "build": "tsc",
     "test": "npm run test:unit && npm run test:e2e",
     "test:unit": "npx jest --config jest.config.ts",
-    "test:e2e": "start-server-and-test 'npm run dev' http://localhost:5001 'cypress run --headless'",
+    "test:e2e": "NODE_ENV=test PORT=5502 start-server-and-test 'ts-node src/server.ts' http://localhost:5502/api/v1/health 'cypress run --headless'",
     "cypress:open": "cypress open"
-
   },
   "keywords": [],
   "author": "",
