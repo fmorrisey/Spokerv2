@@ -4,7 +4,7 @@ import { startMockDB, stopMockDB } from './test-db';
 export const connectDB = async () => {
   try {
     if (process.env.NODE_ENV === 'test') {
-      await startMockDB();
+      startMockDB();
       console.log('✅ Using in-memory mock database');
       return;
     }
@@ -21,7 +21,7 @@ export const connectDB = async () => {
 
 export const disconnectDB = async () => {
   if (process.env.NODE_ENV === 'test') {
-    await stopMockDB();
+    stopMockDB();
   } else {
     await mongoose.connection.close();
   }

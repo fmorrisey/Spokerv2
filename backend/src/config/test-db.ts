@@ -34,4 +34,3 @@ export const stopMockDB = async () => {
 };
 
 export default { startMockDB, stopMockDB };
-
