@@ -3,9 +3,12 @@ import createBundler from '@bahmutov/cypress-esbuild-preprocessor';
 import { createEsbuildPlugin } from '@badeball/cypress-cucumber-preprocessor/esbuild';
 import { addCucumberPreprocessorPlugin } from '@badeball/cypress-cucumber-preprocessor';
 
+const configBaseUrl = `http://localhost:${process.env.PORT || 5001}/api/v1`;
+
 export default defineConfig({
+  
   e2e: {
-    baseUrl: 'http://localhost:5001/api/v1',
+    baseUrl: configBaseUrl,
     specPattern: 'cypress/e2e/**/*.feature',
     supportFile: 'cypress/support/e2e.ts',
     fixturesFolder: 'cypress/fixtures',
