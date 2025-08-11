@@ -8,11 +8,10 @@
     "dev": "nodemon",
     "start": "node dist/server.js",
     "build": "tsc",
-    "test": "npm run test:unit",
+    "test": "npm run test:unit && npm run test:e2e",
     "test:unit": "npx jest --config jest.config.ts",
     "test:e2e": "NODE_ENV=test PORT=5502 start-server-and-test 'ts-node src/server.ts' http://localhost:5502/api/v1/health 'cypress run --headless'",
     "cypress:open": "cypress open"
-
   },
   "keywords": [],
   "author": "",
