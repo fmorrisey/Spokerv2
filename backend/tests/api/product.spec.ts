@@ -4,16 +4,19 @@ const productController = require('../../src/controllers/product.controller');
 import { getAllProducts } from '../../src/controllers/product.controller';
 import { jest } from "@jest/globals";
 import { Product } from '../../src/models/product.model';
+import { ProductType } from '../../src/types/product.type';
 
 // Write a test for the getAllProducts function
 describe('Product Controller', () => {
 it('should fetch all products', async () => {
-    const mockProducts : any = [
-        { id: 1, name: 'Product 1', price: 100 },
-        { id: 2, name: 'Product 2', price: 200 },
+    const mockProducts: ProductType[] = [
+        { _id: '1', name: 'Product 1', description: 'Description 1', msrp: 110, price: 100 },
+        { _id: '2', name: 'Product 2', description: 'Description 2', msrp: 210, price: 200 },
     ];
 
-    jest.spyOn(Product, 'find').mockResolvedValue(mockProducts);
+    jest.spyOn(Product, 'find').mockReturnValue({
+        lean: () => Promise.resolve(mockProducts),
+    } as unknown as any);
 
     const req: any = {};
     const res: any = {
@@ -51,10 +54,17 @@ it('should fetch all products', async () => {
 
   // Write a test for the createProduct function
   it('should create a new product', async () => {
-    const newProductData = { name: 'New Product', price: 300 };
-    const savedProduct = { id: 3, ...newProductData };
+    const newProductData: Omit<ProductType, '_id'> = {
+      name: 'New Product',
+      description: 'New Description',
+      msrp: 330,
+      price: 300,
+    };
+    const savedProduct: ProductType = { _id: '3', ...newProductData };
 
-    jest.spyOn(Product.prototype, 'save').mockResolvedValue(savedProduct);
+    jest.spyOn(Product.prototype, 'save').mockResolvedValue({
+      toObject: () => savedProduct,
+    } as unknown as any);
 
     const req: any = { body: newProductData };
     const res: any = {
