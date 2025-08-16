@@ -151,6 +151,66 @@ describe('Product Controller', () => {
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith(mockProduct);
   });
+
+  // Test get product by id
+  it('should fetch a product by id', async () => {
+    const mockProduct: ProductType = { _id: '1', name: 'Product 1', description: 'Description 1', msrp: 110, price: 100 };
+
+    jest.spyOn(ProductService, 'findById').mockResolvedValue(mockProduct as any);
+
+    const req: any = { params: { id: '1' } };
+    const res: any = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    };
+    const next = jest.fn();
+
+    await productController.getProductById(req, res, next);
+
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.json).toHaveBeenCalledWith(mockProduct);
+  });
+
+  // test update product by id
+  it('should update a product by id', async () => {
+    const mockProduct: ProductType = { _id: '1', name: 'Product 1', description: 'Description 1', msrp: 110, price: 100 };
+    const updatedProductData: ProductType = { _id: '1', name: 'Updated Product 1', description: 'Updated Description 1', msrp: 120, price: 110 };
+
+    jest.spyOn(ProductService, 'findById').mockResolvedValue(mockProduct as any);
+    jest.spyOn(ProductService, 'updateById').mockResolvedValue(updatedProductData as any);
+
+    const req: any = { params: { id: '1' }, body: updatedProductData };
+    const res: any = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    };
+    const next = jest.fn();
+
+    await productController.updateProductById(req, res, next);
+
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.json).toHaveBeenCalledWith(updatedProductData);
+  });
+
+  // test delete product by id
+  it('should delete a product by id', async () => {
+    const mockProduct: ProductType = { _id: '1', name: 'Product 1', description: 'Description 1', msrp: 110, price: 100 };
+
+    jest.spyOn(ProductService, 'findById').mockResolvedValue(mockProduct as any);
+    jest.spyOn(ProductService, 'deleteById').mockResolvedValue(mockProduct as any);
+
+    const req: any = { params: { id: '1' } };
+    const res: any = {
+      status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+    };
+    const next = jest.fn();
+
+    await productController.deleteProductById(req, res, next);
+
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.json).toHaveBeenCalledWith(mockProduct);
+  });
 });
 
 describe('Product API', () => {
