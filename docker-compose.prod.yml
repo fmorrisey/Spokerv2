@@ -5,6 +5,8 @@ services:
     build: ./frontend
     ports:
       - "4200:80"
+    environment:
+      - NODE_ENV=production
     depends_on:
       - backend
 
@@ -13,7 +15,7 @@ services:
     ports:
       - "5001:5001"
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=production
       - DB_URI=mongodb://db:27017/ecommerce
     depends_on:
       - db
