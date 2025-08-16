@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "swagger:gen": "node ../scripts/generate-types.js",
-    "dev": "nodemon",
+    "dev": "NODE_ENV=dev nodemon",
     "dev:test": "NODE_ENV=test PORT=5502 nodemon",
     "start": "node dist/server.js",
     "build": "tsc",
-    "test": "npm run test:unit",
+    "test": "NODE_ENV=test npm run test:unit",
     "test:unit": "npx jest --config jest.config.ts --coverage"
   },
   "keywords": [],
