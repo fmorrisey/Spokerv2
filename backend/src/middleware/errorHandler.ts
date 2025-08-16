@@ -6,12 +6,11 @@ export function errorHandler(
     res: Response,
     _next: NextFunction
 ) {
-    console.error("ERROR OCCURRED :: ", error);
-
     const statusCode = error.statusCode || 500;
     const message = error.message || "Internal Server Error";
     // Show stack traces in non-production environments for easier debugging
     const stack = process.env.NODE_ENV === "production" ? null : error.stack;
+    if (process.env.NODE_ENV !== 'test'){console.error("ERROR OCCURRED :: ", error)};
 
     res.status(statusCode).json({
         status: statusCode === 500 ? "error" : "fail",
@@ -19,4 +18,5 @@ export function errorHandler(
         stack: stack,
         timestamp: new Date().toISOString(),
     })
+
 }
