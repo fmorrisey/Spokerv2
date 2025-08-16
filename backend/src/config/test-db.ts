@@ -8,9 +8,9 @@ const originalSave = Product.prototype.save;
 
 export const startMockDB = async () => {
   products = [
-    { _id: '1', name: 'Alpha', description: 'Test A', price: 10, msrp: 15 },
-    { _id: '2', name: 'Bravo', description: 'Test B', price: 20, msrp: 25 },
-    { _id: '3', name: 'Charlie', description: 'Test C', price: 30, msrp: 35 },
+    { _id: '6898e763ea16ab3643d4be91', name: 'Product 1', description: 'Product 1 description', price: 10, msrp: 15 },
+    { _id: '6898e762ea16ab3643d4be92', name: 'Product 2', description: 'Product 2 description', price: 20, msrp: 25 },
+    { _id: '6898e761ea16ab3643d4be93', name: 'Product 3', description: 'Product 3 description', price: 30, msrp: 35 },
   ];
 
   (Product.find as any) = () => ({

@@ -6,6 +6,7 @@
   "scripts": {
     "swagger:gen": "node ../scripts/generate-types.js",
     "dev": "nodemon",
+    "dev:test": "NODE_ENV=test PORT=5502 nodemon",
     "start": "node dist/server.js",
     "build": "tsc",
     "test": "npm run test:unit",
@@ -32,6 +33,7 @@
     "@types/jest": "^29.5.14",
     "@types/mongoose": "^5.11.96",
     "@types/node": "^22.13.14",
+    "@types/supertest": "^6.0.3",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.8",
     "esbuild": "^0.25.2",
