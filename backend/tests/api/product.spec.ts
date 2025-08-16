@@ -2,8 +2,11 @@
 
 import * as productController from '../../src/controllers/product.controller';
 import * as ProductService from '../../src/services/product.service';
+import app from '../../src/app';
+import request from 'supertest';
 import { jest } from "@jest/globals";
 import { ProductType } from '../../src/types/product.type';
+import { API_URL, Routes } from '../../src/models/constants';
 
 describe('Product Controller', () => {
   beforeEach(() => {
@@ -43,7 +46,7 @@ describe('Product Controller', () => {
 
     await productController.getAllProducts(req, res, next);
 
-    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.status).toHaveBeenCalledWith(Error);
     expect(res.json).toHaveBeenCalledWith({ error: expect.stringContaining('Error fetching products') });
   });
 
@@ -147,3 +150,11 @@ describe('Product Controller', () => {
     expect(res.json).toHaveBeenCalledWith(mockProduct);
   });
 });
+
+describe('Product API', () => {
+  it('GET /api/products', async () => {
+    const res = await request(app).get(API_URL + Routes.PRODUCTS,);
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual(expect.any(Array));
+  });
+})
