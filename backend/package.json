@@ -4,14 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "swagger:gen" : "node ../scripts/generate-types.js",
+    "swagger:gen": "node ../scripts/generate-types.js",
     "dev": "nodemon",
     "start": "node dist/server.js",
     "build": "tsc",
-    "test": "npm run test:unit && npm run test:e2e",
-    "test:unit": "npx jest --config jest.config.ts",
-    "test:e2e": "NODE_ENV=test PORT=5502 start-server-and-test 'ts-node src/server.ts' http://localhost:5502/api/v1/health 'cypress run --headless'",
-    "cypress:open": "cypress open"
+    "test": "npm run test:unit",
+    "test:unit": "npx jest --config jest.config.ts --coverage"
   },
   "keywords": [],
   "author": "",
@@ -23,13 +21,11 @@
     "express": "^4.21.2",
     "helmet": "^8.1.0",
     "mongoose": "^8.12.1",
-    "start-server-and-test": "^2.0.11",
+    "supertest": "^7.1.4",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
-    "@badeball/cypress-cucumber-preprocessor": "^22.0.1",
-    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.4",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/helmet": "^0.0.48",
@@ -38,8 +34,6 @@
     "@types/node": "^22.13.14",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.8",
-    "cypress": "^14.2.1",
-    "cypress-plugin-api": "^2.11.2",
     "esbuild": "^0.25.2",
     "jest": "^29.7.0",
     "mongodb": "^6.15.0",
