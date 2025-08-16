@@ -46,8 +46,9 @@ describe('Product Controller', () => {
 
     await productController.getAllProducts(req, res, next);
 
-    expect(res.status).toHaveBeenCalledWith(Error);
-    expect(res.json).toHaveBeenCalledWith({ error: expect.stringContaining('Error fetching products') });
+    expect(next).toHaveBeenCalledWith(expect.any(Error));
+    expect(res.status).not.toHaveBeenCalled();
+    expect(res.json).not.toHaveBeenCalled();
   });
 
   it('should create a new product', async () => {
@@ -86,8 +87,9 @@ describe('Product Controller', () => {
 
     await productController.createProduct(req, res, next);
 
-    expect(res.status).toHaveBeenCalledWith(500);
-    expect(res.json).toHaveBeenCalledWith({ error: expect.stringContaining('Error creating product') });
+    expect(next).toHaveBeenCalledWith(expect.any(Error));
+    expect(res.status).not.toHaveBeenCalled();
+    expect(res.json).not.toHaveBeenCalled();
   });
 
   // Test get product by id
@@ -152,9 +154,16 @@ describe('Product Controller', () => {
 });
 
 describe('Product API', () => {
-  it('GET /api/products', async () => {
-    const res = await request(app).get(API_URL + Routes.PRODUCTS,);
+  it('GET /api/products and expect 200', async () => {
+    jest.spyOn(ProductService, 'findAll').mockResolvedValue([] as any);
+    const res = await request(app).get(API_URL + Routes.PRODUCTS);
     expect(res.status).toBe(200);
-    expect(res.body).toEqual(expect.any(Array));
+    expect(res.body).toEqual([]);
+  });
+
+  it('GET /api/productsbadroute and return 404', async () => {
+    jest.spyOn(ProductService, 'findAll').mockResolvedValue([] as any);
+    const res = await request(app).get(API_URL + Routes.PRODUCTS + 'badroute');
+    expect(res.status).toBe(404);
   });
 })
