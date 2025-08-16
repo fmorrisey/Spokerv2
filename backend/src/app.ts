@@ -23,7 +23,7 @@ app.use(helmet());
 // TDOO: Set security headers
 
 // Swagger Docs
-setupSwagger(app);
+if (process.env.NODE_ENV !== 'production') {setupSwagger(app)};
 
 // Routes
 app.use(API_URL + Routes.HEALTH, healthCheck);
