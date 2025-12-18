@@ -2,6 +2,7 @@ version: '3.9'
 
 services:
   frontend:
+    image: spokerv2-frontend-dev
     build:
       context: ./frontend
       dockerfile: Dockerfile.dev
@@ -14,6 +15,7 @@ services:
       - NODE_ENV=development
 
   backend:
+    image: spokerv2-backend-dev
     build: 
       context: ./backend
       dockerfile: Dockerfile.dev
