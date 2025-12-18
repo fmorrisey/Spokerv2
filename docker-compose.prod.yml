@@ -2,6 +2,7 @@ version: '3.9'
 
 services:
   nginx:
+    image: spokerv2-nginx-prod
     build: ./nginx
     ports:
       - "3200:80"
@@ -10,6 +11,7 @@ services:
       - backend
 
   frontend:
+    image: spokerv2-frontend-prod
     build: ./frontend
     expose:
       - "80"
@@ -19,6 +21,7 @@ services:
       - backend
 
   backend:
+    image: spokerv2-backend-prod
     build: ./backend
     expose:
       - "5001"
