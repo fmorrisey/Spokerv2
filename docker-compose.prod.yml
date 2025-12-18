@@ -1,22 +1,48 @@
 version: '3.9'
 
 services:
-  frontend:
-    build: ./frontend
+  nginx:
+    image: spokerv2-nginx-prod
+    build: ./nginx
     ports:
-      - "4200:80"
+      - "3200:80"
+    volumes:
+      - nginx-logs:/var/log/nginx
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+      - web-root:/var/www/certbot
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "80"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      - frontend
+      - backend
+
+  frontend:
+    image: spokerv2-frontend-prod
+    build: ./frontend
+    expose:
+      - "80"
     environment:
       - NODE_ENV=production
     depends_on:
       - backend
 
   backend:
+    image: spokerv2-backend-prod
     build: ./backend
-    ports:
-      - "5001:5001"
+    expose:
+      - "5001"
     environment:
       - NODE_ENV=production
       - DB_URI=mongodb://db:27017/ecommerce
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "5001"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     depends_on:
       - db
 
@@ -29,3 +55,7 @@ services:
 
 volumes:
   mongo-data:
+  nginx-logs:
+  certbot-etc:
+  certbot-var:
+  web-root:
