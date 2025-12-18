@@ -1,10 +1,18 @@
 version: '3.9'
 
 services:
+  nginx:
+    build: ./nginx
+    ports:
+      - "3200:80"
+    depends_on:
+      - frontend
+      - backend
+
   frontend:
     build: ./frontend
-    ports:
-      - "4200:80"
+    expose:
+      - "80"
     environment:
       - NODE_ENV=production
     depends_on:
@@ -12,8 +20,8 @@ services:
 
   backend:
     build: ./backend
-    ports:
-      - "5001:5001"
+    expose:
+      - "5001"
     environment:
       - NODE_ENV=production
       - DB_URI=mongodb://db:27017/ecommerce
