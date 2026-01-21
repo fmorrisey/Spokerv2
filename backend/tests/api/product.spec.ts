@@ -142,14 +142,14 @@ describe('Product Controller', () => {
     const req: any = { params: { id: '1' } };
     const res: any = {
       status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
+      send: jest.fn(),
     };
     const next = jest.fn();
 
     await productController.deleteProductById(req, res, next);
 
-    expect(res.status).toHaveBeenCalledWith(200);
-    expect(res.json).toHaveBeenCalledWith(mockProduct);
+    expect(res.status).toHaveBeenCalledWith(204);
+    expect(res.send).toHaveBeenCalled();
   });
 });
 

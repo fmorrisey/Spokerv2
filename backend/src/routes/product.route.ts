@@ -11,6 +11,6 @@ router.get<{}, ProductType[]>('/', getAllProducts);
 router.post<{}, ProductType>('/', createProduct);
 router.get<{ id: string }, ProductType | null>('/:id', getProductById);
 router.put<{ id: string }, ProductType | null>('/:id', updateProductById);
-router.delete<{ id: string }, ProductType | null>('/:id', deleteProductById);
+router.delete<{ id: string }, void>('/:id', deleteProductById);
 
 export default router;
