@@ -21,6 +21,16 @@ export function setupSwagger(app: Express) {
   console.log(
     '📝 Swagger Docs: Development mode detected, using TypeScript files for API documentation.'
   );
+  
+  // Disable CSP for swagger routes
+  app.use('/api-docs', (req, res, next) => {
+    res.setHeader(
+      'Content-Security-Policy',
+      "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:;"
+    );
+    next();
+  });
+  
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 }
 

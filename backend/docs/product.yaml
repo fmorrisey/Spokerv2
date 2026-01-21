@@ -9,7 +9,7 @@ paths:
             application/json:
               schema:
                 type: array
-                products:
+                items:
                   $ref: '#/components/schemas/Product'
     post:
       summary: Create a new product
