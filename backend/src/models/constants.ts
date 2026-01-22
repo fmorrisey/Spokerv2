@@ -2,7 +2,6 @@ export class Routes {
     
     static readonly PRODUCTS = '/products'
     static readonly HEALTH = '/health'
-    static readonly CONFIG = '/config'
 }
 export const PORT = process.env.PORT || 5001
 export const API_VERSION = process.env.API_VERSION || 'v1'; // Example API version

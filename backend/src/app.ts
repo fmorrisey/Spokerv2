@@ -4,7 +4,6 @@ import cors from 'cors';
 import helmet from 'helmet';
 
 import productRoutes from './routes/product.route';
-import configRoute from './routes/config.route';
 
 import { errorHandler } from './middleware/errorHandler';
 import { healthCheck } from './middleware/healthCheck';
@@ -41,7 +40,6 @@ if (process.env.NODE_ENV !== 'production') {setupSwagger(app)};
 
 // Routes
 app.use(API_URL + Routes.HEALTH, healthCheck);
-app.use(API_URL + Routes.CONFIG, configRoute);
 app.use(API_URL + Routes.PRODUCTS, productRoutes);
 app.use(errorHandler);
 
