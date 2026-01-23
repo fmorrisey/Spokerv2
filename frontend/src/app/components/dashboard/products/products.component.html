@@ -1,0 +1,60 @@
+<div class="products-container">
+  <div class="header">
+    <h1>Products</h1>
+    <button class="btn-primary">Add Product</button>
+  </div>
+
+  @if (productService.loading()) {
+    <div class="loading">
+      <p>Loading products...</p>
+    </div>
+  }
+
+  @if (productService.error()) {
+    <div class="error-message">
+      <p>{{ productService.error() }}</p>
+      <button (click)="loadProducts()">Retry</button>
+    </div>
+  }
+
+  @if (!productService.loading() && !productService.error()) {
+    @if (productService.products().length === 0) {
+      <div class="empty-state">
+        <p>No products found</p>
+        <button class="btn-primary">Add Your First Product</button>
+      </div>
+    } @else {
+      <div class="products-grid">
+        @for (product of productService.products(); track product._id) {
+          <div class="product-card">
+            <div class="product-header">
+              <h3>{{ product.name }}</h3>
+              <div class="product-actions">
+                <button class="btn-icon" title="Edit">✏️</button>
+                <button class="btn-icon" title="Delete" (click)="deleteProduct(product._id)">🗑️</button>
+              </div>
+            </div>
+            
+            <p class="product-description">{{ product.description }}</p>
+            
+            <div class="product-pricing">
+              <div class="price-item">
+                <span class="label">MSRP:</span>
+                <span class="value msrp">{{ formatCurrency(product.msrp) }}</span>
+              </div>
+              <div class="price-item">
+                <span class="label">Sale Price:</span>
+                <span class="value price">{{ formatCurrency(product.price) }}</span>
+              </div>
+              @if (product.price < product.msrp) {
+                <div class="savings">
+                  Save {{ formatCurrency(product.msrp - product.price) }}
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
+  }
+</div>
