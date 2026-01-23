@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "project:init": "npm install && npx cypress install && npm run swagger:gen",
-    "swagger:gen" : "node ../scripts/generate-types.js",
+    "swagger:gen": "node ../scripts/generate-types.js",
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0 --port 4200",
     "build": "ng build",
@@ -25,7 +25,9 @@
     "@angular/platform-browser": "^17.3.0",
     "@angular/platform-browser-dynamic": "^17.3.0",
     "@angular/router": "^17.3.0",
+    "@types/swagger-ui": "^5.21.1",
     "concurrently": "^9.1.2",
+    "openapi-fetch": "^0.15.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "^0.14.10"
