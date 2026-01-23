@@ -38,10 +38,4 @@ export class ConfigService {
   getConfig(): Readonly<AppConfig> {
     return this.config;
   }
-
-  // Helper method to build full API endpoint URLs
-  getApiEndpoint(path: string): string {
-    const cleanPath = path.startsWith('/') ? path.slice(1) : path;
-    return `${this.apiUrl}/api/${this.apiVersion}/${cleanPath}`;
-  }
 }

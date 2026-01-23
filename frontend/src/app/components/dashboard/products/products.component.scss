@@ -2,6 +2,7 @@
   padding: 2rem;
   max-width: 1400px;
   margin: 0 auto;
+  color: #333;
 
   .header {
     display: flex;
@@ -29,6 +30,12 @@
 
     &:hover {
       background: #0056b3;
+    }
+
+    &:disabled,
+    &[aria-disabled='true'] {
+      background: #9bbcf4;
+      cursor: not-allowed;
     }
   }
 
@@ -112,6 +119,12 @@
           &:hover {
             opacity: 1;
           }
+
+          &:disabled,
+          &[aria-disabled='true'] {
+            cursor: not-allowed;
+            opacity: 0.4;
+          }
         }
       }
     }
@@ -164,4 +177,58 @@
       }
     }
   }
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  z-index: 1000;
+
+  .modal {
+    background: white;
+    color: #333;
+    border-radius: 12px;
+    max-width: 420px;
+    width: 100%;
+    padding: 1.5rem;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+
+    h2 {
+      margin-top: 0;
+    }
+
+    p {
+      color: #555;
+      margin: 0.75rem 0 1.5rem;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+    }
+  }
+}
+
+.btn-secondary {
+  background: #e9ecef;
+  color: #333;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-danger {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
 }

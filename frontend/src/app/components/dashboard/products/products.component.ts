@@ -11,6 +11,8 @@ import { ProductService } from '../../../services/product/product.service';
 })
 export class ProductsComponent implements OnInit {
   productService = inject(ProductService);
+  isDeleteModalOpen = false;
+  deleteCandidate: { id: string; name: string } | null = null;
 
   ngOnInit() {
     this.loadProducts();
@@ -20,13 +22,21 @@ export class ProductsComponent implements OnInit {
     await this.productService.getAll();
   }
 
-  async deleteProduct(id: string | undefined) {
+  openDeleteConfirm(id: string | undefined, name: string) {
     if (!id) return;
-    
-    const confirmed = confirm('Are you sure you want to delete this product?');
-    if (confirmed) {
-      await this.productService.delete(id);
-    }
+    this.deleteCandidate = { id, name };
+    this.isDeleteModalOpen = true;
+  }
+
+  closeDeleteConfirm() {
+    this.isDeleteModalOpen = false;
+    this.deleteCandidate = null;
+  }
+
+  async confirmDelete() {
+    if (!this.deleteCandidate) return;
+    await this.productService.delete(this.deleteCandidate.id);
+    this.closeDeleteConfirm();
   }
 
   formatCurrency(amount: number): string {
