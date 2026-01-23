@@ -12,5 +12,8 @@
         "test:backend": "npm run test --prefix=backend",
         "test:frontend": "npm run test --prefix=frontend",
         "swagger:gen": "node scripts/generate-types.js"
+    },
+    "devDependencies": {
+        "openapi-typescript": "*"
     }
 }
