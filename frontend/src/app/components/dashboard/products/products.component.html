@@ -1,7 +1,7 @@
 <div class="products-container">
   <div class="header">
     <h1>Products</h1>
-    <button class="btn-primary">Add Product</button>
+    <button class="btn-primary" type="button" disabled aria-disabled="true" title="Add product (coming soon)">Add Product</button>
   </div>
 
   @if (productService.loading()) {
@@ -21,7 +21,7 @@
     @if (productService.products().length === 0) {
       <div class="empty-state">
         <p>No products found</p>
-        <button class="btn-primary">Add Your First Product</button>
+        <button class="btn-primary" type="button" disabled aria-disabled="true" title="Add product (coming soon)">Add Your First Product</button>
       </div>
     } @else {
       <div class="products-grid">
@@ -30,8 +30,8 @@
             <div class="product-header">
               <h3>{{ product.name }}</h3>
               <div class="product-actions">
-                <button class="btn-icon" title="Edit">✏️</button>
-                <button class="btn-icon" title="Delete" (click)="deleteProduct(product._id)">🗑️</button>
+                <button class="btn-icon" type="button" title="Edit (coming soon)" disabled aria-disabled="true" aria-label="Edit product (coming soon)">✏️</button>
+                <button class="btn-icon" type="button" title="Delete" aria-label="Delete product" (click)="openDeleteConfirm(product._id, product.name)">🗑️</button>
               </div>
             </div>
             
@@ -58,3 +58,16 @@
     }
   }
 </div>
+
+@if (isDeleteModalOpen && deleteCandidate) {
+  <div class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="delete-modal-title">
+    <div class="modal">
+      <h2 id="delete-modal-title">Delete product?</h2>
+      <p>Are you sure you want to delete {{ deleteCandidate.name }}? This action cannot be undone.</p>
+      <div class="modal-actions">
+        <button class="btn-secondary" type="button" (click)="closeDeleteConfirm()">Cancel</button>
+        <button class="btn-danger" type="button" (click)="confirmDelete()">Delete</button>
+      </div>
+    </div>
+  </div>
+}
