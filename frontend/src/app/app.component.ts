@@ -10,5 +10,5 @@ import { DashboardComponent } from "./components/dashboard/dashboard.component";
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'spokerv2';
+  title = 'Spoker v2';
 }

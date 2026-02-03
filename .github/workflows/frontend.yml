@@ -14,7 +14,7 @@ on:
       - 'frontend/**'
 
 jobs:
-  test-and-build:
+  test-frontend:
     runs-on: ubuntu-latest
     defaults:
       run:
