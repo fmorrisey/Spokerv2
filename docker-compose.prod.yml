@@ -5,7 +5,7 @@ services:
     image: spokerv2-nginx-prod
     build: ./nginx
     ports:
-      - "3200:80"
+      - "3202:80"
     volumes:
       - nginx-logs:/var/log/nginx
       - certbot-etc:/etc/letsencrypt
@@ -27,6 +27,11 @@ services:
       - "80"
     environment:
       - NODE_ENV=production
+      # Empty string enables relative paths for nginx proxying
+      # Set to external API URL if backend is on a different domain
+      - API_URL=""
+      - ENABLE_ANALYTICS=true
+      - ENABLE_DEBUG=false
     depends_on:
       - backend
 
@@ -35,26 +40,20 @@ services:
     build: ./backend
     expose:
       - "5001"
+    env_file:
+      - ./backend/.env.prod
     environment:
       - NODE_ENV=production
-      - DB_URI=mongodb://db:27017/ecommerce
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
     healthcheck:
       test: ["CMD", "nc", "-z", "localhost", "5001"]
       interval: 10s
       timeout: 5s
       retries: 5
-    depends_on:
-      - db
-
-  db:
-    image: mongo:latest
-    volumes:
-      - mongo-data:/data/db
-    ports:
-      - "27017:27017"
 
 volumes:
-  mongo-data:
   nginx-logs:
   certbot-etc:
   certbot-var:

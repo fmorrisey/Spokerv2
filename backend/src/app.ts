@@ -17,9 +17,23 @@ dotenv.config();
 
 const app = express();
 
+// CORS configuration - more restrictive in production
+const corsOptions = {
+  origin: process.env.NODE_ENV === 'production'
+    ? (() => {
+        if (!process.env.ALLOWED_ORIGINS || process.env.ALLOWED_ORIGINS.trim() === '') {
+          throw new Error('ALLOWED_ORIGINS must be configured in production');
+        }
+        return process.env.ALLOWED_ORIGINS.split(',').map(origin => origin.trim());
+      })()
+    : true, // Allow all origins in development
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+
 // Middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors(corsOptions));
 
 // Configure Helmet with CSP exceptions for Swagger UI
 app.use(

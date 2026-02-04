@@ -1,60 +1,104 @@
-# Spoker v2 - Work In Progress 
-Spoker v2 - refactored from the ground up using professional industry development experience. This project is built to enterprise software standards and architecture 
+# Spoker v2
 
- SpokerV2 is based on my original devCodeCamp Capstone project from 2020 called [Spoker.io](https://github.com/fmorrisey/Spoker.io). After 4 years of industry experience, it's long overdue for a refactoring from the ground up.
+Spoker v2 - refactored from the ground up using professional industry development experience. Built to enterprise software standards and architecture.
+
+Based on the original [Spoker.io](https://github.com/fmorrisey/Spoker.io) capstone project from 2020.
 
 ## Getting Started
 
-### Local App Hot-Load Development Environment
- - `npm run build:dev` builds the local development docker environment image
- - `npm run docker:dev` run the local development docker environment image with hot-loading
- ** point browser at `localhost:4200`
+### Prerequisites
+- Node.js 20+
+- Docker & Docker Compose
+- MongoDB (or use Docker)
 
-### Production App Deployment and Testing
- - `npm run build:prod` builds the local development docker environment image
- - `npm run docker:prod` run the local development docker environment image with hot-loading
- ** point browser at `localhost:4200`
+### Development
+
+**Docker (recommended):**
+```bash
+npm run build:dev     # Build dev containers
+npm run docker:dev    # Run with hot reload
+```
+
+**Local:**
+```bash
+cd backend && npm install && npm run dev
+cd frontend && npm install && npm start
+```
+
+**Access:**
+- Frontend: `http://localhost:4200`
+- Backend: `http://localhost:5001`
+- Swagger: `http://localhost:5001/api-docs/`
+
+### Production
+
+```bash
+# Configure environment
+cp backend/.env.example backend/.env.prod
+export MONGO_PASSWORD=your-secure-password
+
+# Build and run
+npm run build:prod
+npm run docker:prod
+```
+
+**Access:** `http://localhost:3202`
 
 ---
 
-# Architecture
+## Architecture
 
-## Basic Design
-- [Backend](./design/technical/backend_arch.md)   
-- [Frontend](./design/technical/frontend_arch.md)
-- [Integration](./design/technical/integration_arch.md)
+| Component | Technology |
+|-----------|------------|
+| Frontend | Angular 17 (standalone components, Signals) |
+| Backend | Express.js + TypeScript |
+| Database | MongoDB + Mongoose |
+| API Docs | OpenAPI 3.0 / Swagger |
+| Proxy | nginx |
+
+**Detailed documentation:**
+- [Backend Architecture](./design/technical/backend_arch.md)
+- [Frontend Architecture](./design/technical/frontend_arch.md)
+- [Integration Architecture](./design/technical/integration_arch.md)
+- [Environment Configuration](./docs/ENVIRONMENT_CONFIG.md)
 
 ---
 
-# Testing
+## Testing
 
-## Frontend Testing
-- `npm run test:frontend` will run unit tests for the frontend client with code coverage report found in the `frontend/coverage` directory
-- `npm run cy:test:frontend` will run Cypress tests for the frontend client `frontend/coverage` directory
+### All Tests
+```bash
+npm run test           # Backend + Frontend
+npm run test:backend   # Backend only
+npm run test:frontend  # Frontend only
+```
 
-### Unit Testing
-Unit testing currently uses firefox headless as the default for local and ci environments. 
+### Backend (Jest)
+```bash
+cd backend
+npm test                           # All tests with coverage
+npx jest tests/api/product.spec.ts # Single file
+```
 
-### Cypress
-From the frontend client directory
-- `npx cypress open`
-- `npx cypress run`
+### Frontend (Jasmine/Karma)
+```bash
+cd frontend
+npm test                                    # All tests with coverage
+ng test --include=**/product.service.spec.ts # Single file
+```
 
-## Backend Testing
-- `npm run test:unit --prefix=backend` will run unit tests for the backend with code coverage report found in the `backend/coverage` directory
-- `npm run test:e2e --prefix=backend` will run Cypress API end-to-end tests for the backend
+### E2E (Cypress)
+```bash
+cd frontend && npx cypress open   # Frontend E2E
+cd backend && npx cypress open    # API E2E
+```
 
-### Unit Testing with Jest
-Unit testing currently uses Jest
+---
 
-### Cypress for API E2E
-From the backend client directory
-- `npx cypress open`
-- `npx cypress run`
+## CI/CD
 
-___
+GitHub Actions pipelines in `.github/workflows/`:
+- **Backend**: Runs on changes to `backend/**`
+- **Frontend**: Runs on changes to `frontend/**`
 
-# Github Actions CI/CD
-## Frontend CI
-
-## BackEnd CI
+Both pipelines run linting, unit tests, and coverage checks.

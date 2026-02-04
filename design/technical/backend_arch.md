@@ -1,49 +1,122 @@
-# Spoker V2 Backend Architecture  
+# Spoker V2 Backend Architecture
+
+## Technology Stack
+- **Node.js** with Express.js
+- **TypeScript 5.8**
+- **MongoDB** with Mongoose ODM
+- **OpenAPI 3.0** with Swagger UI
+- **Jest** for unit testing
+- **Helmet** for security headers
+
+## Project Structure
 
 ```
 /backend
- ├── cypress/
- ├── src/
- │   ├── controllers/    # Business logic (product, user, order)
- │   ├── models/         # Mongoose schemas & interfaces
- │   ├── routes/         # API endpoints
- │   ├── middlewares/    # Auth, error handling
- │   ├── services/       # Database queries, caching
- │   ├── utils/          # Helpers (logging, validations)
- │   ├── app.ts          # Main Express app
- │   ├── server.ts       # Server entry point
- ├── package.json
- ├── tsconfig.json
- ├── .env 
- ├── nodemon.json       # Config for Development Environment 
- ├── Dockerfile         # Dockerfile for the production builds
- ├── Dockerfile.dev     # Dockerfile for the development environments
- 
+├── Dockerfile              # Production build
+├── Dockerfile.dev          # Development build (nodemon)
+├── cypress/                # API E2E tests
+├── tests/                  # Jest unit tests
+├── docs/                   # OpenAPI YAML specs
+└── src/
+    ├── config/
+    │   ├── mongodb.ts      # Database connection
+    │   ├── swagger.ts      # Swagger configuration
+    │   └── test-db.ts      # Test database setup
+    ├── controllers/
+    │   └── product.controller.ts
+    ├── services/
+    │   ├── product.service.ts
+    │   ├── health.service.ts
+    │   └── error.service.ts
+    ├── routes/
+    │   └── product.route.ts
+    ├── models/
+    │   ├── product.model.ts
+    │   └── constants.ts
+    ├── middleware/
+    │   ├── errorHandler.ts
+    │   └── healthCheck.ts
+    ├── swagger/            # Generated types from OpenAPI
+    ├── app.ts              # Express app setup
+    └── server.ts           # Server entry point
 ```
 
-## Technologies
-- Node server written in TypeScript
-- OpenAPI 3.0
-- MongoDB with Mongoose
-- RBAC with JWT + Bcrypt
-- Email Service (TBD / NodeMailer?)
+## Architecture Pattern
 
-## API V1 Endpoints
+**Route → Controller → Service → Model**
 
-### OpenAPI Docs
-- `http://localhost:5001/api-docs/' : Loads the Swagger page to view all endpoints for this project
+```
+HTTP Request
+    ↓
+Route (product.route.ts)     # Define endpoints
+    ↓
+Controller (product.controller.ts)  # Handle request/response
+    ↓
+Service (product.service.ts)   # Business logic
+    ↓
+Model (product.model.ts)       # Database operations
+    ↓
+MongoDB
+```
 
-### General Server
-- `/api/v1/health` : returns a 200 if the server is live along with connection state of mongoDB
+## API Endpoints
 
-### Products
-- `/api/v1/products` : returns a list of products in the database
+### Health
+- `GET /api/v1/health` - Server health check with MongoDB status
+
+### Products (CRUD)
+- `GET /api/v1/products` - List all products
+- `POST /api/v1/products` - Create product
+- `GET /api/v1/products/:id` - Get product by ID
+- `PUT /api/v1/products/:id` - Update product
+- `DELETE /api/v1/products/:id` - Delete product
+
+### OpenAPI Documentation
+- `GET /api-docs/` - Swagger UI (development only)
+
+## Configuration
+
+### Environment Variables
+See `backend/.env.example`:
+```bash
+NODE_ENV=production
+PORT=5001
+DB_URI=mongodb://db:27017/ecommerce
+ALLOWED_ORIGINS=https://yourdomain.com
+```
+
+### CORS
+- **Development**: Allows all origins
+- **Production**: Restricted to `ALLOWED_ORIGINS` (required)
+
+## Security
+- Helmet middleware for security headers
+- CORS with environment-based restrictions
+- Swagger disabled in production
+- Server binds to `0.0.0.0` for container networking
 
 ## Testing
-Cypress-Gherkin for API Testing
-Jest for unit testing
 
-## Logging
-- Service to handle and process font and backend logs
+### Unit Tests (Jest)
+```bash
+npm test                    # Run all tests
+npm run test:unit           # With coverage
+npx jest tests/api/product.spec.ts  # Single file
+```
 
+### API E2E Tests (Cypress)
+```bash
+npx cypress open
+npx cypress run
+```
 
+## Type Generation
+
+OpenAPI specs in `docs/*.yaml` are the source of truth. Run from project root:
+```bash
+npm run swagger:gen
+```
+
+Generates types to:
+- `backend/src/swagger/`
+- `frontend/src/swagger/`

@@ -13,7 +13,11 @@ RUN rm -rf /usr/share/nginx/html/* && rm /etc/nginx/conf.d/default.conf
 COPY --from=build /app/dist/spokerv2/browser/ /usr/share/nginx/html/
 COPY default.conf /etc/nginx/conf.d/default.conf
 
+# Copy entrypoint script for runtime configuration
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
 # Expose port 80
 EXPOSE 80
 
-CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
