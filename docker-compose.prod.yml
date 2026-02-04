@@ -41,26 +41,19 @@ services:
     expose:
       - "5001"
     env_file:
-      - ./backend/.env
+      - ./backend/.env.prod
     environment:
       - NODE_ENV=production
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
     healthcheck:
       test: ["CMD", "nc", "-z", "localhost", "5001"]
       interval: 10s
       timeout: 5s
       retries: 5
-    depends_on:
-      - db
-
-  db:
-    image: mongo:latest
-    volumes:
-      - mongo-data:/data/db
-    ports:
-      - "27017:27017"
 
 volumes:
-  mongo-data:
   nginx-logs:
   certbot-etc:
   certbot-var:
