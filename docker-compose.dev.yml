@@ -1,6 +1,17 @@
 version: '3.9'
 
 services:
+  nginx:
+    image: spokerv2-nginx-dev
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3200:80"
+    depends_on:
+      - frontend
+      - backend
+
   frontend:
     image: spokerv2-frontend-dev
     build:
@@ -9,6 +20,8 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
+    expose:
+      - "80"
     ports:
       - "4200:4200"
     environment:
@@ -19,6 +32,8 @@ services:
     build: 
       context: ./backend
       dockerfile: Dockerfile.dev
+    expose:
+      - "5001"
     ports:
       - "5001:5001"
     volumes:

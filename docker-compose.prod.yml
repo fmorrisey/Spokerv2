@@ -27,9 +27,9 @@ services:
       - "80"
     environment:
       - NODE_ENV=production
-      # Leave API_URL empty to use relative paths (nginx proxy)
-      # Or set to external API URL if backend is separate
-      - API_URL=
+      # Empty string enables relative paths for nginx proxying
+      # Set to external API URL if backend is on a different domain
+      - API_URL=""
       - ENABLE_ANALYTICS=true
       - ENABLE_DEBUG=false
     depends_on:
@@ -44,9 +44,6 @@ services:
       - ./backend/.env
     environment:
       - NODE_ENV=production
-      - DB_URI=mongodb://db:27017/ecommerce
-      # Frontend is proxied through nginx, so allow requests from nginx
-      - ALLOWED_ORIGINS=http://nginx
     healthcheck:
       test: ["CMD", "nc", "-z", "localhost", "5001"]
       interval: 10s

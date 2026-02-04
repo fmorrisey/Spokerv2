@@ -1,5 +1,7 @@
 // Runtime environment configuration
-// This file can be replaced at container startup with actual values
+// This file is a template that gets processed by envsubst at container startup.
+// The ${VARIABLE} placeholders are replaced with actual environment variable values
+// via the docker-entrypoint.sh script, which generates the final env.js file.
 (function(window) {
   window.__env = window.__env || {};
   

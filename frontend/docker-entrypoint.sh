@@ -1,4 +1,8 @@
 #!/bin/sh
+set -e #exit on error
+
+# Verify envsubst is available
+command -v envsubst >/dev/null 2>&1 || { echo "envsubst not found"; exit 1; }
 
 # Replace environment variables in env.js if env.template.js exists
 if [ -f /usr/share/nginx/html/assets/env.template.js ]; then
@@ -12,7 +16,14 @@ if [ -f /usr/share/nginx/html/assets/env.template.js ]; then
   # Replace placeholders with actual environment variables
   envsubst '${API_URL} ${ENABLE_ANALYTICS} ${ENABLE_DEBUG}' \
     < /usr/share/nginx/html/assets/env.template.js \
-    > /usr/share/nginx/html/assets/env.js
+    > /usr/share/nginx/html/assets/env.js \
+    || { echo "Failed to generate env.js"; exit 1; }
+  
+  # Verify the output file was created and is not empty
+  if [ ! -s /usr/share/nginx/html/assets/env.js ]; then
+    echo "Error: env.js was not generated or is empty"
+    exit 1
+  fi
   
   echo "Runtime configuration generated successfully"
 else
