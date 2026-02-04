@@ -5,7 +5,7 @@ services:
     image: spokerv2-nginx-prod
     build: ./nginx
     ports:
-      - "3200:80"
+      - "3202:80"
     volumes:
       - nginx-logs:/var/log/nginx
       - certbot-etc:/etc/letsencrypt
