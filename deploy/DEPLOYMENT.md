@@ -34,18 +34,30 @@ Deploy Spoker v2 to `spoker-app.rainierserver.com` via Cloudflare Tunnel with au
 
 ## CI/CD Pipeline
 
-Deployments are triggered by pushing a git tag:
+Deployments are triggered by pushing a git tag **from a release branch**:
 
 ```bash
+# Create release branch
+git checkout -b release/v1.0
+
+# ... make release preparations ...
+
+# Tag on release branch
 git tag v1.0.0
-git push origin v1.0.0
+git push origin release/v1.0 v1.0.0
 ```
+
+**Requirements:**
+- Tags must follow semver format: `v1.0.0`, `v2.1.3`, etc.
+- Tags must be created on a `release/*` branch (e.g., `release/v1.0`)
+- Tags on `main`, `develop`, or feature branches will be rejected
 
 **Pipeline flow:**
 1. GitHub Actions runs backend tests (Jest)
 2. GitHub Actions runs frontend tests (Jasmine/Karma)
-3. If tests pass, self-hosted runner on Rainier executes deployment
-4. Health checks verify services are running
+3. Pipeline validates tag is on a `release/*` branch
+4. If tests pass, self-hosted runner on Rainier executes deployment
+5. Health checks verify services are running
 
 ## Prerequisites
 
@@ -99,14 +111,16 @@ sudo ./svc.sh start
 
 ## Manual Deployment
 
-For manual deployments (outside CI/CD):
+For manual deployments (outside CI/CD), you must be on a `release/*` branch:
 
 ```bash
 cd ~/code/spokerv2
+git checkout release/v1.0  # Must be on a release branch
 ./scripts/deploy.sh
 ```
 
 The script will:
+- Validate you're on a `release/*` branch (or tagged commit on release branch)
 - Show current git status and tag
 - Prompt for confirmation
 - Build and deploy containers

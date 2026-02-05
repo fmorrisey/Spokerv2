@@ -30,6 +30,37 @@ if [ ! -f "package.json" ] || [ ! -d "deploy" ]; then
     exit 1
 fi
 
+# Validate we're on a release/* branch or a tag on a release branch
+validate_release_branch() {
+    local current_branch=$(git branch --show-current)
+    local current_tag=$(git describe --exact-match --tags 2>/dev/null || echo "")
+
+    if [[ -n "$current_branch" ]]; then
+        # On a branch - must be release/*
+        if [[ ! "$current_branch" =~ ^release/ ]]; then
+            echo -e "${RED}Error: Deployments only allowed from release/* branches${NC}"
+            echo -e "Current branch: ${YELLOW}$current_branch${NC}"
+            echo -e "Please checkout a release branch (e.g., release/v1.0)"
+            exit 1
+        fi
+    elif [[ -n "$current_tag" ]]; then
+        # On a detached HEAD with tag - verify tag is on a release branch
+        local tag_commit=$(git rev-parse HEAD)
+        local release_branch=$(git branch -r --contains "$tag_commit" | grep -E 'origin/release/' | head -1 | xargs)
+        if [[ -z "$release_branch" ]]; then
+            echo -e "${RED}Error: Tag $current_tag is not on a release/* branch${NC}"
+            echo -e "Deployments only allowed from release branches"
+            exit 1
+        fi
+    else
+        echo -e "${RED}Error: Not on a branch or tag${NC}"
+        echo -e "Deployments require a release/* branch or a tag on a release branch"
+        exit 1
+    fi
+}
+
+validate_release_branch
+
 # Show current git status
 echo -e "${YELLOW}Current Git Status:${NC}"
 echo -e "Branch: ${GREEN}$(git branch --show-current)${NC}"
