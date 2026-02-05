@@ -96,17 +96,21 @@ const { data } = await client.GET('/api/v1/products');
 
 **Production URL:** https://spoker-app.rainierserver.com
 
+**Requirement:** Deployments only allowed from `release/*` branches.
+
 ### Deploy via CI/CD (recommended)
 ```bash
-git tag v1.0.0
-git push origin v1.0.0
+git checkout -b release/v1.0    # Create release branch
+git tag v1.0.0                   # Tag on release branch
+git push origin release/v1.0 v1.0.0
 ```
-Triggers GitHub Actions → tests → self-hosted runner deploys to Rainier.
+Triggers GitHub Actions → tests → validates release branch → deploys to Rainier.
 
 ### Manual Deploy
 ```bash
-./scripts/deploy.sh          # Interactive with confirmation
-./scripts/deploy.sh --yes    # Non-interactive (CI/CD mode)
+git checkout release/v1.0        # Must be on a release branch
+./scripts/deploy.sh              # Interactive with confirmation
+./scripts/deploy.sh --yes        # Non-interactive (CI/CD mode)
 ```
 
 ### Key Files

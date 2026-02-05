@@ -2,6 +2,5 @@
   "watch": ["src"],
   "ext": "ts,json",
   "ignore": ["dist"],
-  "exec": "ts-node src/server.ts",
-  "legacyWatch": true
+  "exec": "ts-node src/server.ts"
 }

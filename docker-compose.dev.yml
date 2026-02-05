@@ -1,3 +1,5 @@
+version: '3.9'
+
 services:
   nginx:
     image: spokerv2-nginx-dev
@@ -19,20 +21,11 @@ services:
       - ./frontend:/app
       - /app/node_modules
     expose:
-      - "4200"
+      - "80"
     ports:
       - "4200:4200"
     environment:
       - NODE_ENV=development
-      - CHOKIDAR_USEPOLLING=true
-      - WATCHPACK_POLLING=true
-    develop:
-      watch:
-        - action: sync
-          path: ./frontend/src
-          target: /app/src
-        - action: rebuild
-          path: ./frontend/package.json
 
   backend:
     image: spokerv2-backend-dev
@@ -50,11 +43,3 @@ services:
       - ./backend/.env
     environment:
       - NODE_ENV=development
-      - CHOKIDAR_USEPOLLING=true
-    develop:
-      watch:
-        - action: sync
-          path: ./backend/src
-          target: /app/src
-        - action: rebuild
-          path: ./backend/package.json
