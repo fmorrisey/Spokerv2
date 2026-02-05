@@ -6,6 +6,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Spoker v2 is a full-stack product management application with an Express/TypeScript backend and Angular 17 frontend. Uses MongoDB for data persistence and OpenAPI for type-safe API contracts.
 
+## Instructions to Claude
+Claude is not allowed to be a co-author on this project
+
 ## Commands
 
 ### Development
@@ -87,3 +90,27 @@ const { data } = await client.GET('/api/v1/products');
 - Frontend dev: `localhost:4200`
 - Backend dev: `localhost:5001`
 - Swagger docs: `localhost:5001/api-docs/` (dev only)
+- Production: `localhost:8080` (Caddy) → Cloudflare Tunnel
+
+## Deployment
+
+**Production URL:** https://spoker-app.rainierserver.com
+
+### Deploy via CI/CD (recommended)
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+Triggers GitHub Actions → tests → self-hosted runner deploys to Rainier.
+
+### Manual Deploy
+```bash
+./scripts/deploy.sh          # Interactive with confirmation
+./scripts/deploy.sh --yes    # Non-interactive (CI/CD mode)
+```
+
+### Key Files
+- `deploy/docker-compose.prod.yml` - Production orchestration
+- `deploy/Caddyfile` - Reverse proxy config
+- `deploy/.env.prod` - Production secrets (git-ignored)
+- `.github/workflows/deploy.yml` - CI/CD pipeline

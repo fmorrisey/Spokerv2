@@ -4,6 +4,14 @@ Spoker v2 - refactored from the ground up using professional industry developmen
 
 Based on the original [Spoker.io](https://github.com/fmorrisey/Spoker.io) capstone project from 2020.
 
+## 🌐 Live Demo
+
+**Production:** [https://spoker-app.rainierserver.com](https://spoker-app.rainierserver.com)
+
+Deployed on a self-hosted homelab server via Cloudflare Tunnel — zero exposed ports, enterprise-grade security.
+
+---
+
 ## Getting Started
 
 ### Prerequisites
@@ -30,20 +38,6 @@ cd frontend && npm install && npm start
 - Backend: `http://localhost:5001`
 - Swagger: `http://localhost:5001/api-docs/`
 
-### Production
-
-```bash
-# Configure environment
-cp backend/.env.example backend/.env.prod
-export MONGO_PASSWORD=your-secure-password
-
-# Build and run
-npm run build:prod
-npm run docker:prod
-```
-
-**Access:** `http://localhost:3202`
-
 ---
 
 ## Architecture
@@ -52,15 +46,100 @@ npm run docker:prod
 |-----------|------------|
 | Frontend | Angular 17 (standalone components, Signals) |
 | Backend | Express.js + TypeScript |
-| Database | MongoDB + Mongoose |
+| Database | MongoDB Atlas |
 | API Docs | OpenAPI 3.0 / Swagger |
-| Proxy | nginx |
+| Proxy | Caddy (production) / nginx (development) |
+| Infrastructure | Docker, Cloudflare Tunnel |
 
 **Detailed documentation:**
-- [Backend Architecture](./design/technical/backend_arch.md)
-- [Frontend Architecture](./design/technical/frontend_arch.md)
-- [Integration Architecture](./design/technical/integration_arch.md)
-- [Environment Configuration](./docs/ENVIRONMENT_CONFIG.md)
+- [Backend Architecture](./docs/design/technical/backend_arch.md)
+- [Frontend Architecture](./docs/design/technical/frontend_arch.md)
+- [Integration Architecture](./docs/design/technical/integration_arch.md)
+- [Deployment Guide](./deploy/DEPLOYMENT.md)
+
+---
+
+## 🚀 Deployment Infrastructure
+
+### Production Architecture
+
+```
+                    Internet
+                       │
+                       ▼
+              ┌────────────────┐
+              │   Cloudflare   │  ← TLS termination, DDoS protection
+              │    Tunnel      │
+              └───────┬────────┘
+                      │ (encrypted tunnel, no open ports)
+                      ▼
+              ┌────────────────┐
+              │     Caddy      │  ← Reverse proxy, hostname routing
+              │   (port 8080)  │
+              └───────┬────────┘
+                      │
+         ┌────────────┴────────────┐
+         ▼                         ▼
+┌─────────────────┐      ┌─────────────────┐
+│    Frontend     │      │    Backend      │
+│  (Angular/nginx)│      │  (Express.js)   │
+│    port 80      │      │   port 5001     │
+└─────────────────┘      └────────┬────────┘
+                                  │
+                                  ▼
+                         ┌─────────────────┐
+                         │  MongoDB Atlas  │
+                         └─────────────────┘
+```
+
+### CI/CD Pipeline
+
+```
+Push tag (v1.0.0)
+       │
+       ▼
+┌──────────────────────────────────────────┐
+│           GitHub Actions                  │
+│  ┌─────────────┐    ┌─────────────────┐  │
+│  │   Backend   │    │    Frontend     │  │
+│  │   Tests     │    │     Tests       │  │
+│  │  (Jest)     │    │ (Jasmine/Karma) │  │
+│  └──────┬──────┘    └────────┬────────┘  │
+│         └──────────┬─────────┘           │
+│                    ▼                     │
+│         ┌─────────────────────┐          │
+│         │  Self-Hosted Runner │          │
+│         │    (on Rainier)     │          │
+│         │  ┌───────────────┐  │          │
+│         │  │ deploy.sh     │  │          │
+│         │  │ docker compose│  │          │
+│         │  │ health checks │  │          │
+│         │  └───────────────┘  │          │
+│         └─────────────────────┘          │
+└──────────────────────────────────────────┘
+```
+
+### Deploy a Release
+
+```bash
+# Create and push a version tag
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+This triggers:
+1. ✅ Backend tests (GitHub-hosted runner)
+2. ✅ Frontend tests (GitHub-hosted runner)
+3. ✅ Deploy to production (self-hosted runner on private network)
+4. ✅ Health checks and verification
+
+### Key Features
+
+- **Zero exposed ports** — Cloudflare Tunnel provides secure ingress
+- **Self-hosted runner** — Deploys to private infrastructure without exposing secrets
+- **Automated testing** — All tests must pass before deployment
+- **Health checks** — Verifies services are running post-deploy
+- **Tag-based releases** — Semantic versioning triggers deployments
 
 ---
 
@@ -95,10 +174,34 @@ cd backend && npx cypress open    # API E2E
 
 ---
 
-## CI/CD
+## CI/CD Workflows
 
-GitHub Actions pipelines in `.github/workflows/`:
-- **Backend**: Runs on changes to `backend/**`
-- **Frontend**: Runs on changes to `frontend/**`
+| Workflow | Trigger | Purpose |
+|----------|---------|---------|
+| `backend.yml` | Push to `backend/**` | Run backend tests |
+| `frontend.yml` | Push to `frontend/**` | Run frontend tests |
+| `deploy.yml` | Push tag `v*.*.*` | Deploy to production |
 
-Both pipelines run linting, unit tests, and coverage checks.
+---
+
+## Project Structure
+
+```
+spokerv2/
+├── backend/           # Express.js API
+├── frontend/          # Angular 17 app
+├── deploy/            # Production deployment configs
+│   ├── Caddyfile
+│   ├── docker-compose.prod.yml
+│   └── DEPLOYMENT.md
+├── scripts/
+│   └── deploy.sh      # Deployment script
+├── nginx/             # Development proxy
+└── .github/workflows/ # CI/CD pipelines
+```
+
+---
+
+## License
+
+MIT

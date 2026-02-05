@@ -1,0 +1,24 @@
+# Caddy reverse proxy configuration for Cloudflare Tunnel
+# TLS is terminated at Cloudflare, so we serve HTTP only
+
+{
+	auto_https off
+}
+
+# Default handler - returns 404 for requests without matching hostname
+http://:8080 {
+	respond "Not Found" 404
+}
+
+# Spoker App - Production (HTTP only - TLS handled by Cloudflare)
+http://spoker-app.rainierserver.com:8080 {
+	# API requests go to backend (same-origin only via CORS)
+	handle /api/* {
+		reverse_proxy backend:5001
+	}
+
+	# All other requests go to frontend
+	handle {
+		reverse_proxy frontend:80
+	}
+}
