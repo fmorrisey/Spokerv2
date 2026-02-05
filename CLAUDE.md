@@ -6,6 +6,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Spoker v2 is a full-stack product management application with an Express/TypeScript backend and Angular 17 frontend. Uses MongoDB for data persistence and OpenAPI for type-safe API contracts.
 
+## Instructions to Claude
+Claude is not allowed to be a co-author on this project
+
 ## Commands
 
 ### Development

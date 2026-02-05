@@ -51,12 +51,13 @@ jobs:
       - name: 🧪 Run Unit Tests
         run: npm test
 
-  # Deploy on self-hosted runner (Rainier)
+  # Deploy on self-hosted runner (Rainier) - only on tag pushes
   deploy:
     name: 🚀 Deploy to Production
     runs-on: self-hosted
     needs: [test-backend, test-frontend]
     environment: production
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
 
     steps:
       - name: 📥 Fetch and Checkout Tag
