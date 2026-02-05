@@ -57,9 +57,9 @@ npm run docker:prod
 | Proxy | nginx |
 
 **Detailed documentation:**
-- [Backend Architecture](./design/technical/backend_arch.md)
-- [Frontend Architecture](./design/technical/frontend_arch.md)
-- [Integration Architecture](./design/technical/integration_arch.md)
+- [Backend Architecture](./docs/design/technical/backend_arch.md)
+- [Frontend Architecture](./docs/design/technical/frontend_arch.md)
+- [Integration Architecture](./docs/design/technical/integration_arch.md)
 - [Environment Configuration](./docs/ENVIRONMENT_CONFIG.md)
 
 ---
@@ -102,3 +102,5 @@ GitHub Actions pipelines in `.github/workflows/`:
 - **Frontend**: Runs on changes to `frontend/**`
 
 Both pipelines run linting, unit tests, and coverage checks.
+
+
