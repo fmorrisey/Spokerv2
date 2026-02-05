@@ -87,3 +87,27 @@ const { data } = await client.GET('/api/v1/products');
 - Frontend dev: `localhost:4200`
 - Backend dev: `localhost:5001`
 - Swagger docs: `localhost:5001/api-docs/` (dev only)
+- Production: `localhost:8080` (Caddy) → Cloudflare Tunnel
+
+## Deployment
+
+**Production URL:** https://spoker-app.rainierserver.com
+
+### Deploy via CI/CD (recommended)
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+Triggers GitHub Actions → tests → self-hosted runner deploys to Rainier.
+
+### Manual Deploy
+```bash
+./scripts/deploy.sh          # Interactive with confirmation
+./scripts/deploy.sh --yes    # Non-interactive (CI/CD mode)
+```
+
+### Key Files
+- `deploy/docker-compose.prod.yml` - Production orchestration
+- `deploy/Caddyfile` - Reverse proxy config
+- `deploy/.env.prod` - Production secrets (git-ignored)
+- `.github/workflows/deploy.yml` - CI/CD pipeline
