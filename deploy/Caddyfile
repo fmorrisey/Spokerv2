@@ -12,13 +12,8 @@ http://:8080 {
 
 # Spoker App - Production (HTTP only - TLS handled by Cloudflare)
 http://spoker-app.rainierserver.com:8080 {
-	# API requests go to backend
+	# API requests go to backend (same-origin only via CORS)
 	handle /api/* {
-		reverse_proxy backend:5001
-	}
-
-	# Swagger docs (if needed in production, remove if not)
-	handle /api-docs/* {
 		reverse_proxy backend:5001
 	}
 
