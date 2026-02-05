@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 html {
-        font-size: 62.5%; /* Sets 1rem to 1rem for easier calculation */
+    font-size: 62.5%; /* Sets 1rem to 1rem for easier calculation */
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
 }
 
 :root {
@@ -8,3 +9,11 @@ html {
     color: white;
 }
 
+.site-footer {
+    padding: 1rem;
+    font-size: 1.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin:auto;
+}
