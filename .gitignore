@@ -83,6 +83,7 @@ web_modules/
 .env.production.local
 .env.local
 .env.prod
+deploy/.env.prod
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
@@ -188,3 +189,4 @@ Thumbs.db
 # Swagger generated files
 /backend/src/swagger/*
 /frontend/src/swagger/*
+
