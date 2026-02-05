@@ -29,7 +29,7 @@ services:
 
   backend:
     image: spokerv2-backend-dev
-    build: 
+    build:
       context: ./backend
       dockerfile: Dockerfile.dev
     expose:

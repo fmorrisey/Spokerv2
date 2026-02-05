@@ -76,6 +76,17 @@ jobs:
           echo "📥 Fetching latest changes..."
           git fetch --all --tags
 
+          # Verify tag is on a release/* branch
+          TAG_COMMIT=$(git rev-parse "$TAG_NAME")
+          RELEASE_BRANCH=$(git branch -r --contains "$TAG_COMMIT" | grep -E 'origin/release/' | head -1 | xargs)
+
+          if [[ -z "$RELEASE_BRANCH" ]]; then
+            echo "❌ Tag $TAG_NAME is not on a release/* branch"
+            echo "Deployments only allowed from release branches (e.g., release/v1.0)"
+            exit 1
+          fi
+          echo "✅ Tag $TAG_NAME verified on branch: $RELEASE_BRANCH"
+
           echo "🧹 Cleaning workspace..."
           git reset --hard
           git clean -fd --exclude=deploy/.env.prod
