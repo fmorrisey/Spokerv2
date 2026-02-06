@@ -11,7 +11,7 @@ http://:8080 {
 }
 
 # Spoker App - Production (HTTP only - TLS handled by Cloudflare)
-http://{$APP_NAME:spoker}-app.rainierserver.com:8080 {
+http://spoker-app.rainierserver.com:8080 {
 	# Security headers
 	header {
 		X-Content-Type-Options "nosniff"
@@ -22,11 +22,11 @@ http://{$APP_NAME:spoker}-app.rainierserver.com:8080 {
 
 	# API requests go to backend (same-origin only via CORS)
 	handle /api/* {
-		reverse_proxy {$APP_NAME:spoker}-backend:5001
+		reverse_proxy spoker-backend:5001
 	}
 
 	# All other requests go to frontend
 	handle {
-		reverse_proxy {$APP_NAME:spoker}-frontend:80
+		reverse_proxy spoker-frontend:80
 	}
 }
