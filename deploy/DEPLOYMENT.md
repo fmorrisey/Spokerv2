@@ -149,7 +149,11 @@ docker logs spoker-backend --tail 100
 
 ### Health Check
 ```bash
+# End-to-end check (through Caddy reverse proxy)
 curl http://localhost:8080/api/v1/health -H "Host: spoker-app.rainierserver.com"
+
+# Direct backend check (useful for troubleshooting)
+docker exec spoker-backend wget -qO- http://localhost:5001/api/v1/health
 ```
 
 ### Test Live Site
