@@ -1,14 +1,37 @@
 # Spoker v2
 
-Spoker v2 - refactored from the ground up using professional industry development experience. Built to enterprise software standards and architecture.
+[![Backend CI](https://github.com/fmorrisey/Spokerv2/actions/workflows/backend.yml/badge.svg)](https://github.com/fmorrisey/Spokerv2/actions/workflows/backend.yml)
+[![Frontend CI](https://github.com/fmorrisey/Spokerv2/actions/workflows/frontend.yml/badge.svg)](https://github.com/fmorrisey/Spokerv2/actions/workflows/frontend.yml)
+[![Deploy](https://github.com/fmorrisey/Spokerv2/actions/workflows/deploy.yml/badge.svg)](https://github.com/fmorrisey/Spokerv2/actions/workflows/deploy.yml)
 
-Based on the original [Spoker.io](https://github.com/fmorrisey/Spoker.io) capstone project from 2020.
+Spoker is a full-stack e-commerce product catalog built with Angular 17 and Express.js, demonstrating enterprise-grade architecture from API design to production deployment. The entire stack — CI/CD pipeline, reverse proxy, and application containers — runs on self-hosted infrastructure with zero exposed ports via Cloudflare Tunnel.
+
+Refactored from the ground up based on the original [Spoker.io](https://github.com/fmorrisey/Spoker.io) capstone project (2020).
+
+### Key Features
+
+- **Type-safe API contracts** — OpenAPI 3.0 specs generate TypeScript types shared across frontend and backend
+- **Modern Angular** — Standalone components with Angular Signals for reactive state (no RxJS boilerplate)
+- **Production CI/CD** — GitHub Actions pipeline with automated tests, release branch gating, and post-deploy health checks
+- **Self-hosted infrastructure** — Docker containers behind Caddy reverse proxy, accessed via Cloudflare Tunnel with zero exposed ports
+- **Self-hosted GitHub Actions runner** — Deploys to private infrastructure without exposing secrets
 
 ## 🌐 Live Demo
 
 **Production:** [https://spoker-app.rainierserver.com](https://spoker-app.rainierserver.com)
 
-Deployed on a self-hosted homelab server via Cloudflare Tunnel — zero exposed ports, enterprise-grade security.
+## Roadmap
+
+| Milestone | Status |
+|-----------|--------|
+| M0 — First Impressions (CRUD, seed data, docs) | 🔄 In Progress |
+| M1 — Authentication & User Management | 📋 Planned |
+| M2 — Shopping Cart & Wishlist | 📋 Planned |
+| M3 — Checkout & Orders (Stripe integration) | 📋 Planned |
+| M4 — Admin Dashboard & Security Hardening | 📋 Planned |
+| M5 — Polish & Observability | 📋 Planned |
+
+See the full [project board](https://github.com/users/fmorrisey/projects/1) for detailed progress.
 
 ---
 
