@@ -62,8 +62,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 echo -e "${BLUE}========================================${NC}"
-APP_NAME=${APP_NAME:-$(node -e "try{const p=require('./package.json'); if(!p.project){console.error('WARNING: package.json.project not found, falling back to name'); } const src=(p.project||p.name||'app').toString().toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,''); console.log(src)}catch(e){console.log('app')}" 2>/dev/null)}
-echo -e "${BLUE}  ${APP_NAME} Production Deployment${NC}"
+echo -e "${BLUE}  Spoker Production Deployment${NC}"
 echo -e "${BLUE}========================================${NC}"
 echo ""
 
@@ -163,6 +162,9 @@ fi
 echo -e "${GREEN}Starting deployment...${NC}"
 echo ""
 
+# Set BUILD_DATE for cache busting
+export BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
 if docker compose -f "${COMPOSE_FILE}" up -d --build; then
     echo ""
     echo -e "${GREEN}========================================${NC}"
@@ -172,7 +174,7 @@ if docker compose -f "${COMPOSE_FILE}" up -d --build; then
     echo -e "${BLUE}Verification steps:${NC}"
     echo "  • Check container status: docker ps"
     echo "  • View logs: docker compose -f ${COMPOSE_FILE} logs -f"
-    echo "  • Visit: https://${APP_NAME}-app.rainierserver.com"
+    echo "  • Visit: https://spoker-app.rainierserver.com"
     echo ""
 else
     echo ""
