@@ -116,7 +116,7 @@ For manual deployments (outside CI/CD), you must be on a `release/*` branch:
 ```bash
 cd ~/code/spokerv2
 git checkout release/v1.0  # Must be on a release branch
-./scripts/deploy.sh
+./tools/scripts/deploy.sh
 ```
 
 The script will:
@@ -128,7 +128,7 @@ The script will:
 
 For non-interactive deployment:
 ```bash
-./scripts/deploy.sh --yes
+./tools/scripts/deploy.sh --yes
 ```
 
 ## Verification
@@ -163,7 +163,7 @@ curl http://localhost:8080/api/v1/health -H "Host: spoker-app.rainierserver.com"
 cd ~/code/spokerv2
 git fetch --tags
 git checkout v0.9.0  # previous version
-./scripts/deploy.sh --yes
+./tools/scripts/deploy.sh --yes
 ```
 
 ### Emergency Stop
@@ -202,5 +202,5 @@ Verify `ALLOWED_ORIGINS` in `deploy/.env.prod` matches the exact domain.
 | `deploy/docker-compose.prod.yml` | Production container orchestration |
 | `deploy/Caddyfile` | Reverse proxy configuration |
 | `deploy/.env.prod` | Production secrets (git-ignored) |
-| `scripts/deploy.sh` | Deployment script |
+| `tools/scripts/deploy.sh` | Deployment script |
 | `.github/workflows/deploy.yml` | CI/CD pipeline |

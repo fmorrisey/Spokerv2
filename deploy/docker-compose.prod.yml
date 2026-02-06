@@ -4,7 +4,7 @@
 services:
   caddy:
     image: caddy:2-alpine
-    container_name: spoker-caddy
+    container_name: "${APP_NAME:-spoker}-caddy"
     restart: unless-stopped
     ports:
       - "8080:8080"
@@ -20,7 +20,7 @@ services:
     build:
       context: ../frontend
       dockerfile: Dockerfile
-    container_name: spoker-frontend
+    container_name: "${APP_NAME:-spoker}-frontend"
     restart: unless-stopped
     expose:
       - "80"
@@ -29,7 +29,7 @@ services:
     build:
       context: ../backend
       dockerfile: Dockerfile
-    container_name: spoker-backend
+    container_name: "${APP_NAME:-spoker}-backend"
     restart: unless-stopped
     env_file:
       - .env.prod

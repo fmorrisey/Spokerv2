@@ -194,8 +194,10 @@ spokerv2/
 │   ├── Caddyfile
 │   ├── docker-compose.prod.yml
 │   └── DEPLOYMENT.md
-├── scripts/
-│   └── deploy.sh      # Deployment script
+├── tools/             # Canonical tooling root
+│   ├── scripts/       # Project-specific glue scripts
+│   │   └── deploy.sh  # Deployment script
+│   └── shared/        # Reusable cross-project utilities (submodule)
 ├── nginx/             # Development proxy
 └── .github/workflows/ # CI/CD pipelines
 ```

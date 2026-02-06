@@ -3,17 +3,34 @@ const { execSync } = require('child_process');
 const path = require('path');
 const os = require('os');
 
-const docsDir = path.resolve(__dirname, '../backend/docs');
-const backendOutDir = path.resolve(__dirname, '../backend/src/swagger');
-const frontendOutDir = path.resolve(__dirname, '../frontend/src/swagger');
+// --- CLI arg parsing (simple) -------------------------------------------
+const argv = require('process').argv.slice(2);
+function getArg(name, short) {
+  const longIdx = argv.indexOf(`--${name}`);
+  const shortIdx = short ? argv.indexOf(`-${short}`) : -1;
+  const idx = longIdx !== -1 ? longIdx : shortIdx;
+  if (idx !== -1 && argv.length > idx + 1) return argv[idx + 1];
+  return null;
+}
+
+const docsDir = path.resolve(getArg('docs', 'd') || path.join(__dirname, '../../backend/docs'));
+const backendOutDir = path.resolve(getArg('backend-out', 'b') || path.join(__dirname, '../../backend/src/swagger'));
+const frontendOutDir = path.resolve(getArg('frontend-out', 'f') || path.join(__dirname, '../../frontend/src/swagger'));
+const apiTitle = getArg('title', 't') || 'Spoker v2 API';
+const apiVersion = getArg('version', 'v') || '1.0.0';
+
+if (argv.includes('-h') || argv.includes('--help')) {
+  console.log(`Usage: node generate-types.js [options]\n\nOptions:\n  -d, --docs <path>          Path to OpenAPI YAML source directory (default: backend/docs)\n  -b, --backend-out <path>   Output directory for backend types (default: backend/src/swagger)\n  -f, --frontend-out <path>  Output directory for frontend types (default: frontend/src/swagger)\n  -t, --title <string>       API title for generated temp specs\n  -v, --version <string>     API version for generated temp specs\n  -h, --help                 Show this help message\n`);
+  process.exit(0);
+}
 
 mkdirSync(backendOutDir, { recursive: true });
 mkdirSync(frontendOutDir, { recursive: true });
 
 const baseHeader = `openapi: 3.0.0
 info:
-  title: Spoker v2 API
-  version: '1.0.0'
+  title: ${apiTitle}
+  version: '${apiVersion}'
 `;
 
 const yamlFiles = readdirSync(docsDir).filter((f) => f.endsWith('.yaml'));

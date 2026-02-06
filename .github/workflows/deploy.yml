@@ -97,8 +97,11 @@ jobs:
       - name: 🚀 Run Deploy Script
         run: |
           cd ~/code/spokerv2
-          chmod +x scripts/deploy.sh
-          ./scripts/deploy.sh --yes
+          chmod +x tools/scripts/deploy.sh
+          # Derive APP_NAME from package.json for deploy script (sanitized)
+          APP_NAME=$(node -e "try{const n=require('./package.json').name; console.log(n.replace(/[^a-zA-Z0-9_-]/g,''))}catch(e){console.log('app')}")
+          echo "Using APP_NAME=$APP_NAME"
+          ./tools/scripts/deploy.sh --yes -n "$APP_NAME"
 
       - name: ⏳ Wait for Services
         run: sleep 10
@@ -106,29 +109,29 @@ jobs:
       - name: 🏥 Health Check
         run: |
           echo "🔍 Checking container status..."
-          docker ps --filter "name=spoker"
+          docker ps --filter "name=${APP_NAME:-spoker}"
 
           # Verify containers are running
-          if ! docker ps | grep -q "spoker-caddy"; then
+          if ! docker ps | grep -q "${APP_NAME:-spoker}-caddy"; then
             echo "❌ Caddy is not running"
             exit 1
           fi
           echo "✅ Caddy is running"
 
-          if ! docker ps | grep -q "spoker-frontend"; then
+          if ! docker ps | grep -q "${APP_NAME:-spoker}-frontend"; then
             echo "❌ Frontend is not running"
             exit 1
           fi
           echo "✅ Frontend is running"
 
-          if ! docker ps | grep -q "spoker-backend"; then
+          if ! docker ps | grep -q "${APP_NAME:-spoker}-backend"; then
             echo "❌ Backend is not running"
             exit 1
           fi
           echo "✅ Backend is running"
 
           # API health check
-          if curl -sf http://localhost:8080/api/v1/health -H "Host: spoker-app.rainierserver.com" > /dev/null; then
+          if curl -sf http://localhost:8080/api/v1/health -H "Host: ${APP_NAME:-spoker}-app.rainierserver.com" > /dev/null; then
             echo "✅ API health check passed"
           else
             echo "❌ API health check failed"
@@ -141,7 +144,7 @@ jobs:
           echo "## 🚀 Deployment Successful!" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Version:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
-          echo "**URL:** https://spoker-app.rainierserver.com" >> $GITHUB_STEP_SUMMARY
+          echo "**URL:** https://${APP_NAME:-spoker}-app.rainierserver.com" >> $GITHUB_STEP_SUMMARY
           echo "**Deployed at:** $(date -u)" >> $GITHUB_STEP_SUMMARY
 
       - name: 🧹 Cleanup Old Images
