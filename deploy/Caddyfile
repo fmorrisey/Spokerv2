@@ -22,11 +22,11 @@ http://spoker-app.rainierserver.com:8080 {
 
 	# API requests go to backend (same-origin only via CORS)
 	handle /api/* {
-		reverse_proxy backend:5001
+		reverse_proxy spoker-backend:5001
 	}
 
 	# All other requests go to frontend
 	handle {
-		reverse_proxy frontend:80
+		reverse_proxy spoker-frontend:80
 	}
 }
