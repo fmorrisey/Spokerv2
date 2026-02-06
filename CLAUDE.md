@@ -109,8 +109,8 @@ Triggers GitHub Actions → tests → validates release branch → deploys to Ra
 ### Manual Deploy
 ```bash
 git checkout release/v1.0        # Must be on a release branch
-./scripts/deploy.sh              # Interactive with confirmation
-./scripts/deploy.sh --yes        # Non-interactive (CI/CD mode)
+./tools/scripts/deploy.sh        # Interactive with confirmation
+./tools/scripts/deploy.sh --yes  # Non-interactive (CI/CD mode)
 ```
 
 ### Key Files
