@@ -30,6 +30,13 @@ if [ ! -f "package.json" ] || [ ! -d "deploy" ]; then
     exit 1
 fi
 
+# Validate .env.prod exists
+if [ ! -f "deploy/.env.prod" ]; then
+    echo -e "${RED}Error: deploy/.env.prod not found${NC}"
+    echo -e "Copy deploy/.env.prod.example to deploy/.env.prod and configure it"
+    exit 1
+fi
+
 # Validate we're on a release/* branch or a tag on a release branch
 validate_release_branch() {
     local current_branch=$(git branch --show-current)

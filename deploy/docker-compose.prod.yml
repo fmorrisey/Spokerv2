@@ -3,7 +3,7 @@
 
 services:
   caddy:
-    image: caddy:2-alpine
+    image: caddy:2.7-alpine
     container_name: spoker-caddy
     restart: unless-stopped
     ports:
@@ -38,7 +38,7 @@ services:
     expose:
       - "5001"
     healthcheck:
-      test: ["CMD", "nc", "-z", "localhost", "5001"]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:5001/api/v1/health"]
       interval: 30s
       timeout: 10s
       retries: 3
