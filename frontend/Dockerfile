@@ -1,6 +1,10 @@
 # Build stage
 FROM node:20-alpine AS build
 
+# Build argument for cache busting
+ARG BUILD_DATE=unknown
+RUN echo "Build date: ${BUILD_DATE}"
+
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm install

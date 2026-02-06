@@ -163,6 +163,9 @@ fi
 echo -e "${GREEN}Starting deployment...${NC}"
 echo ""
 
+# Set BUILD_DATE for cache busting
+export BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
 if docker compose -f "${COMPOSE_FILE}" up -d --build; then
     echo ""
     echo -e "${GREEN}========================================${NC}"

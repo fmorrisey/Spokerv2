@@ -20,6 +20,8 @@ services:
     build:
       context: ../frontend
       dockerfile: Dockerfile
+      args:
+        BUILD_DATE: ${BUILD_DATE:-unknown}
     container_name: spoker-frontend
     restart: unless-stopped
     expose:
