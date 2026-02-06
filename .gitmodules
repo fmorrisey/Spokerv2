@@ -1,3 +1,6 @@
 [submodule "tools/shared/dev-tools"]
 	path = tools/shared/dev-tools
 	url = https://github.com/fmorrisey/Development-Tools.git
+[submodule "ai/agents"]
+	path = ai/agents
+	url = https://github.com/fmorrisey/Agentic-Agents-Artifactory.git
