@@ -33,4 +33,10 @@ Note: This is a structural/documentation-only change. No runtime application log
   - `-e, --env-file <file>` env file to validate (default `deploy/.env.prod`)
   - `-b, --branch-pattern <pattern>` allowed branch prefix for deploy validation (default `release/`)
 
-These changes keep the previous defaults while enabling reuse across projects and CI by supplying alternate paths/filenames.
+
+- Update: scripts now strictly prefer `package.json.project` for app/title and warn & fall back to `name` if missing.
+
+### 2026-02-06 — Prefer `package.json.project` for app/title
+
+- `tools/scripts/deploy.sh` and CI now prefer `package.json.project` when deriving `APP_NAME`, falling back to `package.json.name` when `project` is not present. Values are slugified (lowercase, non-alphanumerics -> `-`).
+- `tools/scripts/generate-types.js` now defaults the API title from `package.json.project` (or `name`) when `--title` is not supplied.

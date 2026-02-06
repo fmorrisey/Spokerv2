@@ -62,7 +62,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 echo -e "${BLUE}========================================${NC}"
-APP_NAME=${APP_NAME:-$(node -e "try{console.log(require('./package.json').name)}catch(e){console.log('app')}" 2>/dev/null)}
+APP_NAME=${APP_NAME:-$(node -e "try{const p=require('./package.json'); if(!p.project){console.error('WARNING: package.json.project not found, falling back to name'); } const src=(p.project||p.name||'app').toString().toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,''); console.log(src)}catch(e){console.log('app')}" 2>/dev/null)}
 echo -e "${BLUE}  ${APP_NAME} Production Deployment${NC}"
 echo -e "${BLUE}========================================${NC}"
 echo ""

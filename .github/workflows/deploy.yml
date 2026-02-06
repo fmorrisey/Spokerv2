@@ -99,7 +99,7 @@ jobs:
           cd ~/code/spokerv2
           chmod +x tools/scripts/deploy.sh
           # Derive APP_NAME from package.json for deploy script (sanitized)
-          APP_NAME=$(node -e "try{const n=require('./package.json').name; console.log(n.replace(/[^a-zA-Z0-9_-]/g,''))}catch(e){console.log('app')}")
+          APP_NAME=$(node -e "try{const p=require('./package.json'); if(!p.project) { console.error('WARNING: package.json.project not found, falling back to name'); } const v=(p.project||p.name||'app').toString().toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,''); console.log(v)}catch(e){console.log('app')}")
           echo "Using APP_NAME=$APP_NAME"
           ./tools/scripts/deploy.sh --yes -n "$APP_NAME"
 

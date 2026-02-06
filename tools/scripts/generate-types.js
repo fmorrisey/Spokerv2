@@ -16,8 +16,21 @@ function getArg(name, short) {
 const docsDir = path.resolve(getArg('docs', 'd') || path.join(__dirname, '../../backend/docs'));
 const backendOutDir = path.resolve(getArg('backend-out', 'b') || path.join(__dirname, '../../backend/src/swagger'));
 const frontendOutDir = path.resolve(getArg('frontend-out', 'f') || path.join(__dirname, '../../frontend/src/swagger'));
-const apiTitle = getArg('title', 't') || 'Spoker v2 API';
 const apiVersion = getArg('version', 'v') || '1.0.0';
+let apiTitle = getArg('title', 't');
+if (!apiTitle) {
+  try {
+    const pkg = require(path.resolve(__dirname, '../../package.json'));
+    if (!pkg.project) {
+      console.error('WARNING: package.json.project not found; using package.json.name for API title');
+      apiTitle = (pkg.name || 'Spoker v2') + ' API';
+    } else {
+      apiTitle = pkg.project + ' API';
+    }
+  } catch (e) {
+    apiTitle = 'Spoker v2 API';
+  }
+}
 
 if (argv.includes('-h') || argv.includes('--help')) {
   console.log(`Usage: node generate-types.js [options]\n\nOptions:\n  -d, --docs <path>          Path to OpenAPI YAML source directory (default: backend/docs)\n  -b, --backend-out <path>   Output directory for backend types (default: backend/src/swagger)\n  -f, --frontend-out <path>  Output directory for frontend types (default: frontend/src/swagger)\n  -t, --title <string>       API title for generated temp specs\n  -v, --version <string>     API version for generated temp specs\n  -h, --help                 Show this help message\n`);
