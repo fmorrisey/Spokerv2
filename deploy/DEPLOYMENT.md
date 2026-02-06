@@ -48,7 +48,7 @@ git tag v1.0.0
 git push origin release/v1.0 v1.0.0
 ```
 
-- **Subdomain:** `<APP_NAME>-app` (defaults to `spoker-app` when `package.json` name is `spoker`)
+- **Subdomain:** `<APP_NAME>-app` (derived from `package.json.project`; falls back to `package.json.name` or `spoker`)
 - Tags must follow semver format: `v1.0.0`, `v2.1.3`, etc.
 - Tags must be created on a `release/*` branch (e.g., `release/v1.0`)
 - Tags on `main`, `develop`, or feature branches will be rejected
@@ -90,7 +90,7 @@ Required variables:
 ```bash
 DB_URI=mongodb+srv://user:pass@cluster.mongodb.net/dbname
 DB_NAME=ecommerce
-ALLOWED_ORIGINS=https://spoker-app.rainierserver.com
+ALLOWED_ORIGINS=https://${APP_NAME:-spoker}-app.rainierserver.com
 ```
 
 ### 3. Set Up Self-Hosted Runner
@@ -136,7 +136,7 @@ For non-interactive deployment:
 
 ### Check Container Status
 ```bash
-docker ps --filter "name=spoker"
+docker ps --filter "name=${APP_NAME:-spoker}"
 ```
 
 ### View Logs
@@ -145,17 +145,17 @@ docker ps --filter "name=spoker"
 docker compose -f deploy/docker-compose.prod.yml logs -f
 
 # Specific service
-docker logs spoker-backend --tail 100
+docker logs ${APP_NAME:-spoker}-backend --tail 100
 ```
 
 ### Health Check
 ```bash
-curl http://localhost:8080/api/v1/health -H "Host: spoker-app.rainierserver.com"
+curl http://localhost:8080/api/v1/health -H "Host: ${APP_NAME:-spoker}-app.rainierserver.com"
 ```
 
 ### Test Live Site
-- App: https://spoker-app.rainierserver.com
-- API: https://spoker-app.rainierserver.com/api/v1/health
+- App: https://${APP_NAME:-spoker}-app.rainierserver.com
+- API: https://${APP_NAME:-spoker}-app.rainierserver.com/api/v1/health
 
 ## Rollback
 

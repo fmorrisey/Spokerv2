@@ -21,12 +21,9 @@ let apiTitle = getArg('title', 't');
 if (!apiTitle) {
   try {
     const pkg = require(path.resolve(__dirname, '../../package.json'));
-    if (!pkg.project) {
-      console.error('WARNING: package.json.project not found; using package.json.name for API title');
-      apiTitle = (pkg.name || 'Spoker v2') + ' API';
-    } else {
-      apiTitle = pkg.project + ' API';
-    }
+    // Prefer the explicit `package.json.project` field for human-friendly titles.
+    // Fallback to `name`, then a safe literal.
+    apiTitle = (pkg.project || pkg.name || 'Spoker v2') + ' API';
   } catch (e) {
     apiTitle = 'Spoker v2 API';
   }
