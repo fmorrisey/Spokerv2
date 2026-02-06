@@ -27,7 +27,7 @@ healthcheck:
 ```
 
 ### 2. Add .env.prod Validation to Deploy Script
-**File:** `scripts/deploy.sh`
+**File:** `tools/scripts/deploy.sh`
 
 The script doesn't verify that `deploy/.env.prod` exists before running docker compose.
 

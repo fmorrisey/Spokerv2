@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "swagger:gen": "node ../scripts/generate-types.js",
+    "swagger:gen": "node ../tools/scripts/generate-types.js",
     "dev": "NODE_ENV=dev nodemon",
     "dev:test": "NODE_ENV=test PORT=5502 nodemon",
     "start": "node dist/server.js",

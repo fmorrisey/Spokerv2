@@ -1,5 +1,6 @@
 {
     "name": "spoker-v2-root",
+    "project": "Spoker v2",
     "version": "0.0.0",
     "scripts": {
         "ng": "ng",
@@ -11,8 +12,8 @@
         "test": "npm run test:backend && npm run test:frontend",
         "test:backend": "npm run test --prefix=backend",
         "test:frontend": "npm run test --prefix=frontend",
-        "swagger:gen": "node scripts/generate-types.js",
-        "deploy": "./scripts/deploy.sh"
+        "swagger:gen": "node tools/scripts/generate-types.js",
+        "deploy": "./tools/scripts/deploy.sh"
     },
     "devDependencies": {
         "openapi-typescript": "*"
