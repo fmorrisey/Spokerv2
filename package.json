@@ -1,5 +1,6 @@
 {
     "name": "spoker-v2-root",
+    "project" : "Spoker v2",
     "version": "0.0.0",
     "scripts": {
         "ng": "ng",
