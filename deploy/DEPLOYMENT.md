@@ -150,7 +150,11 @@ docker logs ${APP_NAME:-spoker}-backend --tail 100
 
 ### Health Check
 ```bash
-curl http://localhost:8080/api/v1/health -H "Host: ${APP_NAME:-spoker}-app.rainierserver.com"
+# End-to-end check (through Caddy reverse proxy)
+curl http://localhost:8080/api/v1/health -H "Host: spoker-app.rainierserver.com"
+
+# Direct backend check (useful for troubleshooting)
+docker exec spoker-backend wget -qO- http://localhost:5001/api/v1/health
 ```
 
 ### Test Live Site
@@ -159,13 +163,65 @@ curl http://localhost:8080/api/v1/health -H "Host: ${APP_NAME:-spoker}-app.raini
 
 ## Rollback
 
-### To Previous Tag
+Rollback procedures for reverting to a previous version.
+
+### Quick Rollback to Previous Tag
+
+If you need to quickly rollback to a previous version:
+
 ```bash
 cd ~/code/spokerv2
 git fetch --tags
 git checkout v0.9.0  # previous version
 ./tools/scripts/deploy.sh --yes
 ```
+
+### Rollback via CI/CD
+
+To rollback using the automated pipeline:
+
+```bash
+# On your local machine
+git fetch --tags
+git checkout <previous-tag>  # e.g., v0.9.0
+
+# Verify tag is on a release branch
+git branch -r --contains $(git rev-parse HEAD) | grep origin/release/
+
+# Push tag (CI/CD will deploy it)
+git push origin <previous-tag>
+```
+
+### Image Retention Strategy
+
+Docker images are automatically pruned after successful deployments to save disk space. To keep images for rollback:
+
+```bash
+# List current images
+docker images | grep spoker
+
+# Tag a specific version for retention (prevents pruning)
+docker tag spoker-backend:latest spoker-backend:v1.0.0-keep
+docker tag spoker-frontend:latest spoker-frontend:v1.0.0-keep
+
+# To rollback to a retained image
+docker tag spoker-backend:v1.0.0-keep spoker-backend:latest
+docker compose -f deploy/docker-compose.prod.yml up -d
+```
+
+**Recommendation:** Keep the last 2-3 production images tagged with `-keep` suffix for quick rollback without rebuilding.
+
+### Rollback Checklist
+
+Before rolling back, verify:
+- [ ] Database schema is compatible with the previous version
+- [ ] No irreversible data migrations were run
+- [ ] External services (MongoDB Atlas, etc.) are compatible
+
+After rollback, verify:
+- [ ] All containers are running: `docker ps --filter "name=spoker"`
+- [ ] Health check passes: `curl http://localhost:8080/api/v1/health -H "Host: spoker-app.rainierserver.com"`
+- [ ] App is accessible: https://spoker-app.rainierserver.com
 
 ### Emergency Stop
 ```bash
