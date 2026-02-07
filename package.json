@@ -13,6 +13,7 @@
         "test:backend": "npm run test --prefix=backend",
         "test:frontend": "npm run test --prefix=frontend",
         "swagger:gen": "node tools/scripts/generate-types.js",
+        "seed": "node tools/scripts/seed.js",
         "deploy": "./tools/scripts/deploy.sh"
     },
     "devDependencies": {
