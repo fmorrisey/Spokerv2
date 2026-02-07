@@ -45,7 +45,6 @@ OpenAPI specs (`backend/docs/*.yaml`) are the single source of truth:
 | Frontend Unit | Jasmine/Karma | Components, Services |
 | Backend Unit | Jest | Controllers, Services |
 | Frontend E2E | Cypress | User workflows |
-| Backend E2E | Cypress | API contracts |
 | Integration | Docker Compose | Full stack |
 
 ### Running Tests

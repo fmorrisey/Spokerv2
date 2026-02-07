@@ -14,7 +14,6 @@
 /backend
 ├── Dockerfile              # Production build
 ├── Dockerfile.dev          # Development build (nodemon)
-├── cypress/                # API E2E tests
 ├── tests/                  # Jest unit tests
 ├── docs/                   # OpenAPI YAML specs
 └── src/
@@ -102,12 +101,6 @@ ALLOWED_ORIGINS=https://yourdomain.com
 npm test                    # Run all tests
 npm run test:unit           # With coverage
 npx jest tests/api/product.spec.ts  # Single file
-```
-
-### API E2E Tests (Cypress)
-```bash
-npx cypress open
-npx cypress run
 ```
 
 ## Type Generation

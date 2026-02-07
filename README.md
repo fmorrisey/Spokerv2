@@ -191,8 +191,8 @@ ng test --include=**/product.service.spec.ts # Single file
 
 ### E2E (Cypress)
 ```bash
-cd frontend && npx cypress open   # Frontend E2E
-cd backend && npx cypress open    # API E2E
+cd frontend && npm run cy:dev     # Interactive mode (starts dev server + Cypress)
+cd frontend && npm run cy:run     # Headless mode
 ```
 
 ---
