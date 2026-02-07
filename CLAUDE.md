@@ -8,6 +8,7 @@ Spoker v2 is a full-stack product management application with an Express/TypeScr
 
 ## Instructions to Claude
 Claude is not allowed to be a co-author on this project
+The user wants to make commits themselves and review all changes first
 
 ## Commands
 

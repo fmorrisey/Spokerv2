@@ -9,6 +9,20 @@ html {
     color: white;
 }
 
+a {
+    color: #7eb8da;
+    text-decoration: none;
+
+    &:visited {
+        color: #a08cc4;
+    }
+
+    &:hover {
+        color: #a6d4f0;
+        text-decoration: underline;
+    }
+}
+
 footer {
     padding: 1rem;
     font-size: 1.6rem;
