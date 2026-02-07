@@ -10,7 +10,8 @@
     "start": "node dist/server.js",
     "build": "tsc",
     "test": "NODE_ENV=test npm run test:unit",
-    "test:unit": "npx jest --config jest.config.ts --coverage"
+    "test:unit": "npx jest --config jest.config.ts --coverage",
+    "seed": "npx ts-node src/scripts/seed.ts"
   },
   "keywords": [],
   "author": "",
