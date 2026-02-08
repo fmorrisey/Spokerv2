@@ -14,8 +14,8 @@
     "seed": "npx ts-node src/scripts/seed.ts"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Forrest Morrisey",
+  "license": "MIT",
   "type": "commonjs",
   "dependencies": {
     "cors": "^2.8.5",

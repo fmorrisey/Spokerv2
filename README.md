@@ -229,4 +229,4 @@ spokerv2/
 
 ## License
 
-MIT
+Copyright (c) 2026 Forrest Morrisey. Licensed under the [MIT License](./LICENSE).
