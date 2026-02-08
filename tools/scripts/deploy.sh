@@ -110,6 +110,18 @@ validate_release_branch() {
 
 validate_release_branch
 
+# Run version consistency check
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [ -x "$SCRIPT_DIR/check-version.sh" ]; then
+    echo ""
+    if ! "$SCRIPT_DIR/check-version.sh"; then
+        echo ""
+        echo -e "${RED}Fix version mismatches before deploying${NC}"
+        exit 1
+    fi
+    echo ""
+fi
+
 # Show current git status
 echo -e "${YELLOW}Current Git Status:${NC}"
 echo -e "Branch: ${GREEN}$(git branch --show-current)${NC}"

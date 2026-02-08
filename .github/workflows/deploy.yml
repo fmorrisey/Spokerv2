@@ -94,6 +94,12 @@ jobs:
           echo "🏷️ Checking out $TAG_NAME..."
           git checkout "$TAG_NAME"
 
+      - name: 🔢 Version Consistency Check
+        run: |
+          cd ~/code/spokerv2
+          chmod +x tools/scripts/check-version.sh
+          ./tools/scripts/check-version.sh
+
       - name: 🚀 Run Deploy Script
         run: |
           cd ~/code/spokerv2
