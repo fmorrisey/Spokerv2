@@ -22,28 +22,28 @@ jobs:
 
     steps:
       # Step 1: Checkout the repository
-      - name: ⬇️ Checkout Repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
-      
+
       # Step 2: Set up Node.js
-      - name: 🟢 Set up Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-        
+
       # Step 3: Install dependencies
-      - name: 📦 Install Dependencies
+      - name: Install Dependencies
         run: npm ci && npm run swagger:gen
 
       # Step 4: Run unit tests with Jasmine/Karma
-      - name: 🧪 Run Jasmine/Karma Unit Tests
+      - name: Run Jasmine/Karma Unit Tests
         run: npm run test --no-watch --no-progress --browsers=FirefoxHeadless --code-coverage
 
-        # Step 5: Run E2E tests with Cypress  
-      - name: 🧪 Run Cypress E2E Tests
+      # Step 5: Run E2E tests with Cypress
+      - name: Run Cypress E2E Tests
         uses: cypress-io/github-action@v6
         with:
-          start: npm run test:e2e
+          start: npm start
           wait-on: 'http://localhost:4200'
-          wait-on-timeout: 60
+          wait-on-timeout: 120
           working-directory: frontend

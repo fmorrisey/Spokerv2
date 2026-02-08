@@ -1,0 +1,18 @@
+{
+  "app.title": "Spoker",
+  "app.tagline": "Product Catalog Management",
+  "products.title": "Products",
+  "products.addProduct": "Add Product",
+  "products.addFirstProduct": "Add Your First Product",
+  "products.loading": "Loading products...",
+  "products.empty": "No products found",
+  "products.deleteConfirm": "Delete product?",
+  "form.name": "Name",
+  "form.description": "Description",
+  "form.msrp": "MSRP ($)",
+  "form.salePrice": "Sale Price ($)",
+  "form.cancel": "Cancel",
+  "form.create": "Create",
+  "form.update": "Update",
+  "form.saving": "Saving..."
+}

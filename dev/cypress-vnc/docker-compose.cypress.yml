@@ -1,0 +1,21 @@
+# Cypress VNC container for visual debugging
+# Run from repo root: docker compose -f dev/cypress-vnc/docker-compose.cypress.yml up
+services:
+  cypress-vnc:
+    container_name: cypress-vnc
+    image: spokerv2-cypress-vnc:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /e2e/frontend
+    shm_size: "2gb"
+    environment:
+      - DISPLAY=:0
+      - CYPRESS_BASE_URL=http://host.docker.internal:4200
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ../../:/e2e    # Maps repo root to /e2e inside container
+    ports:
+      - "6080:6080"    # noVNC web UI (access at http://localhost:6080)
+    entrypoint: ["/bin/bash", "/e2e/dev/cypress-vnc/start-vnc.sh"]
