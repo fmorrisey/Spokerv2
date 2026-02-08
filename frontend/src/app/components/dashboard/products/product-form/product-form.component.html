@@ -1,0 +1,85 @@
+@if (isOpen) {
+  <dialog class="modal-backdrop" role="dialog" aria-modal="true" open aria-labelledby="product-form-title">
+    <div class="modal">
+      <h2 id="product-form-title">{{ title }}</h2>
+
+      <form (ngSubmit)="onSubmit()" novalidate>
+        <div class="form-group">
+          <label for="product-name">Name</label>
+          <input
+            id="product-name"
+            type="text"
+            [(ngModel)]="formData.name"
+            name="name"
+            placeholder="Product name"
+            [class.input-error]="errors['name']"
+            autocomplete="off"
+          />
+          @if (errors['name']) {
+            <span class="field-error">{{ errors['name'] }}</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="product-description">Description</label>
+          <textarea
+            id="product-description"
+            [(ngModel)]="formData.description"
+            name="description"
+            placeholder="Product description"
+            rows="3"
+            [class.input-error]="errors['description']"
+          ></textarea>
+          @if (errors['description']) {
+            <span class="field-error">{{ errors['description'] }}</span>
+          }
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="product-msrp">MSRP ($)</label>
+            <input
+              id="product-msrp"
+              type="number"
+              [(ngModel)]="formData.msrp"
+              name="msrp"
+              min="0.01"
+              step="0.01"
+              [class.input-error]="errors['msrp']"
+            />
+            @if (errors['msrp']) {
+              <span class="field-error">{{ errors['msrp'] }}</span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="product-price">Sale Price ($)</label>
+            <input
+              id="product-price"
+              type="number"
+              [(ngModel)]="formData.price"
+              name="price"
+              min="0.01"
+              step="0.01"
+              [class.input-error]="errors['price']"
+            />
+            @if (errors['price']) {
+              <span class="field-error">{{ errors['price'] }}</span>
+            }
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button class="btn-secondary" type="button" (click)="onCancel()" [disabled]="saving">Cancel</button>
+          <button class="btn-primary" type="submit" [disabled]="saving">
+            @if (saving) {
+              Saving...
+            } @else {
+              {{ isEditMode ? 'Update' : 'Create' }}
+            }
+          </button>
+        </div>
+      </form>
+    </div>
+  </dialog>
+}
