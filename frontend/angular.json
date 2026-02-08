@@ -69,6 +69,7 @@
           "options": {
             "proxyConfig": "proxy.conf.json",
             "allowedHosts": [
+              "localhost",
               "host.docker.internal"
             ]
           },

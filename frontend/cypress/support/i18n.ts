@@ -13,9 +13,13 @@ Cypress.Commands.add('setLocale', (locale: string) => {
   Cypress.env('locale', locale);
 
   // Intercept all requests and set Accept-Language header
-  cy.intercept('**', (req) => {
-    req.headers['Accept-Language'] = locale;
-  });
+  cy.intercept(
+    { url: '**', middleware: true },
+    (req) => {
+      req.headers['Accept-Language'] = locale;
+      req.continue();
+    }
+  );
 });
 
 Cypress.Commands.add('getLocale', () => {

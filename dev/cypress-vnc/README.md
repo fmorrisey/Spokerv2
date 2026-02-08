@@ -1,4 +1,4 @@
-# Cypress + noVNC (Rainier)
+# Cypress + noVNC (Headless Server)
 
 Run Cypress interactively on a headless server via a browser-based VNC desktop.
 
@@ -22,10 +22,8 @@ docker compose -f docker-compose.cypress.yml up --build -d
 Open a browser to:
 
 ```
-http://<rainier-ip>:6080
+http://<server-ip>:6080
 ```
-
-Or use a VNC client on port `5900` (no password).
 
 ## Run Cypress
 

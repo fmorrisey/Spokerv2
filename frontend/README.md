@@ -1,6 +1,6 @@
 # Spokerv2 Frontend
 
-[![Spoker V2 Frontend CI/CD Pipeline](https://github.com/fmorrisey/Spokerv2/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/fmorrisey/Spokerv2/actions/workflows/ci.yml)
+[![Spoker V2 Frontend CI/CD Pipeline](https://github.com/fmorrisey/Spokerv2/actions/workflows/frontend.yml/badge.svg?branch=main)](https://github.com/fmorrisey/Spokerv2/actions/workflows/frontend.yml)
 
 ## Setup
 
