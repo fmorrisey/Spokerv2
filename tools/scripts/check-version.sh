@@ -59,11 +59,12 @@ if [[ "$CURRENT_BRANCH" =~ ^release/ ]]; then
     echo ""
     echo -e "  Release branch:        ${CURRENT_BRANCH} (${BRANCH_VERSION})"
 
-    if [ "$BRANCH_VERSION" != "$ROOT_VERSION" ]; then
+    # Allow branch to be a prefix: release/v1.0 matches 1.0.0, release/v1.0.0 matches 1.0.0
+    if [[ "$ROOT_VERSION" == "$BRANCH_VERSION"* ]]; then
+        echo -e "  ${GREEN}✓ Branch name matches package.json${NC}"
+    else
         echo -e "  ${RED}✗ Branch ($CURRENT_BRANCH) does not match package.json ($ROOT_VERSION)${NC}"
         ERRORS=$((ERRORS + 1))
-    else
-        echo -e "  ${GREEN}✓ Branch name matches package.json${NC}"
     fi
 fi
 

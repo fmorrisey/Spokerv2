@@ -44,7 +44,10 @@ export class ProductFormComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['isOpen'] && this.isOpen) {
+    const openedNow = !!changes['isOpen'] && this.isOpen;
+    const productChangedWhileOpen = !!changes['product'] && this.isOpen;
+
+    if (openedNow || productChangedWhileOpen) {
       this.resetForm();
     }
   }
@@ -88,7 +91,8 @@ export class ProductFormComponent implements OnChanges {
   }
 
   onSubmit(): void {
-    if (!this.validate() || this.saving) return;
+    if (this.saving) return;
+    if (!this.validate()) return;
 
     this.save.emit({
       name: this.formData.name.trim(),
