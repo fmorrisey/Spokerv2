@@ -8,6 +8,8 @@ Spoker is a full-stack e-commerce product catalog built with Angular 17 and Expr
 
 Refactored from the ground up based on the original [Spoker.io](https://github.com/fmorrisey/Spoker.io) capstone project (2020).
 
+<img width="1592" height="1120" alt="Screenshot 2026-02-08 at 21 23 53" src="https://github.com/user-attachments/assets/5c804b46-3d3b-44c3-9f8e-725711cb3ef1" />
+
 ### Key Features
 
 - **Type-safe API contracts** — OpenAPI 3.0 specs generate TypeScript types shared across frontend and backend
@@ -15,6 +17,7 @@ Refactored from the ground up based on the original [Spoker.io](https://github.c
 - **Production CI/CD** — GitHub Actions pipeline with automated tests, release branch gating, and post-deploy health checks
 - **Self-hosted infrastructure** — Docker containers behind Caddy reverse proxy, accessed via Cloudflare Tunnel with zero exposed ports
 - **Self-hosted GitHub Actions runner** — Deploys to private infrastructure without exposing secrets
+- **Remote Cypress Testing** - Standalone docker container to host cypress testing when running on a headless system
 
 ## 🌐 Live Demo
 
@@ -60,6 +63,11 @@ cd frontend && npm install && npm start
 - Frontend: `http://localhost:4200`
 - Backend: `http://localhost:5001`
 - Swagger: `http://localhost:5001/api-docs/`
+
+### Swagger API Docs support
+
+<img width="1486" height="1269" alt="Screenshot 2026-02-08 at 21 29 34" src="https://github.com/user-attachments/assets/9960c533-1a9b-41e8-af13-cd7b21c22ab8" />
+
 
 ---
 
@@ -193,7 +201,11 @@ ng test --include=**/product.service.spec.ts # Single file
 ```bash
 cd frontend && npm run cy:dev     # Interactive mode (starts dev server + Cypress)
 cd frontend && npm run cy:run     # Headless mode
+cd frontend && npm run cy:vnc     # Launch VNC workflow when developing on headless systems
 ```
+<img width="1735" height="953" alt="Screenshot 2026-02-08 at 17 40 31" src="https://github.com/user-attachments/assets/c14a72f5-71e2-43d6-8c75-29647441d1f2" />
+In VNC mode: Cypress can be accessed via the browser at: http://localhost:6080/vnc.html
+
 
 ---
 
@@ -205,7 +217,10 @@ cd frontend && npm run cy:run     # Headless mode
 | `frontend.yml` | Push to `frontend/**` | Run frontend tests |
 | `deploy.yml` | Push tag `v*.*.*` | Deploy to production |
 
+<img width="1714" height="795" alt="Screenshot 2026-02-08 at 21 33 27" src="https://github.com/user-attachments/assets/e0cdc602-b74d-405b-8b4e-b07d4b58b871" />
+
 ---
+
 
 ## Project Structure
 
