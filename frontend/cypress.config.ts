@@ -19,6 +19,7 @@ export default defineConfig({
 
       config.env = {
         ...config.env,
+        locale: config.env.locale || 'en',
         stepDefinitions: 'cypress/fixtures/**/*.{js,ts}',
       };    
 

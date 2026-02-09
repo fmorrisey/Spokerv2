@@ -132,7 +132,7 @@ Push tag (v1.0.0)
 │                    ▼                     │
 │         ┌─────────────────────┐          │
 │         │  Self-Hosted Runner │          │
-│         │    (on Rainier)     │          │
+│         │     (on Server)     │          │
 │         │  ┌───────────────┐  │          │
 │         │  │ deploy.sh     │  │          │
 │         │  │ docker compose│  │          │
