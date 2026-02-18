@@ -2,11 +2,15 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
+import mongoSanitize from 'express-mongo-sanitize';
 
 import productRoutes from './routes/product.route';
+import authRoutes from './routes/auth.route';
 
 import { errorHandler } from './middleware/errorHandler';
 import { healthCheck } from './middleware/healthCheck';
+import { sanitizeBody } from './middleware/sanitize';
 
 import { setupSwagger } from './config/swagger';
 import { connectDB } from './config/mongodb';
@@ -33,6 +37,9 @@ const corsOptions = {
 
 // Middleware
 app.use(express.json());
+app.use(cookieParser());
+app.use(mongoSanitize());
+app.use(sanitizeBody);
 app.use(cors(corsOptions));
 
 // Configure Helmet with CSP exceptions for Swagger UI
@@ -54,6 +61,7 @@ if (process.env.NODE_ENV !== 'production') {setupSwagger(app)};
 
 // Routes
 app.use(API_URL + Routes.HEALTH, healthCheck);
+app.use(API_URL + Routes.AUTH, authRoutes);
 app.use(API_URL + Routes.PRODUCTS, productRoutes);
 app.use(errorHandler);
 

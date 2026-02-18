@@ -64,6 +64,28 @@ cd frontend && npm install && npm start
 - Backend: `http://localhost:5001`
 - Swagger: `http://localhost:5001/api-docs/`
 
+### Environment Setup
+
+Copy the example env file and fill in your values:
+```bash
+cp backend/.env.example backend/.env
+```
+
+**JWT secrets** — generate two independent secrets (one for access tokens, one for refresh tokens):
+```bash
+openssl rand -base64 32  # run twice, use each output for JWT_SECRET and JWT_REFRESH_SECRET
+```
+
+Then set them in `backend/.env`:
+```
+JWT_SECRET=<generated secret>
+JWT_EXPIRATION=15m
+JWT_REFRESH_SECRET=<generated secret>
+JWT_REFRESH_EXPIRATION=7d
+```
+
+Access tokens expire in 15 minutes. Refresh tokens (stored in an httpOnly cookie) expire in 7 days and are used to issue new access tokens without re-login.
+
 ### Swagger API Docs support
 
 <img width="1486" height="1269" alt="Screenshot 2026-02-08 at 21 29 34" src="https://github.com/user-attachments/assets/9960c533-1a9b-41e8-af13-cd7b21c22ab8" />
