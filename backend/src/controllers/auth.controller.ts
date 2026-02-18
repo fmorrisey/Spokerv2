@@ -61,7 +61,8 @@ export const logout: RequestHandler = async (req, res, next) => {
     if (token) {
       await AuthService.revokeRefreshToken(token);
     }
-    res.clearCookie(REFRESH_COOKIE, { ...cookieOptions });
+    const { maxAge: _, ...clearOptions } = cookieOptions;
+    res.clearCookie(REFRESH_COOKIE, clearOptions);
     res.status(204).send();
   } catch (error) {
     next(error);

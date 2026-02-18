@@ -47,6 +47,55 @@ describe('AuthService', () => {
     expect(service.currentUser()).toBeNull();
   });
 
+  it('should call loadCurrentUser on construction when token exists', () => {
+    (localStorage.getItem as jasmine.Spy).and.returnValue('existing-token');
+    mockClient.GET.and.returnValue(Promise.resolve({ data: { email: 'a@b.com', name: 'A', role: 'customer' } }));
+
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({
+      providers: [
+        AuthService,
+        provideRouter([]),
+        { provide: ApiClientService, useValue: mockApiClientService },
+      ]
+    });
+    const newService = TestBed.inject(AuthService);
+    expect(mockClient.GET).toHaveBeenCalled();
+    expect(newService).toBeTruthy();
+  });
+
+  describe('loadCurrentUser', () => {
+    it('should set user and isAuthenticated on success', async () => {
+      const mockUser = { email: 'test@example.com', name: 'Test', role: 'customer' as const };
+      mockClient.GET.and.returnValue(Promise.resolve({ data: mockUser }));
+
+      await service.loadCurrentUser();
+
+      expect(service.currentUser()).toEqual(mockUser);
+      expect(service.isAuthenticated()).toBe(true);
+    });
+
+    it('should clear token when response has no data', async () => {
+      mockClient.GET.and.returnValue(Promise.resolve({ data: null }));
+
+      await service.loadCurrentUser();
+
+      expect(localStorage.removeItem).toHaveBeenCalledWith('auth_token');
+      expect(service.isAuthenticated()).toBe(false);
+    });
+
+    it('should clear token and warn on error', async () => {
+      mockClient.GET.and.returnValue(Promise.reject(new Error('Network error')));
+      spyOn(console, 'warn');
+
+      await service.loadCurrentUser();
+
+      expect(console.warn).toHaveBeenCalled();
+      expect(localStorage.removeItem).toHaveBeenCalledWith('auth_token');
+      expect(service.isAuthenticated()).toBe(false);
+    });
+  });
+
   describe('login', () => {
     it('should set token and user on successful login', async () => {
       const mockUser = { email: 'test@example.com', name: 'Test User', role: 'customer' as const };
@@ -93,6 +142,17 @@ describe('AuthService', () => {
 
       expect(localStorage.removeItem).toHaveBeenCalledWith('auth_token');
       expect(service.currentUser()).toBeNull();
+      expect(service.isAuthenticated()).toBe(false);
+      expect(router.navigate).toHaveBeenCalledWith(['/login']);
+    });
+
+    it('should clear local state even when API call fails', async () => {
+      mockClient.POST.and.returnValue(Promise.reject(new Error('Network error')));
+      spyOn(console, 'warn');
+
+      await service.logout();
+
+      expect(localStorage.removeItem).toHaveBeenCalledWith('auth_token');
       expect(service.isAuthenticated()).toBe(false);
       expect(router.navigate).toHaveBeenCalledWith(['/login']);
     });

@@ -60,14 +60,25 @@ describe('RegisterComponent', () => {
 
     await component.onSubmit();
 
-    expect(component.error()).toBe('Password must be at least 8 characters');
+    expect(component.error()).toContain('Password must be at least 8 characters');
+  });
+
+  it('should show error when password is not strong enough', async () => {
+    component.name = 'Jane';
+    component.email = 'jane@example.com';
+    component.password = 'alllowercase1!';
+    component.confirmPassword = 'alllowercase1!';
+
+    await component.onSubmit();
+
+    expect(component.error()).toContain('uppercase');
   });
 
   it('should show error when passwords do not match', async () => {
     component.name = 'Jane';
     component.email = 'jane@example.com';
-    component.password = 'password123';
-    component.confirmPassword = 'different123';
+    component.password = 'Password1!';
+    component.confirmPassword = 'Different1!';
 
     await component.onSubmit();
 
@@ -78,12 +89,12 @@ describe('RegisterComponent', () => {
     mockAuthService.register.and.returnValue(Promise.resolve());
     component.name = 'Jane Smith';
     component.email = 'jane@example.com';
-    component.password = 'password123';
-    component.confirmPassword = 'password123';
+    component.password = 'Password1!';
+    component.confirmPassword = 'Password1!';
 
     await component.onSubmit();
 
-    expect(mockAuthService.register).toHaveBeenCalledWith('jane@example.com', 'password123', 'Jane Smith');
+    expect(mockAuthService.register).toHaveBeenCalledWith('jane@example.com', 'Password1!', 'Jane Smith');
     expect(router.navigate).toHaveBeenCalledWith(['/']);
   });
 
@@ -91,11 +102,23 @@ describe('RegisterComponent', () => {
     mockAuthService.register.and.returnValue(Promise.reject(new Error('Server error')));
     component.name = 'Jane';
     component.email = 'jane@example.com';
-    component.password = 'password123';
-    component.confirmPassword = 'password123';
+    component.password = 'Password1!';
+    component.confirmPassword = 'Password1!';
 
     await component.onSubmit();
 
     expect(component.error()).toBe('Registration failed. Please try again.');
+  });
+
+  it('should show specific error when email is already registered (409)', async () => {
+    mockAuthService.register.and.returnValue(Promise.reject({ status: 409 }));
+    component.name = 'Jane';
+    component.email = 'jane@example.com';
+    component.password = 'Password1!';
+    component.confirmPassword = 'Password1!';
+
+    await component.onSubmit();
+
+    expect(component.error()).toBe('Email is already registered');
   });
 });

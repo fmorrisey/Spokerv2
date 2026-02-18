@@ -21,13 +21,20 @@ export class RegisterComponent {
   loading = signal(false);
   error = signal('');
 
+  private isStrongPassword(password: string): boolean {
+    // Require at least 8 characters, with at least one lowercase letter,
+    // one uppercase letter, one digit, and one special character.
+    const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
+    return strongPasswordRegex.test(password);
+  }
+
   async onSubmit(): Promise<void> {
     if (!this.name || !this.email || !this.password) {
       this.error.set('All fields are required');
       return;
     }
-    if (this.password.length < 8) {
-      this.error.set('Password must be at least 8 characters');
+    if (!this.isStrongPassword(this.password)) {
+      this.error.set('Password must be at least 8 characters and include uppercase, lowercase, number, and special character');
       return;
     }
     if (this.password !== this.confirmPassword) {
@@ -40,8 +47,9 @@ export class RegisterComponent {
       await this.auth.register(this.email, this.password, this.name);
       this.router.navigate(['/']);
     } catch (err: any) {
-      if (err?.message?.includes('409') || err?.detail?.includes('409')) {
-        this.error.set('An account with this email already exists');
+      const statusCode = err?.status ?? err?.statusCode;
+      if (statusCode === 409) {
+        this.error.set('Email is already registered');
       } else {
         this.error.set('Registration failed. Please try again.');
       }

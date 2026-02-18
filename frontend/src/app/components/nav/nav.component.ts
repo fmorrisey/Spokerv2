@@ -12,7 +12,7 @@ import { AuthService } from '../../services/auth/auth.service';
 export class NavComponent {
   auth = inject(AuthService);
 
-  logout(): void {
-    this.auth.logout();
+  async logout(): Promise<void> {
+    await this.auth.logout();
   }
 }

@@ -14,7 +14,6 @@ export class AuthService {
   isAuthenticated = signal<boolean>(false);
 
   constructor() {
-    // On init, if token exists try to load current user
     const token = localStorage.getItem('auth_token');
     if (token) this.loadCurrentUser();
   }
@@ -42,21 +41,31 @@ export class AuthService {
   }
 
   async logout(): Promise<void> {
-    const client = this.apiClient.getClient();
-    await client.POST('/api/v1/auth/logout', {});
-    localStorage.removeItem('auth_token');
-    this.currentUser.set(null);
-    this.isAuthenticated.set(false);
-    this.router.navigate(['/login']);
+    try {
+      const client = this.apiClient.getClient();
+      await client.POST('/api/v1/auth/logout', {});
+    } catch (err) {
+      console.warn('Logout API call failed, clearing local session anyway', err);
+    } finally {
+      localStorage.removeItem('auth_token');
+      this.currentUser.set(null);
+      this.isAuthenticated.set(false);
+      this.router.navigate(['/login']);
+    }
   }
 
-  private async loadCurrentUser(): Promise<void> {
-    const client = this.apiClient.getClient();
-    const { data } = await client.GET('/api/v1/auth/me');
-    if (data) {
-      this.currentUser.set(data);
-      this.isAuthenticated.set(true);
-    } else {
+  async loadCurrentUser(): Promise<void> {
+    try {
+      const client = this.apiClient.getClient();
+      const { data } = await client.GET('/api/v1/auth/me');
+      if (data) {
+        this.currentUser.set(data);
+        this.isAuthenticated.set(true);
+      } else {
+        localStorage.removeItem('auth_token');
+      }
+    } catch (err) {
+      console.warn('Failed to load current user', err);
       localStorage.removeItem('auth_token');
     }
   }

@@ -24,6 +24,12 @@ export class LoginComponent {
       this.error.set('Email and password are required');
       return;
     }
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(this.email)) {
+      this.error.set('Please enter a valid email address');
+      return;
+    }
     this.loading.set(true);
     this.error.set('');
     try {
