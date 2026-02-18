@@ -1,0 +1,13 @@
+<nav class="navbar">
+  <a routerLink="/" class="brand">Spoker</a>
+  <div class="nav-links">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Products</a>
+    @if (auth.isAuthenticated()) {
+      <span class="user-name">{{ auth.currentUser()?.name }}</span>
+      <button class="btn-logout" (click)="logout()">Sign Out</button>
+    } @else {
+      <a routerLink="/login" routerLinkActive="active">Sign In</a>
+      <a routerLink="/register" routerLinkActive="active" class="btn-register">Register</a>
+    }
+  </div>
+</nav>

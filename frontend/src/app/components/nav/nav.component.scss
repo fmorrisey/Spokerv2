@@ -1,0 +1,61 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 2.4rem;
+  background: #1a1a1a;
+  border-bottom: 0.1rem solid #333;
+
+  .brand {
+    font-size: 2rem;
+    font-weight: 700;
+    color: white;
+    text-decoration: none;
+    letter-spacing: 0.05rem;
+
+    &:hover { color: #7eb8da; }
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1.6rem;
+
+    a {
+      font-size: 1.4rem;
+      color: #aaa;
+      text-decoration: none;
+      transition: color 0.2s;
+
+      &:hover, &.active { color: white; }
+    }
+
+    .user-name {
+      font-size: 1.4rem;
+      color: #aaa;
+    }
+
+    .btn-logout {
+      font-size: 1.4rem;
+      background: transparent;
+      color: #aaa;
+      border: 0.1rem solid #555;
+      border-radius: 0.4rem;
+      padding: 0.4rem 1.2rem;
+      cursor: pointer;
+      transition: all 0.2s;
+
+      &:hover { color: white; border-color: #aaa; }
+    }
+
+    .btn-register {
+      background: #007bff;
+      color: white !important;
+      padding: 0.4rem 1.2rem;
+      border-radius: 0.4rem;
+      transition: background 0.2s;
+
+      &:hover { background: #0056b3; color: white !important; }
+    }
+  }
+}
