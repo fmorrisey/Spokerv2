@@ -1,10 +1,25 @@
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { AppComponent } from './app.component';
+import { AuthService } from './services/auth/auth.service';
+import { signal } from '@angular/core';
 
 describe('AppComponent', () => {
+  let mockAuthService: any;
+
   beforeEach(async () => {
+    mockAuthService = {
+      isAuthenticated: signal(false),
+      currentUser: signal(null),
+      logout: jasmine.createSpy('logout').and.returnValue(Promise.resolve()),
+    };
+
     await TestBed.configureTestingModule({
       imports: [AppComponent],
+      providers: [
+        provideRouter([]),
+        { provide: AuthService, useValue: mockAuthService },
+      ]
     }).compileComponents();
   });
 
@@ -20,10 +35,10 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('Spoker v2');
   });
 
-  it('should render title', () => {
+  it('should render nav', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Spoker');
+    expect(compiled.querySelector('app-nav')).toBeTruthy();
   });
 });

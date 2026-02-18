@@ -1,0 +1,38 @@
+import { Component, inject, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../services/auth/auth.service';
+
+@Component({
+  selector: 'app-login',
+  standalone: true,
+  imports: [FormsModule, RouterLink],
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss']
+})
+export class LoginComponent {
+  private auth = inject(AuthService);
+  private router = inject(Router);
+
+  email = '';
+  password = '';
+  loading = signal(false);
+  error = signal('');
+
+  async onSubmit(): Promise<void> {
+    if (!this.email || !this.password) {
+      this.error.set('Email and password are required');
+      return;
+    }
+    this.loading.set(true);
+    this.error.set('');
+    try {
+      await this.auth.login(this.email, this.password);
+      this.router.navigate(['/']);
+    } catch {
+      this.error.set('Invalid email or password');
+    } finally {
+      this.loading.set(false);
+    }
+  }
+}
