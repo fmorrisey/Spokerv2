@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { UserType } from '../../src/types/user.type';
 
 export interface IUser extends Document, Omit<UserType, '_id'> {
@@ -21,6 +21,35 @@ const userSchema = new Schema<IUser>(
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
   this.password = await bcrypt.hash(this.password, 12);
+  next();
+});
+
+// Ensure passwords are also hashed when updated via query-based operations
+userSchema.pre(['findOneAndUpdate', 'updateOne'], async function (next) {
+  const update = this.getUpdate() as any;
+
+  if (!update) {
+    return next();
+  }
+
+  // Support both direct and $set-style updates
+  const password =
+    (update.$set && update.$set.password) !== undefined
+      ? update.$set.password
+      : update.password;
+
+  if (!password) {
+    return next();
+  }
+
+  const hashed = await bcrypt.hash(password, 12);
+
+  if (update.$set && update.$set.password !== undefined) {
+    update.$set.password = hashed;
+  } else {
+    update.password = hashed;
+  }
+
   next();
 });
 

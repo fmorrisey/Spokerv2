@@ -55,9 +55,17 @@ export const refresh: RequestHandler = async (req, res, next) => {
   }
 };
 
-export const logout: RequestHandler = (_req, res) => {
-  res.clearCookie(REFRESH_COOKIE, { httpOnly: true, sameSite: 'strict' });
-  res.status(204).send();
+export const logout: RequestHandler = async (req, res, next) => {
+  try {
+    const token = req.cookies?.[REFRESH_COOKIE];
+    if (token) {
+      await AuthService.revokeRefreshToken(token);
+    }
+    res.clearCookie(REFRESH_COOKIE, { ...cookieOptions });
+    res.status(204).send();
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const me: RequestHandler = async (req, res, next) => {

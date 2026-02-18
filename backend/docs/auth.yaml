@@ -46,11 +46,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  accessToken:
-                    type: string
-                required: [accessToken]
+                $ref: '#/components/schemas/AuthResponse'
         '401':
           description: Missing or invalid refresh token
   /api/v1/auth/logout:
@@ -98,6 +94,7 @@ components:
           enum: [customer, owner]
           default: customer
       required: [email, name, role]
+
     RegisterRequest:
       type: object
       properties:
@@ -115,6 +112,7 @@ components:
       properties:
         email:
           type: string
+          format: email
         password:
           type: string
       required: [email, password]

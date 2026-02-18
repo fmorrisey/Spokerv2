@@ -1,7 +1,8 @@
 import { jest } from '@jest/globals';
 import * as AuthService from '../../src/services/auth.service';
 import { User } from '../../src/models/user.model';
-import bcrypt from 'bcrypt';
+import { RefreshToken } from '../../src/models/refresh-token.model';
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 const mockUserDoc = {
@@ -13,10 +14,15 @@ const mockUserDoc = {
   save: jest.fn<() => Promise<void>>().mockResolvedValue(undefined),
 };
 
+const mockRefreshTokenDoc = { token: 'mock-token', userId: 'user1' };
+
 describe('AuthService', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     jest.spyOn(jwt, 'sign').mockReturnValue('mock-token' as any);
+    jest.spyOn(jwt, 'decode').mockReturnValue({ exp: Math.floor(Date.now() / 1000) + 604800 } as any);
+    jest.spyOn(RefreshToken, 'create').mockResolvedValue(mockRefreshTokenDoc as any);
+    jest.spyOn(RefreshToken, 'deleteOne').mockResolvedValue({ deletedCount: 1 } as any);
   });
 
   describe('register', () => {
@@ -54,6 +60,7 @@ describe('AuthService', () => {
 
     it('should throw 401 if user not found', async () => {
       jest.spyOn(User, 'findOne').mockResolvedValue(null as any);
+      jest.spyOn(bcrypt, 'compare').mockImplementation(() => Promise.resolve(false));
 
       await expect(
         AuthService.login({ email: 'nobody@test.com', password: 'pass' })
@@ -73,6 +80,7 @@ describe('AuthService', () => {
   describe('refreshAccessToken', () => {
     it('should return new access token for valid refresh token', async () => {
       jest.spyOn(jwt, 'verify').mockReturnValue({ userId: 'user1' } as any);
+      jest.spyOn(RefreshToken, 'findOne').mockResolvedValue(mockRefreshTokenDoc as any);
       jest.spyOn(User, 'findById').mockResolvedValue(mockUserDoc as any);
 
       const result = await AuthService.refreshAccessToken('valid-refresh-token');
@@ -88,13 +96,31 @@ describe('AuthService', () => {
       ).rejects.toMatchObject({ statusCode: 401 });
     });
 
+    it('should throw 401 if token not in DB', async () => {
+      jest.spyOn(jwt, 'verify').mockReturnValue({ userId: 'user1' } as any);
+      jest.spyOn(RefreshToken, 'findOne').mockResolvedValue(null as any);
+
+      await expect(
+        AuthService.refreshAccessToken('unrecognized-token')
+      ).rejects.toMatchObject({ statusCode: 401 });
+    });
+
     it('should throw 401 if user no longer exists', async () => {
       jest.spyOn(jwt, 'verify').mockReturnValue({ userId: 'user1' } as any);
+      jest.spyOn(RefreshToken, 'findOne').mockResolvedValue(mockRefreshTokenDoc as any);
       jest.spyOn(User, 'findById').mockResolvedValue(null as any);
 
       await expect(
         AuthService.refreshAccessToken('valid-refresh-token')
       ).rejects.toMatchObject({ statusCode: 401 });
+    });
+  });
+
+  describe('revokeRefreshToken', () => {
+    it('should call RefreshToken.deleteOne', async () => {
+      const spy = jest.spyOn(RefreshToken, 'deleteOne').mockResolvedValue({ deletedCount: 1 } as any);
+      await AuthService.revokeRefreshToken('some-token');
+      expect(spy).toHaveBeenCalledWith({ token: 'some-token' });
     });
   });
 
