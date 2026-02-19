@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# regen-secrets.sh — Regenerate JWT secrets in backend env files
+# regen-secrets.sh — Regenerate JWT secrets in backend/.env (dev) and deploy/.env.prod (prod)
 # Usage:
 #   ./tools/scripts/regen-secrets.sh           # updates both .env and .env.prod
 #   ./tools/scripts/regen-secrets.sh --dev     # updates backend/.env only
@@ -10,7 +10,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
 DEV_ENV="$ROOT_DIR/backend/.env"
-PROD_ENV="$ROOT_DIR/backend/.env.prod"
+PROD_ENV="$ROOT_DIR/deploy/.env.prod"
 
 # Determine which files to update
 UPDATE_DEV=true
