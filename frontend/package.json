@@ -1,21 +1,18 @@
 {
   "name": "spoker-v2-frontend",
-  "version": "0.0.0",
+  "version": "0.0.6",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0 --port 4200",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test --code-coverage --watch=false --browsers=ChromeHeadlessCI",
-
     "setup": "npm install && npx cypress install && npm run swagger:gen",
     "swagger:gen": "node ../tools/scripts/generate-types.js",
-
     "cy": "start-server-and-test start http://localhost:4200 cy:run",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
     "cy:vnc": "./cypress-vnc.sh",
-
     "ci:cy:chrome": "cypress run --browser chrome",
     "ci:cy:firefox": "cypress run --browser firefox"
   },
