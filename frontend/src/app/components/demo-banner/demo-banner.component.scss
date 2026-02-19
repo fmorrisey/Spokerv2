@@ -1,25 +1,25 @@
 .demo-banner {
   position: fixed;
   top: 5.6rem;
-  right: 1.6rem;
+  right: var(--space-4);
   z-index: 1000;
 }
 
 .demo-chip {
-  background: #e67e22;
-  color: white;
-  font-size: 1.1rem;
+  background: var(--color-accent);
+  color: var(--color-text-inverted);
+  font-size: var(--font-size-xs);
   font-weight: 700;
   letter-spacing: 0.1rem;
   padding: 0.5rem 1.2rem;
   border: none;
-  border-radius: 2rem;
+  border-radius: var(--radius-pill);
   cursor: pointer;
-  box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-chip);
   transition: background 0.2s, transform 0.1s;
 
   &:hover {
-    background: #d35400;
+    background: var(--color-accent-hover);
     transform: scale(1.05);
   }
 }
@@ -29,13 +29,13 @@
   top: calc(100% + 0.8rem);
   right: 0;
   width: 28rem;
-  background: #fff;
-  color: #333;
-  border-radius: 0.8rem;
-  padding: 1.6rem;
-  box-shadow: 0 0.4rem 2rem rgba(0, 0, 0, 0.25);
-  font-size: 1.4rem;
-  border-top: 0.3rem solid #e67e22;
+  background: var(--color-surface);
+  color: var(--color-text);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  box-shadow: var(--shadow-popover);
+  font-size: var(--font-size-base);
+  border-top: 0.3rem solid var(--color-accent);
 
   .popover-close {
     position: absolute;
@@ -43,30 +43,30 @@
     right: 0.8rem;
     background: transparent;
     border: none;
-    font-size: 1.4rem;
+    font-size: var(--font-size-base);
     cursor: pointer;
-    color: #999;
+    color: var(--color-text-subtle);
     line-height: 1;
     padding: 0.2rem 0.5rem;
 
-    &:hover { color: #333; }
+    &:hover { color: var(--color-text); }
   }
 
   .popover-description {
-    margin: 0 0 1.6rem;
+    margin: 0 0 var(--space-4);
     line-height: 1.5;
-    color: #555;
-    font-size: 1.3rem;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
   }
 
   .role-section {
-    margin-bottom: 1.6rem;
+    margin-bottom: var(--space-4);
 
     .role-label {
       display: block;
-      font-size: 1.2rem;
+      font-size: var(--font-size-sm);
       font-weight: 600;
-      color: #777;
+      color: var(--color-text-subtle);
       margin-bottom: 0.6rem;
       text-transform: uppercase;
       letter-spacing: 0.05rem;
@@ -74,33 +74,29 @@
 
     .role-toggle {
       display: flex;
-      border-radius: 0.4rem;
+      border-radius: var(--radius-sm);
       overflow: hidden;
-      border: 0.1rem solid #ddd;
+      border: 0.1rem solid var(--color-border-subtle);
 
       .role-btn {
         flex: 1;
         padding: 0.7rem;
-        font-size: 1.3rem;
-        background: #f5f5f5;
-        color: #555;
+        font-size: var(--font-size-sm);
+        background: var(--color-surface-subtle);
+        color: var(--color-text-muted);
         border: none;
         cursor: pointer;
         transition: background 0.15s, color 0.15s;
 
-        & + .role-btn {
-          border-left: 0.1rem solid #ddd;
-        }
+        & + .role-btn { border-left: 0.1rem solid var(--color-border-subtle); }
 
         &.active {
-          background: #e67e22;
-          color: white;
+          background: var(--color-accent);
+          color: var(--color-text-inverted);
           font-weight: 600;
         }
 
-        &:not(.active):hover {
-          background: #ebebeb;
-        }
+        &:not(.active):hover { background: var(--color-surface-hover); }
       }
     }
   }
@@ -108,18 +104,18 @@
   .reset-btn {
     width: 100%;
     padding: 0.7rem;
-    font-size: 1.3rem;
+    font-size: var(--font-size-sm);
     background: transparent;
-    color: #888;
-    border: 0.1rem solid #ddd;
-    border-radius: 0.4rem;
+    color: var(--color-text-subtle);
+    border: 0.1rem solid var(--color-border-subtle);
+    border-radius: var(--radius-sm);
     cursor: pointer;
     transition: all 0.15s;
 
     &:hover {
       background: #fdf2e9;
-      color: #e67e22;
-      border-color: #e67e22;
+      color: var(--color-accent);
+      border-color: var(--color-accent);
     }
   }
 }
