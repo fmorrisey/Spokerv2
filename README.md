@@ -33,6 +33,7 @@ Refactored from the ground up based on the original [Spoker.io](https://github.c
 | M3 — Checkout & Orders (Stripe integration) | 📋 Planned |
 | M4 — Admin Dashboard & RBAC | 📋 Planned |
 | M5 — Polish & Observability | 📋 Planned |
+| M6 — Analytics & Insights | 📋 Planned |
 
 See the full [project board](https://github.com/users/fmorrisey/projects/1) for detailed progress.
 
