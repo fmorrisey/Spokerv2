@@ -291,4 +291,4 @@ spokerv2/
 
 ## License
 
-Copyright (c) 2026 Forrest Morrisey. Licensed under the [MIT License](./LICENSE).
+Copyright (c) 2026 Forrest Morrisey. All Rights Reserved. See [LICENSE](./LICENSE) for details.
