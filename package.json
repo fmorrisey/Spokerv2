@@ -17,6 +17,7 @@
         "test:frontend": "npm run test --prefix=frontend",
         "swagger:gen": "node tools/scripts/generate-types.js",
         "seed": "node tools/scripts/seed.js",
+        "key:gen": "./tools/scripts/regen-secrets.sh",
         "version:check": "./tools/scripts/check-version.sh",
         "deploy": "./tools/scripts/deploy.sh"
     },

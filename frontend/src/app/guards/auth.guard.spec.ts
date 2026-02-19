@@ -2,10 +2,13 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import { authGuard } from './auth.guard';
 import { AuthService } from '../services/auth/auth.service';
+import { ConfigService } from '../services/config.service';
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { signal } from '@angular/core';
 
 describe('authGuard', () => {
   let mockAuthService: { isAuthenticated: jasmine.Spy; loadCurrentUser: jasmine.Spy };
+  let mockConfigService: { demoMode: ReturnType<typeof signal<boolean>> };
   let router: Router;
 
   function runGuard() {
@@ -19,6 +22,7 @@ describe('authGuard', () => {
       isAuthenticated: jasmine.createSpy('isAuthenticated'),
       loadCurrentUser: jasmine.createSpy('loadCurrentUser').and.returnValue(Promise.resolve()),
     };
+    mockConfigService = { demoMode: signal(false) };
 
     spyOn(localStorage, 'getItem').and.returnValue(null);
 
@@ -26,6 +30,7 @@ describe('authGuard', () => {
       providers: [
         provideRouter([]),
         { provide: AuthService, useValue: mockAuthService },
+        { provide: ConfigService, useValue: mockConfigService },
       ]
     });
 
@@ -39,6 +44,16 @@ describe('authGuard', () => {
     const result = await runGuard();
 
     expect(result).toBe(true);
+    expect(router.navigate).not.toHaveBeenCalled();
+  });
+
+  it('should allow access immediately when demo mode is on', async () => {
+    mockConfigService.demoMode.set(true);
+
+    const result = await runGuard();
+
+    expect(result).toBe(true);
+    expect(mockAuthService.loadCurrentUser).not.toHaveBeenCalled();
     expect(router.navigate).not.toHaveBeenCalled();
   });
 

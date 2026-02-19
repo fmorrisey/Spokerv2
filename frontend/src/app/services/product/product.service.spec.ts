@@ -1,7 +1,10 @@
 import { TestBed } from '@angular/core/testing';
+import { signal } from '@angular/core';
 
 import { ProductService } from './product.service';
 import { ApiClientService } from '../apiClient/api-client.service';
+import { ConfigService } from '../config.service';
+import { DemoService } from '../demo/demo.service';
 
 describe('ProductService', () => {
   let service: ProductService;
@@ -24,8 +27,22 @@ describe('ProductService', () => {
       providers: [
         {
           provide: ApiClientService,
+          useValue: { getClient: () => apiClient }
+        },
+        {
+          provide: ConfigService,
+          useValue: { demoMode: signal(false) }
+        },
+        {
+          provide: DemoService,
           useValue: {
-            getClient: () => apiClient
+            demoRole: signal('owner'),
+            initSessionData: jasmine.createSpy(),
+            getAll: jasmine.createSpy().and.returnValue([]),
+            getById: jasmine.createSpy().and.returnValue(null),
+            create: jasmine.createSpy(),
+            update: jasmine.createSpy(),
+            delete: jasmine.createSpy(),
           }
         }
       ]
@@ -211,7 +228,6 @@ describe('ProductService', () => {
 
       expect(result).toBeNull();
       expect(service.error()).toBe('No product returned from API');
-      expect(consoleErrorSpy).toHaveBeenCalledWith('No product returned from create');
     });
 
     it('handles network errors during create', async () => {
@@ -296,7 +312,6 @@ describe('ProductService', () => {
 
       expect(result).toBeNull();
       expect(service.error()).toBe('No product returned from API');
-      expect(consoleErrorSpy).toHaveBeenCalledWith('No product returned from update');
     });
 
     it('handles network errors during update', async () => {

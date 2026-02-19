@@ -48,6 +48,13 @@
       &:hover { color: white; border-color: #aaa; }
     }
 
+    .demo-role-indicator {
+      font-size: 1.4rem;
+      color: #aaa;
+
+      strong { color: #e67e22; }
+    }
+
     .btn-register {
       background: #007bff;
       color: white !important;

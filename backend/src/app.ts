@@ -7,6 +7,7 @@ import mongoSanitize from 'express-mongo-sanitize';
 
 import productRoutes from './routes/product.route';
 import authRoutes from './routes/auth.route';
+import configRoutes from './routes/config.route';
 
 import { errorHandler } from './middleware/errorHandler';
 import { healthCheck } from './middleware/healthCheck';
@@ -61,6 +62,7 @@ if (process.env.NODE_ENV !== 'production') {setupSwagger(app)};
 
 // Routes
 app.use(API_URL + Routes.HEALTH, healthCheck);
+app.use(API_URL + Routes.CONFIG, configRoutes);
 app.use(API_URL + Routes.AUTH, authRoutes);
 app.use(API_URL + Routes.PRODUCTS, productRoutes);
 app.use(errorHandler);

@@ -1,6 +1,15 @@
 <div class="auth-container">
   <div class="auth-card">
     <h2>Sign In</h2>
+
+    @if (config.demoMode()) {
+      <div class="demo-notice">
+        <strong>You're in demo mode.</strong>
+        This site is publicly accessible — no account needed.
+        <a routerLink="/">← Back to demo</a>
+      </div>
+    }
+
     <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
       @if (error()) {
         <div class="error-message">{{ error() }}</div>

@@ -1,0 +1,37 @@
+@if (config.demoMode()) {
+  <div class="demo-banner">
+    <button class="demo-chip" (click)="togglePopover()" [attr.aria-expanded]="popoverOpen()">
+      DEMO MODE
+    </button>
+
+    @if (popoverOpen()) {
+      <div class="demo-popover">
+        <button class="popover-close" (click)="closePopover()" aria-label="Close">✕</button>
+        <p class="popover-description">
+          You're exploring a live demo. Feel free to create, edit, and delete —
+          your changes are saved only in this browser tab and disappear when you close it.
+        </p>
+
+        <div class="role-section">
+          <span class="role-label">Viewing as:</span>
+          <div class="role-toggle">
+            <button
+              class="role-btn"
+              [class.active]="demo.demoRole() === 'owner'"
+              (click)="demo.setRole('owner')">
+              Shop Owner
+            </button>
+            <button
+              class="role-btn"
+              [class.active]="demo.demoRole() === 'customer'"
+              (click)="demo.setRole('customer')">
+              Customer
+            </button>
+          </div>
+        </div>
+
+        <button class="reset-btn" (click)="resetData()">↺ Reset Demo Data</button>
+      </div>
+    }
+  </div>
+}

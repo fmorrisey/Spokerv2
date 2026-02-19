@@ -2,7 +2,11 @@
   <a routerLink="/" class="brand">Spoker</a>
   <div class="nav-links">
     <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Products</a>
-    @if (auth.isAuthenticated()) {
+    @if (config.demoMode()) {
+      <span class="demo-role-indicator">
+        Viewing as: <strong>{{ demo.demoRole() === 'owner' ? 'Shop Owner' : 'Customer' }}</strong>
+      </span>
+    } @else if (auth.isAuthenticated()) {
       <span class="user-name">{{ auth.currentUser()?.name }}</span>
       <button class="btn-logout" (click)="logout()">Sign Out</button>
     } @else {
