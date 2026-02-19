@@ -27,11 +27,11 @@ Refactored from the ground up based on the original [Spoker.io](https://github.c
 
 | Milestone | Status |
 |-----------|--------|
-| M0 — First Impressions (CRUD, seed data, docs) | 🔄 In Progress |
-| M1 — Authentication & User Management | 📋 Planned |
+| M0 — First Impressions (CRUD, seed data, docs) | ✅ Complete |
+| M1 — Authentication & User Management | ✅ Complete |
 | M2 — Shopping Cart & Wishlist | 📋 Planned |
 | M3 — Checkout & Orders (Stripe integration) | 📋 Planned |
-| M4 — Admin Dashboard & Security Hardening | 📋 Planned |
+| M4 — Admin Dashboard & RBAC | 📋 Planned |
 | M5 — Polish & Observability | 📋 Planned |
 
 See the full [project board](https://github.com/users/fmorrisey/projects/1) for detailed progress.
@@ -174,10 +174,25 @@ Push tag (v1.0.0)
 
 ### Deploy a Release
 
+> **Important:** The deploy pipeline only runs when a version tag is pushed from a `release/*` branch. Tags pushed from `main` or any other branch will pass tests but skip deployment.
+
 ```bash
-# Create and push a version tag
+# 1. Create a release branch from main
+git checkout main && git pull
+git checkout -b release/v1.0
+
+# 2. Bump versions in package.json files (root, backend, frontend) to match tag
+npm version 1.0.0 --no-git-tag-version
+npm version 1.0.0 --no-git-tag-version --prefix=backend
+npm version 1.0.0 --no-git-tag-version --prefix=frontend
+
+# 3. Commit the version bump
+git add package.json backend/package.json frontend/package.json
+git commit -m "chore: bump version to 1.0.0"
+
+# 4. Tag the release commit and push both
 git tag v1.0.0
-git push origin v1.0.0
+git push origin release/v1.0 v1.0.0
 ```
 
 This triggers:
@@ -185,6 +200,16 @@ This triggers:
 2. ✅ Frontend tests (GitHub-hosted runner)
 3. ✅ Deploy to production (self-hosted runner on private network)
 4. ✅ Health checks and verification
+
+**If deployment was skipped** (tag pushed from wrong branch):
+```bash
+# Delete the tag locally and remotely, re-tag from release branch
+git tag -d v1.0.0
+git push origin :refs/tags/v1.0.0
+git checkout release/v1.0
+git tag v1.0.0
+git push origin v1.0.0
+```
 
 ### Key Features
 
@@ -237,7 +262,7 @@ In VNC mode: Cypress can be accessed via the browser at: http://localhost:6080/v
 |----------|---------|---------|
 | `backend.yml` | Push to `backend/**` | Run backend tests |
 | `frontend.yml` | Push to `frontend/**` | Run frontend tests |
-| `deploy.yml` | Push tag `v*.*.*` | Deploy to production |
+| `deploy.yml` | Push tag `v*.*.*` on a `release/*` branch | Deploy to production |
 
 <img width="1714" height="795" alt="Screenshot 2026-02-08 at 21 33 27" src="https://github.com/user-attachments/assets/e0cdc602-b74d-405b-8b4e-b07d4b58b871" />
 
