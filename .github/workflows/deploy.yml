@@ -102,7 +102,7 @@ jobs:
 
       - name: ⚠️ Demo Mode Warning
         run: |
-          if grep -qE '^DEMO_MODE=true' ~/code/spokerv2/deploy/.env.prod; then
+          if grep -qE '^DEMO_MODE=true' ~/code/spokerv2/deploy/.env.prod 2>/dev/null; then
             echo "::warning title=DEMO_MODE ENABLED::DEMO_MODE=true is set in deploy/.env.prod — the production app is running in demo mode!"
             echo ""
             echo "  ╔══════════════════════════════════════════════════════════╗"

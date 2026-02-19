@@ -93,7 +93,7 @@ if grep -qE '^DEMO_MODE=true' "$ENV_FILE"; then
     echo "  ║                                                          ║"
     echo "  ╚══════════════════════════════════════════════════════════╝"
     echo -e "${NC}"
-    if [ "$YES" != "true" ]; then
+    if [ "$AUTO_CONFIRM" != "true" ]; then
         read -r -p "  Deploy with DEMO_MODE=true? [y/N] " confirm
         if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
             echo "Aborted."
