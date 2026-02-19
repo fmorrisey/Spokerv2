@@ -100,6 +100,29 @@ jobs:
           chmod +x tools/scripts/check-version.sh
           ./tools/scripts/check-version.sh
 
+      - name: 🔐 Validate Required Secrets
+        run: |
+          ENV_FILE=~/code/spokerv2/deploy/.env.prod
+          MISSING=()
+
+          for var in JWT_SECRET JWT_REFRESH_SECRET DB_URI; do
+            if ! grep -qE "^${var}=.+" "$ENV_FILE" 2>/dev/null; then
+              MISSING+=("$var")
+            fi
+          done
+
+          if [ ${#MISSING[@]} -gt 0 ]; then
+            echo "❌ Missing required variables in deploy/.env.prod:"
+            for var in "${MISSING[@]}"; do
+              echo "   - $var"
+            done
+            echo ""
+            echo "Run tools/scripts/regen-secrets.sh --prod to generate JWT secrets."
+            exit 1
+          fi
+
+          echo "✅ All required secrets present"
+
       - name: ⚠️ Demo Mode Warning
         run: |
           if grep -qE '^DEMO_MODE=true' ~/code/spokerv2/deploy/.env.prod 2>/dev/null; then
