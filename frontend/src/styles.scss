@@ -1,34 +1,37 @@
-/* You can add global styles to this file, and also import other style files */
+// =============================================================================
+// Global Styles
+// =============================================================================
+// To apply a custom theme, swap the theme import below.
+// All component styles reference CSS custom properties defined in _tokens.scss.
+// =============================================================================
+
+@use 'app/styles/tokens';
+@use 'app/styles/themes/default';
+
 html {
-    font-size: 62.5%; /* Sets 1rem to 1rem for easier calculation */
-    font-family:Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 62.5%;
+  font-family: var(--font-family);
 }
 
 :root {
-    background-color: rgb(48, 47, 47);
-    color: white;
+  background-color: var(--color-bg);
+  color: var(--color-text-inverted);
 }
 
 a {
-    color: #7eb8da;
-    text-decoration: none;
+  color: var(--color-link);
+  text-decoration: none;
 
-    &:visited {
-        color: #a08cc4;
-    }
-
-    &:hover {
-        color: #a6d4f0;
-        text-decoration: underline;
-    }
+  &:visited { color: var(--color-link-visited); }
+  &:hover   { color: var(--color-link-hover); text-decoration: underline; }
 }
 
 footer {
-    padding: 1rem;
-    font-size: 1.6rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin:auto;
+  padding: var(--space-2);
+  font-size: var(--font-size-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
 }
