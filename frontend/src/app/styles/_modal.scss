@@ -1,0 +1,40 @@
+// =============================================================================
+// Shared Modal Styles
+// =============================================================================
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: var(--color-overlay);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  z-index: 1000;
+}
+
+.modal {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  padding: 2rem;
+  box-shadow: var(--shadow-modal);
+
+  h2 {
+    margin: 0 0 1.5rem;
+    font-size: var(--font-size-xl);
+  }
+
+  p {
+    color: var(--color-text-muted);
+    margin: 0.75rem 0 1.5rem;
+  }
+
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+}

@@ -2,6 +2,25 @@
 
 All notable changes to this repository are documented here.
 
+## Unreleased — Design Token System & Theming
+
+### Added
+- **`frontend/src/app/styles/_tokens.scss`** — CSS custom properties as the single source of truth for all design values: colors, typography, spacing, border radius, and shadows
+- **`frontend/src/app/styles/themes/_default.scss`** — Spoker/bikeshop base theme with commented examples for creating client themes
+- **`frontend/src/app/styles/_buttons.scss`** — shared `.btn-primary`, `.btn-secondary`, `.btn-danger`, `.btn-icon` styles extracted from components
+- **`frontend/src/app/styles/_modal.scss`** — shared `.modal-backdrop` and `.modal` styles extracted from components
+- **`frontend/src/app/styles/_forms.scss`** — shared `.form-group`, `.form-row`, `.field-error` styles extracted from components
+- **`docs/theming.md`** — guide for creating and applying a custom client theme
+
+### Changed
+- All component SCSS files refactored to use CSS custom property tokens instead of hardcoded color/spacing literals
+- `_auth-form.scss` updated to use tokens
+- `styles.scss` now imports `_tokens.scss` and the active theme; global styles use tokens
+- `products.component.scss` and `product-form.component.scss` now `@use` shared button, modal, and form partials instead of duplicating styles
+- `angular.json` component style budget raised from `2kb/4kb` to `6kb/10kb` to accommodate shared partial inlining
+
+---
+
 ## v0.0.6 — 2026-02-19 — Milestone 1: Auth & Demo Mode
 
 ### Added
