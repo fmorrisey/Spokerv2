@@ -3,6 +3,7 @@ export class Routes {
     static readonly PRODUCTS = '/products'
     static readonly HEALTH = '/health'
     static readonly AUTH = '/auth'
+    static readonly CONFIG = '/config'
 }
 
 function getRequiredEnvVar(name: string): string {
@@ -25,4 +26,5 @@ export const DEFAULT_PAGE_SIZE = 10; // Default page size for pagination
 export const MAX_PAGE_SIZE = 100; // Maximum page size for pagination
 export const SESSION_TIMEOUT = 3600; // Session timeout in seconds (1 hour)
 export const CACHE_TTL = 300; // Cache time-to-live in seconds (5 minutes)
+export const DEMO_MODE = process.env.DEMO_MODE === 'true';
 

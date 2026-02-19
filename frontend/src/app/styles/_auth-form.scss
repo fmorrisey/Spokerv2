@@ -21,6 +21,28 @@
     text-align: center;
   }
 
+  .demo-notice {
+    background: #fff8f0;
+    border: 0.1rem solid #f0c070;
+    border-left: 0.3rem solid #e67e22;
+    border-radius: 0.4rem;
+    padding: 1rem 1.4rem;
+    font-size: 1.3rem;
+    color: #7a5c2e;
+    margin-bottom: 1.6rem;
+    line-height: 1.5;
+
+    a {
+      display: block;
+      margin-top: 0.4rem;
+      color: #e67e22;
+      text-decoration: none;
+      font-weight: 600;
+
+      &:hover { text-decoration: underline; }
+    }
+  }
+
   .error-message {
     background: #fde8e8;
     color: #c0392b;

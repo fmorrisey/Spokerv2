@@ -1,0 +1,125 @@
+.demo-banner {
+  position: fixed;
+  top: 5.6rem;
+  right: 1.6rem;
+  z-index: 1000;
+}
+
+.demo-chip {
+  background: #e67e22;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.1rem;
+  padding: 0.5rem 1.2rem;
+  border: none;
+  border-radius: 2rem;
+  cursor: pointer;
+  box-shadow: 0 0.2rem 0.8rem rgba(0, 0, 0, 0.3);
+  transition: background 0.2s, transform 0.1s;
+
+  &:hover {
+    background: #d35400;
+    transform: scale(1.05);
+  }
+}
+
+.demo-popover {
+  position: absolute;
+  top: calc(100% + 0.8rem);
+  right: 0;
+  width: 28rem;
+  background: #fff;
+  color: #333;
+  border-radius: 0.8rem;
+  padding: 1.6rem;
+  box-shadow: 0 0.4rem 2rem rgba(0, 0, 0, 0.25);
+  font-size: 1.4rem;
+  border-top: 0.3rem solid #e67e22;
+
+  .popover-close {
+    position: absolute;
+    top: 0.8rem;
+    right: 0.8rem;
+    background: transparent;
+    border: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+    color: #999;
+    line-height: 1;
+    padding: 0.2rem 0.5rem;
+
+    &:hover { color: #333; }
+  }
+
+  .popover-description {
+    margin: 0 0 1.6rem;
+    line-height: 1.5;
+    color: #555;
+    font-size: 1.3rem;
+  }
+
+  .role-section {
+    margin-bottom: 1.6rem;
+
+    .role-label {
+      display: block;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #777;
+      margin-bottom: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05rem;
+    }
+
+    .role-toggle {
+      display: flex;
+      border-radius: 0.4rem;
+      overflow: hidden;
+      border: 0.1rem solid #ddd;
+
+      .role-btn {
+        flex: 1;
+        padding: 0.7rem;
+        font-size: 1.3rem;
+        background: #f5f5f5;
+        color: #555;
+        border: none;
+        cursor: pointer;
+        transition: background 0.15s, color 0.15s;
+
+        & + .role-btn {
+          border-left: 0.1rem solid #ddd;
+        }
+
+        &.active {
+          background: #e67e22;
+          color: white;
+          font-weight: 600;
+        }
+
+        &:not(.active):hover {
+          background: #ebebeb;
+        }
+      }
+    }
+  }
+
+  .reset-btn {
+    width: 100%;
+    padding: 0.7rem;
+    font-size: 1.3rem;
+    background: transparent;
+    color: #888;
+    border: 0.1rem solid #ddd;
+    border-radius: 0.4rem;
+    cursor: pointer;
+    transition: all 0.15s;
+
+    &:hover {
+      background: #fdf2e9;
+      color: #e67e22;
+      border-color: #e67e22;
+    }
+  }
+}

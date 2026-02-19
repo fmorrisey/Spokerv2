@@ -1,0 +1,22 @@
+paths:
+  /api/v1/config:
+    get:
+      summary: Get application configuration
+      description: Returns public runtime configuration for the frontend, including demo mode status.
+      responses:
+        '200':
+          description: Application configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppConfig'
+components:
+  schemas:
+    AppConfig:
+      type: object
+      properties:
+        demoMode:
+          type: boolean
+          description: Whether the application is running in demo mode
+      required:
+        - demoMode
