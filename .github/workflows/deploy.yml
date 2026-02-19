@@ -100,6 +100,26 @@ jobs:
           chmod +x tools/scripts/check-version.sh
           ./tools/scripts/check-version.sh
 
+      - name: ⚠️ Demo Mode Warning
+        run: |
+          if grep -qE '^DEMO_MODE=true' ~/code/spokerv2/deploy/.env.prod; then
+            echo "::warning title=DEMO_MODE ENABLED::DEMO_MODE=true is set in deploy/.env.prod — the production app is running in demo mode!"
+            echo ""
+            echo "  ╔══════════════════════════════════════════════════════════╗"
+            echo "  ║                                                          ║"
+            echo "  ║   ⚠️   WARNING: DEMO_MODE=true IN PRODUCTION ENV   ⚠️    ║"
+            echo "  ║                                                          ║"
+            echo "  ║   The app will run in demo mode. Real auth is bypassed   ║"
+            echo "  ║   and all product edits are session-scoped only.         ║"
+            echo "  ║                                                          ║"
+            echo "  ║   Set DEMO_MODE=false in deploy/.env.prod to disable.    ║"
+            echo "  ║                                                          ║"
+            echo "  ╚══════════════════════════════════════════════════════════╝"
+            echo ""
+          else
+            echo "✅ DEMO_MODE is not enabled"
+          fi
+
       - name: 🚀 Run Deploy Script
         run: |
           cd ~/code/spokerv2
@@ -107,7 +127,7 @@ jobs:
           ./tools/scripts/deploy.sh --yes
 
       - name: ⏳ Wait for Services
-        run: sleep 10
+        run: sleep 20
 
       - name: 🏥 Health Check
         run: |
@@ -133,13 +153,22 @@ jobs:
           fi
           echo "✅ Backend is running"
 
-          # API health check
-          if curl -sf http://localhost:8080/api/v1/health -H "Host: spoker-app.rainierserver.com" > /dev/null; then
-            echo "✅ API health check passed"
-          else
-            echo "❌ API health check failed"
-            exit 1
-          fi
+          # API health check with retries
+          MAX_RETRIES=6
+          RETRY_DELAY=10
+          for i in $(seq 1 $MAX_RETRIES); do
+            if curl -sf http://localhost:8080/api/v1/health -H "Host: spoker-app.rainierserver.com" > /dev/null; then
+              echo "✅ API health check passed (attempt $i)"
+              break
+            fi
+            if [ "$i" -eq "$MAX_RETRIES" ]; then
+              echo "❌ API health check failed after $MAX_RETRIES attempts"
+              docker logs spoker-backend --tail 50
+              exit 1
+            fi
+            echo "⏳ API not ready yet, retrying in ${RETRY_DELAY}s... (attempt $i/$MAX_RETRIES)"
+            sleep $RETRY_DELAY
+          done
 
       - name: 📢 Deployment Summary
         if: success()

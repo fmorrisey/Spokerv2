@@ -79,6 +79,29 @@ if [ ! -f "$ENV_FILE" ]; then
     exit 1
 fi
 
+# Warn loudly if DEMO_MODE is enabled in the env file
+if grep -qE '^DEMO_MODE=true' "$ENV_FILE"; then
+    echo -e "${YELLOW}"
+    echo "  ╔══════════════════════════════════════════════════════════╗"
+    echo "  ║                                                          ║"
+    echo "  ║   ⚠️   WARNING: DEMO_MODE=true IN PRODUCTION ENV   ⚠️    ║"
+    echo "  ║                                                          ║"
+    echo "  ║   The app will run in demo mode. Real auth is bypassed   ║"
+    echo "  ║   and all product edits are session-scoped only.         ║"
+    echo "  ║                                                          ║"
+    echo "  ║   Set DEMO_MODE=false in deploy/.env.prod to disable.    ║"
+    echo "  ║                                                          ║"
+    echo "  ╚══════════════════════════════════════════════════════════╝"
+    echo -e "${NC}"
+    if [ "$YES" != "true" ]; then
+        read -r -p "  Deploy with DEMO_MODE=true? [y/N] " confirm
+        if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
+            echo "Aborted."
+            exit 1
+        fi
+    fi
+fi
+
 # Validate we're on a release/* branch or a tag on a release branch
 validate_release_branch() {
     local current_branch=$(git branch --show-current)
