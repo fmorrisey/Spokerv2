@@ -8,6 +8,15 @@ const swaggerDefinition = {
     title: 'Spoker v2 API',
     version: '1.0.0',
   },
+  components: {
+    securitySchemes: {
+      bearerAuth: {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+      },
+    },
+  },
 };
 
 const swaggerOptions: { definition: typeof swaggerDefinition; apis: string[] } = {

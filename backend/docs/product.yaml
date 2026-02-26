@@ -13,6 +13,8 @@ paths:
                   $ref: '#/components/schemas/Product'
     post:
       summary: Create a new product
+      security:
+        - bearerAuth: []
       requestBody:
         required: true
         content:
@@ -46,6 +48,8 @@ paths:
           description: Product not found
     put:
       summary: Update an existing product
+      security:
+        - bearerAuth: []
       parameters:
         - in: path
           name: id
@@ -69,6 +73,8 @@ paths:
           description: Product not found
     delete:
       summary: Delete an product by ID
+      security:
+        - bearerAuth: []
       parameters:
         - in: path
           name: id
