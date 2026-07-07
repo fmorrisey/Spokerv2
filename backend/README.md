@@ -85,7 +85,9 @@ An account becomes an owner in one of two ways:
 - **Seeded owner** — created by `npm run seed` (see above).
 - **`OWNER_EMAILS` allowlist** — a comma-separated list of emails promoted to
   `owner` on register/login. The allowlist only ever promotes; it never demotes,
-  so the seeded owner keeps its role even if its email isn't listed.
+  so the seeded owner keeps its role even if its email isn't listed. Because the
+  role is carried in the access token, an already-logged-in user must log in
+  again for a newly-added allowlist entry to take effect.
 
 ## Environment Variables
 

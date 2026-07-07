@@ -524,6 +524,25 @@ describe('ProductsComponent', () => {
 
       expect(actions.length).toBe(2);
     });
+
+    it('hides the empty-state Add button for a customer', () => {
+      authService.currentUser.set({ _id: 'u2', email: 'c@test.com', name: 'Cust', role: 'customer' });
+      productService.products.set([]);
+      fixture.detectChanges();
+
+      const emptyStateButton = fixture.nativeElement.querySelector('.empty-state button');
+
+      expect(emptyStateButton).toBeFalsy();
+    });
+
+    it('shows the empty-state Add button for an owner', () => {
+      productService.products.set([]);
+      fixture.detectChanges();
+
+      const emptyStateButton = fixture.nativeElement.querySelector('.empty-state button');
+
+      expect(emptyStateButton).toBeTruthy();
+    });
   });
 
   describe('Component accessibility', () => {
