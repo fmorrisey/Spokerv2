@@ -139,4 +139,20 @@ describe('AuthService', () => {
       expect(tokens).toHaveProperty('refreshToken');
     });
   });
+
+  describe('resolveRole', () => {
+    // OWNER_EMAILS is empty in the test environment, so these cover the
+    // no-promotion paths — including the safety property that it never demotes.
+    it('defaults to customer when no current role is given', () => {
+      expect(AuthService.resolveRole('someone@test.com')).toBe('customer');
+    });
+
+    it('keeps a customer as customer when not on the allowlist', () => {
+      expect(AuthService.resolveRole('someone@test.com', 'customer')).toBe('customer');
+    });
+
+    it('never demotes an existing owner not on the allowlist', () => {
+      expect(AuthService.resolveRole('owner@spoker.dev', 'owner')).toBe('owner');
+    });
+  });
 });

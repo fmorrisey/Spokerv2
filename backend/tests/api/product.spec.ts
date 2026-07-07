@@ -5,6 +5,7 @@ import * as ProductService from '../../src/services/product.service';
 import app from '../../src/app';
 import request from 'supertest';
 import { jest } from "@jest/globals";
+import jwt from 'jsonwebtoken';
 import { ProductType } from '../../src/types/product.type';
 import { API_URL, Routes } from '../../src/models/constants';
 
@@ -165,5 +166,34 @@ describe('Product API', () => {
     jest.spyOn(ProductService, 'findAll').mockResolvedValue([] as any);
     const res = await request(app).get(API_URL + Routes.PRODUCTS + 'badroute');
     expect(res.status).toBe(404);
+  });
+})
+
+describe('Product API — RBAC on mutations', () => {
+  const sign = (role: string) =>
+    jwt.sign({ userId: 'u1', role }, process.env.JWT_SECRET as string);
+
+  const newProduct = { name: 'X', description: 'Y', msrp: 10, price: 9 };
+
+  it('rejects POST with no token (401)', async () => {
+    const res = await request(app).post(API_URL + Routes.PRODUCTS).send(newProduct);
+    expect(res.status).toBe(401);
+  });
+
+  it('rejects POST from a customer (403)', async () => {
+    const res = await request(app)
+      .post(API_URL + Routes.PRODUCTS)
+      .set('Authorization', `Bearer ${sign('customer')}`)
+      .send(newProduct);
+    expect(res.status).toBe(403);
+  });
+
+  it('allows POST from an owner (passes authorization)', async () => {
+    jest.spyOn(ProductService, 'create').mockResolvedValue({ _id: '1', ...newProduct } as any);
+    const res = await request(app)
+      .post(API_URL + Routes.PRODUCTS)
+      .set('Authorization', `Bearer ${sign('owner')}`)
+      .send(newProduct);
+    expect(res.status).toBe(201);
   });
 })

@@ -6,7 +6,9 @@ export interface IUser extends Document, Omit<UserType, '_id'> {
   password: string;
 }
 
-interface UserModel extends Model<IUser> {}
+interface UserModel extends Model<IUser> {
+  seed(): Promise<void>;
+}
 
 const userSchema = new Schema<IUser>(
   {
@@ -52,5 +54,25 @@ userSchema.pre(['findOneAndUpdate', 'updateOne'], async function (next) {
 
   next();
 });
+
+// Seed a demo owner account so a fresh database has a user who can manage
+// products. Credentials come from SEED_OWNER_* env vars (with dev defaults).
+// Read lazily from process.env (not module-level constants) so the seed script
+// picks up values loaded via dotenv after import time.
+userSchema.statics.seed = async function () {
+  const email = (process.env.SEED_OWNER_EMAIL || 'owner@spoker.dev').toLowerCase();
+  const password = process.env.SEED_OWNER_PASSWORD || 'ownerpassword';
+  const name = process.env.SEED_OWNER_NAME || 'Demo Owner';
+
+  const existing = await this.findOne({ email });
+  if (existing) {
+    console.log(`⏭️  Skipping owner seed — ${email} already exists.`);
+    return;
+  }
+
+  // Use create() (not insertMany) so the bcrypt pre-save hook hashes the password.
+  await this.create({ email, password, name, role: 'owner' });
+  console.log(`✅ Seeded owner account: ${email}`);
+};
 
 export const User = mongoose.model<IUser, UserModel>('User', userSchema);

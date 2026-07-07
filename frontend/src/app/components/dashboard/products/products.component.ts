@@ -1,6 +1,9 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../../services/product/product.service';
+import { AuthService } from '../../../services/auth/auth.service';
+import { ConfigService } from '../../../services/config.service';
+import { DemoService } from '../../../services/demo/demo.service';
 import { ProductFormComponent, ProductFormData } from './product-form/product-form.component';
 import type { ProductComponents } from '../../../../swagger';
 
@@ -15,6 +18,17 @@ type Product = ProductComponents['schemas']['Product'];
 })
 export class ProductsComponent implements OnInit {
   productService = inject(ProductService);
+  private auth = inject(AuthService);
+  private config = inject(ConfigService);
+  private demo = inject(DemoService);
+
+  // Only owners can manage products. In demo mode the banner's role toggle
+  // (demoRole) drives this; otherwise it's the authenticated user's role.
+  canManageProducts = computed(() =>
+    this.config.demoMode()
+      ? this.demo.demoRole() === 'owner'
+      : this.auth.currentUser()?.role === 'owner'
+  );
 
   // Delete modal state
   isDeleteModalOpen = false;

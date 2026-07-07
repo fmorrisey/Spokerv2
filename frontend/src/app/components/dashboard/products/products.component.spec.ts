@@ -3,6 +3,9 @@ import { signal } from '@angular/core';
 
 import { ProductsComponent } from './products.component';
 import { ProductService } from '../../../services/product/product.service';
+import { AuthService } from '../../../services/auth/auth.service';
+import { ConfigService } from '../../../services/config.service';
+import { DemoService } from '../../../services/demo/demo.service';
 
 describe('ProductsComponent', () => {
   let component: ProductsComponent;
@@ -16,6 +19,9 @@ describe('ProductsComponent', () => {
     loading: ReturnType<typeof signal>;
     error: ReturnType<typeof signal>;
   };
+  let authService: { currentUser: ReturnType<typeof signal> };
+  let configService: { demoMode: ReturnType<typeof signal> };
+  let demoService: { demoRole: ReturnType<typeof signal> };
 
   const mockProducts = [
     { _id: '1', name: 'Widget', description: 'A test widget', msrp: 100, price: 90 },
@@ -33,13 +39,18 @@ describe('ProductsComponent', () => {
       error: signal(null)
     };
 
+    // Default to an owner (real, non-demo mode) so product-management controls render.
+    authService = { currentUser: signal({ _id: 'u1', email: 'owner@test.com', name: 'Owner', role: 'owner' }) };
+    configService = { demoMode: signal(false) };
+    demoService = { demoRole: signal('owner') };
+
     await TestBed.configureTestingModule({
       imports: [ProductsComponent],
       providers: [
-        {
-          provide: ProductService,
-          useValue: productService
-        }
+        { provide: ProductService, useValue: productService },
+        { provide: AuthService, useValue: authService },
+        { provide: ConfigService, useValue: configService },
+        { provide: DemoService, useValue: demoService }
       ]
     })
     .compileComponents();
@@ -464,6 +475,54 @@ describe('ProductsComponent', () => {
 
       expect(msrpValues[0]?.textContent).toContain('$100.00');
       expect(priceValues[0]?.textContent).toContain('$90.00');
+    });
+  });
+
+  describe('Role-based UI gating', () => {
+    it('canManageProducts is true for an owner in real mode', () => {
+      expect(component.canManageProducts()).toBeTrue();
+    });
+
+    it('canManageProducts is false for a customer in real mode', () => {
+      authService.currentUser.set({ _id: 'u2', email: 'c@test.com', name: 'Cust', role: 'customer' });
+      expect(component.canManageProducts()).toBeFalse();
+    });
+
+    it('canManageProducts follows demoRole in demo mode', () => {
+      configService.demoMode.set(true);
+      demoService.demoRole.set('owner');
+      expect(component.canManageProducts()).toBeTrue();
+
+      demoService.demoRole.set('customer');
+      expect(component.canManageProducts()).toBeFalse();
+    });
+
+    it('hides the Add Product button for a customer', () => {
+      authService.currentUser.set({ _id: 'u2', email: 'c@test.com', name: 'Cust', role: 'customer' });
+      fixture.detectChanges();
+
+      const addButton = fixture.nativeElement.querySelector('.header button');
+
+      expect(addButton).toBeFalsy();
+    });
+
+    it('hides product action buttons for a customer', () => {
+      authService.currentUser.set({ _id: 'u2', email: 'c@test.com', name: 'Cust', role: 'customer' });
+      productService.products.set(mockProducts);
+      fixture.detectChanges();
+
+      const actions = fixture.nativeElement.querySelectorAll('.product-actions');
+
+      expect(actions.length).toBe(0);
+    });
+
+    it('shows product action buttons for an owner', () => {
+      productService.products.set(mockProducts);
+      fixture.detectChanges();
+
+      const actions = fixture.nativeElement.querySelectorAll('.product-actions');
+
+      expect(actions.length).toBe(2);
     });
   });
 

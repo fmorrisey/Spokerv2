@@ -13,6 +13,7 @@ paths:
                   $ref: '#/components/schemas/Product'
     post:
       summary: Create a new product
+      description: Requires an authenticated user with the `owner` role.
       security:
         - bearerAuth: []
       requestBody:
@@ -28,6 +29,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Product'
+        '401':
+          description: Missing or invalid authentication token
+        '403':
+          description: Authenticated user is not an owner
   /api/v1/products/{id}:
     get:
       summary: Retrieve a specific product by ID
@@ -48,6 +53,7 @@ paths:
           description: Product not found
     put:
       summary: Update an existing product
+      description: Requires an authenticated user with the `owner` role.
       security:
         - bearerAuth: []
       parameters:
@@ -69,10 +75,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Product'
+        '401':
+          description: Missing or invalid authentication token
+        '403':
+          description: Authenticated user is not an owner
         '404':
           description: Product not found
     delete:
       summary: Delete an product by ID
+      description: Requires an authenticated user with the `owner` role.
       security:
         - bearerAuth: []
       parameters:
@@ -84,8 +95,12 @@ paths:
       responses:
         '204':
           description: Product deleted successfully
+        '401':
+          description: Missing or invalid authentication token
+        '403':
+          description: Authenticated user is not an owner
         '404':
-          description: Product not found          
+          description: Product not found
 components:
   schemas:
     Product:
