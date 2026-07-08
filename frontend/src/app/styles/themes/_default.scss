@@ -1,0 +1,23 @@
+// =============================================================================
+// Theme: Default (Spoker Bikeshop)
+// =============================================================================
+// This is the base Spoker theme. It does not need to override any tokens
+// since _tokens.scss already defines these values. This file exists as a
+// reference and starting point for creating new client themes.
+//
+// To create a new theme (e.g. plant shop):
+//   1. Copy this file to themes/_plantshop.scss
+//   2. Override only the tokens you want to change
+//   3. Import your theme file in styles.scss instead of this one
+// =============================================================================
+
+// Example overrides (uncomment and modify to create a custom theme):
+//
+// :root {
+//   --color-primary:        #2e7d32;   // forest green
+//   --color-primary-hover:  #1b5e20;
+//   --color-accent:         #ff6f00;   // amber
+//   --color-accent-hover:   #e65100;
+//   --color-nav-bg:         #1b2a1b;
+//   --font-family:          'Georgia', serif;
+// }

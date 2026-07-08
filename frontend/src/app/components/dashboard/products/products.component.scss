@@ -1,73 +1,52 @@
+@use '../../../styles/buttons';
+@use '../../../styles/modal';
+
 .products-container {
-  padding: 2rem;
+  padding: var(--space-5);
   max-width: 140rem;
   margin: 0 auto;
-  color: #333;
+  color: var(--color-text);
 
   .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2rem;
+    margin-bottom: var(--space-5);
 
     h1 {
       margin: 0;
-      font-size: 2.6rem;
-      color: #333;
-    }
-  }
-
-  .btn-primary {
-    background: #007bff;
-    color: white;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.8rem;
-    cursor: pointer;
-    font-size: 1.6rem;
-    font-weight: 600;
-    transition: background 0.2s;
-
-    &:hover {
-      background: #0056b3;
-    }
-
-    &:disabled,
-    &[aria-disabled='true'] {
-      background: #9bbcf4;
-      cursor: not-allowed;
+      font-size: var(--font-size-2xl);
+      color: var(--color-text);
     }
   }
 
   .loading, .error-message, .empty-state {
     text-align: center;
-    padding: 3rem;
-    background: #f8f9fa;
-    border-radius: 0.8rem;
-    margin-top: 2rem;
+    padding: var(--space-10);
+    background: var(--color-surface-subtle);
+    border-radius: var(--radius-md);
+    margin-top: var(--space-5);
 
     p {
-      margin: 0 0 1rem;
-      font-size: 1.6rem;
-      color: #666;
+      margin: 0 0 var(--space-2);
+      font-size: var(--font-size-md);
+      color: var(--color-text-muted);
     }
   }
 
   .error-message {
-    background: #fee;
-    color: #c33;
+    background: var(--color-danger-bg);
+    color: var(--color-danger);
 
     button {
-      background: #c33;
-      color: white;
+      background: var(--color-danger);
+      color: var(--color-text-inverted);
       border: none;
       padding: 0.5rem 1rem;
-      border-radius: 0.4rem;
+      border-radius: var(--radius-sm);
       cursor: pointer;
 
-      &:hover {
-        background: #a22;
-      }
+      &:hover { background: var(--color-danger-hover); }
     }
   }
 
@@ -75,18 +54,18 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(32rem, 1fr));
     gap: 1.5rem;
-    margin-top: 2rem;
+    margin-top: var(--space-5);
   }
 
   .product-card {
-    background: white;
-    border: 0.1rem solid #e0e0e0;
-    border-radius: 1.2rem;
+    background: var(--color-surface);
+    border: 0.1rem solid var(--color-border-subtle);
+    border-radius: var(--radius-lg);
     padding: 1.5rem;
     transition: box-shadow 0.2s, transform 0.2s;
 
     &:hover {
-      box-shadow: 0 0.4rem 1.2rem rgba(0, 0, 0, 0.1);
+      box-shadow: var(--shadow-card);
       transform: translateY(-0.2rem);
     }
 
@@ -94,51 +73,31 @@
       display: flex;
       justify-content: space-between;
       align-items: start;
-      margin-bottom: 1rem;
+      margin-bottom: var(--space-2);
 
       h3 {
         margin: 0;
         font-size: 2.1rem;
-        color: #333;
+        color: var(--color-text);
         flex: 1;
       }
 
       .product-actions {
         display: flex;
         gap: 0.5rem;
-
-        .btn-icon {
-          background: none;
-          border: none;
-          cursor: pointer;
-          font-size: 1.2rem;
-          padding: 0.25rem;
-          opacity: 0.7;
-          transition: opacity 0.2s;
-
-          &:hover {
-            opacity: 1;
-          }
-
-          &:disabled,
-          &[aria-disabled='true'] {
-            cursor: not-allowed;
-            opacity: 0.4;
-          }
-        }
       }
     }
 
     .product-description {
-      color: #666;
+      color: var(--color-text-muted);
       margin-bottom: 1.5rem;
       line-height: 1.5;
-      font-size: 1.6rem;
+      font-size: var(--font-size-md);
     }
 
     .product-pricing {
-      border-top: 0.1rem solid #e0e0e0;
-      padding-top: 1rem;
+      border-top: 0.1rem solid var(--color-border-subtle);
+      padding-top: var(--space-2);
 
       .price-item {
         display: flex;
@@ -146,90 +105,36 @@
         margin-bottom: 0.5rem;
 
         .label {
-          color: #666;
-          font-size: 1.4rem;
+          color: var(--color-text-muted);
+          font-size: var(--font-size-base);
         }
 
         .value {
           font-weight: 600;
-          font-size: 1.4rem;
+          font-size: var(--font-size-base);
 
           &.msrp {
-            color: #999;
+            color: var(--color-text-subtle);
             text-decoration: line-through;
           }
 
-          &.price {
-            color: #28a745;
-            font-size: 1.4rem;
-          }
+          &.price { color: var(--color-success); }
         }
       }
 
       .savings {
-        background: #d4edda;
-        color: #155724;
+        background: var(--color-success-bg);
+        color: var(--color-success-text);
         padding: 0.5rem;
-        border-radius: 0.4rem;
+        border-radius: var(--radius-sm);
         text-align: center;
         margin-top: 0.5rem;
         font-weight: 600;
-        font-size: 1.4rem;
+        font-size: var(--font-size-base);
       }
     }
   }
-}
 
-.modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.45);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.5rem;
-  z-index: 1000;
-
-  .modal {
-    background: white;
-    color: #333;
-    border-radius: 1.2rem;
-    max-width: 42rem;
-    width: 100%;
-    padding: 1.5rem;
-    box-shadow: 0 1.2rem 2.4rem rgba(0, 0, 0, 0.2);
-
-    h2 {
-      margin-top: 0;
-    }
-
-    p {
-      color: #555;
-      margin: 0.75rem 0 1.5rem;
-    }
-
-    .modal-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 0.75rem;
-    }
-  }
-}
-
-.btn-secondary {
-  background: #e9ecef;
-  color: #333;
-  border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 0.8rem;
-  cursor: pointer;
-}
-
-.btn-danger {
-  background: #dc3545;
-  color: white;
-  border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 0.8rem;
-  cursor: pointer;
+  // Size override for confirm-delete modal in this context
+  .modal { max-width: 42rem; }
 }
