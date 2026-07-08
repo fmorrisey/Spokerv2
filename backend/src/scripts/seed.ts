@@ -2,6 +2,7 @@ import path from 'path';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import { Product } from '../models/product.model';
+import { User } from '../models/user.model';
 
 // Parse args
 const args = process.argv.slice(2);
@@ -29,6 +30,7 @@ async function main() {
     }
 
     await Product.seed();
+    await User.seed();
 
     await mongoose.connection.close();
     console.log('🔌 Disconnected');

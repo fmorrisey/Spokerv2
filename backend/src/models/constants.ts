@@ -28,3 +28,10 @@ export const SESSION_TIMEOUT = 3600; // Session timeout in seconds (1 hour)
 export const CACHE_TTL = 300; // Cache time-to-live in seconds (5 minutes)
 export const DEMO_MODE = process.env.DEMO_MODE === 'true';
 
+// Comma-separated list of emails that should be granted the `owner` role.
+// Applied on register/login so ownership can be configured without touching the DB.
+export const OWNER_EMAILS = (process.env.OWNER_EMAILS || '')
+    .split(',')
+    .map(email => email.trim().toLowerCase())
+    .filter(Boolean);
+

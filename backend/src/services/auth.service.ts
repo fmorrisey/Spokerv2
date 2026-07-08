@@ -3,13 +3,32 @@ import jwt from 'jsonwebtoken';
 import { User, IUser } from '../models/user.model';
 import { RefreshToken } from '../models/refresh-token.model';
 import { RegisterRequest, LoginRequest, AuthResponse, UserType } from '../types/user.type';
-import { JWT_SECRET, JWT_EXPIRATION, JWT_REFRESH_SECRET, JWT_REFRESH_EXPIRATION } from '../models/constants';
+import { JWT_SECRET, JWT_EXPIRATION, JWT_REFRESH_SECRET, JWT_REFRESH_EXPIRATION, OWNER_EMAILS } from '../models/constants';
+import { conflict, unauthorized } from './error.service';
 
 // Dummy hash used for timing-safe rejection when user is not found
 const DUMMY_HASH = '$2b$12$invalidhashfortimingprotectiononly000000000000000000000';
 
-function makeError(message: string, statusCode: number): Error {
-  return Object.assign(new Error(message), { statusCode });
+type Role = UserType['role'];
+
+/**
+ * Resolve the effective role for an email against the OWNER_EMAILS allowlist.
+ * The allowlist only ever *promotes* to `owner` — it never demotes, so a
+ * seeded owner (not necessarily in the allowlist) keeps its role.
+ */
+export function resolveRole(email: string, currentRole: Role = 'customer'): Role {
+  if (OWNER_EMAILS.includes(email.toLowerCase())) return 'owner';
+  return currentRole;
+}
+
+/** Reconcile a user's stored role with the allowlist, persisting any promotion. */
+async function reconcileRole(user: IUser): Promise<Role> {
+  const effectiveRole = resolveRole(user.email, user.role);
+  if (effectiveRole !== user.role) {
+    user.role = effectiveRole;
+    await user.save();
+  }
+  return effectiveRole;
 }
 
 export function toSafeUser(user: IUser): UserType {
@@ -37,10 +56,15 @@ async function storeRefreshToken(token: string, userId: string): Promise<void> {
 export async function register(data: RegisterRequest): Promise<{ authResponse: AuthResponse; refreshToken: string }> {
   const existing = await User.findOne({ email: data.email.toLowerCase() });
   if (existing) {
-    throw makeError('Email already in use', 409);
+    throw conflict('Email already in use');
   }
 
-  const user = new User({ email: data.email, password: data.password, name: data.name });
+  const user = new User({
+    email: data.email,
+    password: data.password,
+    name: data.name,
+    role: resolveRole(data.email),
+  });
   await user.save();
 
   const { accessToken, refreshToken } = generateTokens((user._id as any).toString(), user.role);
@@ -57,10 +81,11 @@ export async function login(data: LoginRequest): Promise<{ authResponse: AuthRes
   // Always run bcrypt.compare to prevent timing attacks that reveal valid emails
   const passwordMatch = await bcrypt.compare(data.password, user?.password ?? DUMMY_HASH);
   if (!user || !passwordMatch) {
-    throw makeError('Invalid credentials', 401);
+    throw unauthorized('Invalid credentials');
   }
 
-  const { accessToken, refreshToken } = generateTokens((user._id as any).toString(), user.role);
+  const role = await reconcileRole(user);
+  const { accessToken, refreshToken } = generateTokens((user._id as any).toString(), role);
   await storeRefreshToken(refreshToken, (user._id as any).toString());
   return {
     authResponse: { accessToken, user: toSafeUser(user) },
@@ -73,20 +98,21 @@ export async function refreshAccessToken(refreshToken: string): Promise<AuthResp
   try {
     payload = jwt.verify(refreshToken, JWT_REFRESH_SECRET) as { userId: string };
   } catch {
-    throw makeError('Invalid or expired refresh token', 401);
+    throw unauthorized('Invalid or expired refresh token');
   }
 
   const stored = await RefreshToken.findOne({ token: refreshToken });
   if (!stored) {
-    throw makeError('Refresh token not recognized', 401);
+    throw unauthorized('Refresh token not recognized');
   }
 
   const user = await User.findById(payload.userId);
   if (!user) {
-    throw makeError('User not found', 401);
+    throw unauthorized('User not found');
   }
 
-  const accessToken = jwt.sign({ userId: payload.userId, role: user.role }, JWT_SECRET, { expiresIn: JWT_EXPIRATION } as jwt.SignOptions);
+  const role = await reconcileRole(user);
+  const accessToken = jwt.sign({ userId: payload.userId, role }, JWT_SECRET, { expiresIn: JWT_EXPIRATION } as jwt.SignOptions);
   return { accessToken, user: toSafeUser(user) };
 }
 

@@ -1,10 +1,7 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
 import * as ProductService from "../services/product.service";
+import { notFound } from "../services/error.service";
 import { ProductType } from "../types/product.type";
-
-function notFoundError(message: string) {
-  return Object.assign(new Error(message), { statusCode: 404 });
-}
 
 export const getAllProducts: RequestHandler<{}, ProductType[]> = async (
   _req: Request,
@@ -40,7 +37,7 @@ export const getProductById: RequestHandler<{ id: string }, ProductType | null> 
   try {
     const product = await ProductService.findById(req.params.id);
     if (!product) {
-      next?.(notFoundError("Product not found"));
+      next?.(notFound("Product not found"));
       return;
     }
     res.status(200).json(product);
@@ -57,7 +54,7 @@ export const updateProductById: RequestHandler<{ id: string }, ProductType | nul
   try {
     const updatedProduct = await ProductService.updateById(req.params.id, req.body);
     if (!updatedProduct) {
-      next?.(notFoundError("Product not found"));
+      next?.(notFound("Product not found"));
       return;
     }
     res.status(200).json(updatedProduct);
@@ -74,7 +71,7 @@ export const deleteProductById: RequestHandler<{ id: string }, void> = async (
   try {
     const deletedProduct = await ProductService.deleteById(req.params.id);
     if (!deletedProduct) {
-      next?.(notFoundError("Product not found"));
+      next?.(notFound("Product not found"));
       return;
     }
     res.status(204).send();
