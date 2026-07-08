@@ -1,6 +1,6 @@
 {
   "name": "spoker-v2-backend",
-  "version": "0.0.6",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
